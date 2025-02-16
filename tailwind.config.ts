@@ -15,6 +15,9 @@ export default {
       },
       boxShadow: {
         header: "0px 2px 5px 2px rgb(0 0 0 / 0.1)"
+      },
+      fontFamily : {
+        leagueSpartan: "'League Spartan', serif"
       }
     },
   },
