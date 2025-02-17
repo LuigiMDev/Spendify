@@ -21,7 +21,7 @@ const SanduichMenu = () => {
         </div>
     </div>
 
-    <div className={`${menu ? "opacity-30" : "opacity-0 pointer-events-none"} w-screen h-screen bg-black fixed top-0 left-0 transition-all durations 300 lg:hidden`}></div>
+    <div className={`${menu ? "opacity-30" : "opacity-0 pointer-events-none"} w-screen h-screen bg-black fixed top-0 left-0 transition-all durations 300 lg:hidden`} onClick={handleMenu}></div>
 
     <div className={`fixed ${menu ? "-translate-x-full": "translate-x-0"} left-full bg-white h-screen shadow-header top-0 transition-all duration-500 pt-24 w-[80vw] md:w-[50vw] lg:hidden px-5 z-40`}>
         <div className='w-full h-[2px] bg-black opacity-30 mb-5'></div>
