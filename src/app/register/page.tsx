@@ -1,46 +1,39 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import { Eye, EyeClosed, LockKeyhole, LogIn, Mail } from "lucide-react";
+import { Eye, EyeClosed, LockKeyhole, LogIn, Mail, User } from "lucide-react";
 import finance from "@/assets/login/finance.svg";
-import { SaveAuth, signInUser, signInWithGoogle } from "@/lib/Firebase/auth";
+import { signInWithGoogle, signUpUser } from "@/lib/Firebase/auth";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
-import { auth } from "@/lib/Firebase/firebaseConfig";
-import { UserHookContext } from "@/context/UserHookContext";
-import { useRouter } from "next/navigation";
 
 const page = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState(true);
   const [seePassword, setSeePassword] = useState(false);
-  const {setAuth} = UserHookContext()
+  const [seeConfirmPassword, setSeeConfirmPassword] = useState(false);
 
-  const router = useRouter()
-
-  useEffect(() => {
-    auth.onAuthStateChanged(async (user) => {
-      if(user) {
-        const auth = SaveAuth(user)
-      setAuth(await auth)
-      console.log(user)
-      router.push("/dashboard")
-      } else {
-        router.push("/login")
-      }
-    })
-  }, [])
-
-  
+  const handleConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.target.value === password
+      ? setConfirmPassword(true)
+      : setConfirmPassword(false);
+  };
 
   const handleSeePassword = () => {
     setSeePassword(!seePassword);
   };
+  const handleSeeConfirmPassword = () => {
+    setSeeConfirmPassword(!seeConfirmPassword);
+  };
 
-  const LoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const RegisterSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    signInUser(email, password);
+    if(confirmPassword) {
+        signUpUser(name, email, password);
+    }
   };
 
   return (
@@ -48,16 +41,16 @@ const page = () => {
       className="w-full min-h-screen flex items-center justify-center flex-col"
       style={{ backgroundImage: "url(/Login/loginBackground.svg)" }}
     >
-      <Image
-        className="w-60 mb-5 block lg:hidden"
-        src="/spendifyLogoHorizontalSemFundo.svg"
-        width={700}
-        height={250}
-        alt="Spendify"
-        quality={100}
-      />
+        <Image
+                className="w-60 mb-5 block lg:hidden"
+                src="/spendifyLogoHorizontalSemFundo.svg"
+                width={700}
+                height={250}
+                alt="Spendify"
+                quality={100}
+              />
       <section className="flex shadow-header rounded-lg lg:max-w-[70%] max-w-[90%] bg-white w-full flex-shrink-0">
-        <div className="bg-gradient-to-br from-green-300 rounded-lg px-5 py-10 to-primary w-full flex-grow flex-1 flex-col items-center justify-around hidden lg:flex">
+      <div className="bg-gradient-to-br from-green-300 rounded-lg px-5 py-10 to-primary w-full flex-grow flex-1 flex-col items-center justify-around hidden lg:flex">
           <Image
             className="w-48"
             src="/spendifyLogoHorizontalWhite.svg"
@@ -74,11 +67,20 @@ const page = () => {
         </div>
 
         <div className="flex flex-col px-5 py-10 flex-1 w-[40vw] items-center justify-center gap-10">
-          <h1 className="text-6xl font-semibold text-primary">Login</h1>
+          <h1 className="text-6xl font-semibold text-primary">Registrar</h1>
           <form
-            onSubmit={(e) => LoginSubmit(e)}
+            onSubmit={(e) => RegisterSubmit(e)}
             className="flex flex-col gap-4 w-full"
           >
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Nome"
+                className="outline-primary rounded-lg border-2 border-gray-150 p-2 pl-10 w-full"
+                onChange={(e) => setName(e.target.value)}
+              />
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 text-black opacity-50 pointer-events-none" />
+            </div>
             <div className="relative">
               <input
                 type="email"
@@ -108,27 +110,43 @@ const page = () => {
                 />
               )}
             </div>
+            <div className="relative">
+              <input
+                type={seeConfirmPassword ? "text" : "password"}
+                placeholder="Confirmar Senha"
+                className="outline-primary rounded-lg border-2 border-gray-150 py-2 px-10 w-full"
+                onChange={(e) => handleConfirmPassword(e)}
+              />
+              <LockKeyhole className="absolute left-3 top-1/2 -translate-y-1/2 text-black opacity-50 pointer-events-none" />
+              {seeConfirmPassword ? (
+                <Eye
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-black opacity-50 cursor-pointer"
+                  onClick={handleSeeConfirmPassword}
+                />
+              ) : (
+                <EyeClosed
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-black opacity-50 cursor-pointer"
+                  onClick={handleSeeConfirmPassword}
+                />
+              )}
+            </div>
+            {!confirmPassword && (
+              <span className="text-red-600">As senhas devem ser iguais!</span>
+            )}
 
-            <Link
-              href="/forget-password"
-              className="text-primary font-semibold underline"
-            >
-              Esqueci minha senha{" "}
-            </Link>
-
-            <div className="w-full flex justify-between items-center">
+            <div className="w-full flex justify-between">
               <Link
-                href="/register"
+                href="/login"
                 className="text-primary font-semibold underline"
               >
-                Registre-se{" "}
+                Fazer login
               </Link>
 
               <button
                 type="submit"
                 className="text-white font-semibold px-4 py-2 bg-primary rounded-xl flex gap-1"
               >
-                Entrar
+                Cadastrar
                 <LogIn />
               </button>
             </div>
