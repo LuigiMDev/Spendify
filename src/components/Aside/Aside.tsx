@@ -2,13 +2,13 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import Link from "next/link";
-import Navbar from "./Navbar";
-import { PanelRightClose, PanelRightOpen, User } from "lucide-react";
-import { UserHookContext } from "@/context/UserHookContext";
+import Navbar from "../Navbar";
+import { PanelRightClose, PanelRightOpen } from "lucide-react";
+import UserAsideAndHeader from "./UserAsideAndHeader";
+
 
 const Aside = () => {
   const [openAside, setOpenAside] = useState(true);
-  const {authUser} = UserHookContext()
 
   const handleAside = () => {
     setOpenAside(!openAside);
@@ -25,9 +25,7 @@ const Aside = () => {
             className={`flex items-center gap-3 w-auto  transition-all overflow-hidden`}
           >
             <Image
-              className={`h-16 ${
-                  !openAside && "w-0"
-                } transition-all`}
+              className={`h-16 ${!openAside && "w-0"} transition-all`}
               src="/spendifyLogoHorizontal.svg"
               width={200}
               height={64}
@@ -45,12 +43,7 @@ const Aside = () => {
         <div className="w-full h-[2px] bg-black opacity-30 my-5"></div>
         <Navbar openAside={openAside} />
       </div>
-      <div className="px-5 py-10 border-t-2 border-gray-400 flex">
-        <User />
-        <div>
-          <span>{authUser?.data.name}</span>
-        </div>
-      </div>
+      <UserAsideAndHeader openAside={openAside} />
     </aside>
   );
 };

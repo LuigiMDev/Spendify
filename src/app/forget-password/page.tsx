@@ -13,7 +13,11 @@ const page = () => {
   const LoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    ForgetPassword(email);
+    try {
+      ForgetPassword(email);
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
@@ -55,9 +59,10 @@ const page = () => {
             <div className="relative">
               <input
                 type="email"
-                placeholder="Email"
+                placeholder="E-mail"
                 className="outline-primary rounded-lg border-2 border-gray-150 p-2 pl-10 w-full"
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-black opacity-50 pointer-events-none" />
             </div>

@@ -6,6 +6,7 @@ import finance from "@/assets/login/finance.svg";
 import { signInWithGoogle, signUpUser } from "@/lib/Firebase/auth";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const page = () => {
   const [name, setName] = useState("");
@@ -14,6 +15,8 @@ const page = () => {
   const [confirmPassword, setConfirmPassword] = useState(true);
   const [seePassword, setSeePassword] = useState(false);
   const [seeConfirmPassword, setSeeConfirmPassword] = useState(false);
+
+  const router = useRouter();
 
   const handleConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.target.value === password
@@ -28,11 +31,25 @@ const page = () => {
     setSeeConfirmPassword(!seeConfirmPassword);
   };
 
-  const RegisterSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const LoginWithGoogle = async () => {
+      try {
+        await signInWithGoogle()
+        router.push("/dashboard")
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+  const RegisterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if(confirmPassword) {
-        signUpUser(name, email, password);
+    try {
+      if (confirmPassword) {
+        await signUpUser(name, email, password);
+      }
+      router.push("/dashboard");
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -41,16 +58,16 @@ const page = () => {
       className="w-full min-h-screen flex items-center justify-center flex-col"
       style={{ backgroundImage: "url(/Login/loginBackground.svg)" }}
     >
-        <Image
-                className="w-60 mb-5 block lg:hidden"
-                src="/spendifyLogoHorizontalSemFundo.svg"
-                width={700}
-                height={250}
-                alt="Spendify"
-                quality={100}
-              />
+      <Image
+        className="w-60 mb-5 block lg:hidden"
+        src="/spendifyLogoHorizontalSemFundo.svg"
+        width={700}
+        height={250}
+        alt="Spendify"
+        quality={100}
+      />
       <section className="flex shadow-header rounded-lg lg:max-w-[70%] max-w-[90%] bg-white w-full flex-shrink-0">
-      <div className="bg-gradient-to-br from-green-300 rounded-lg px-5 py-10 to-primary w-full flex-grow flex-1 flex-col items-center justify-around hidden lg:flex">
+        <div className="bg-gradient-to-br from-green-300 rounded-lg px-5 py-10 to-primary w-full flex-grow flex-1 flex-col items-center justify-around hidden lg:flex">
           <Image
             className="w-48"
             src="/spendifyLogoHorizontalWhite.svg"
@@ -75,18 +92,20 @@ const page = () => {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Nome"
+                placeholder="Nome de usuário"
                 className="outline-primary rounded-lg border-2 border-gray-150 p-2 pl-10 w-full"
                 onChange={(e) => setName(e.target.value)}
+                required
               />
               <User className="absolute left-3 top-1/2 -translate-y-1/2 text-black opacity-50 pointer-events-none" />
             </div>
             <div className="relative">
               <input
                 type="email"
-                placeholder="Email"
+                placeholder="E-mail"
                 className="outline-primary rounded-lg border-2 border-gray-150 p-2 pl-10 w-full"
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-black opacity-50 pointer-events-none" />
             </div>
@@ -96,6 +115,7 @@ const page = () => {
                 placeholder="Senha"
                 className="outline-primary rounded-lg border-2 border-gray-150 py-2 px-10 w-full"
                 onChange={(e) => setPassword(e.target.value)}
+                required
               />
               <LockKeyhole className="absolute left-3 top-1/2 -translate-y-1/2 text-black opacity-50 pointer-events-none" />
               {seePassword ? (
@@ -116,6 +136,7 @@ const page = () => {
                 placeholder="Confirmar Senha"
                 className="outline-primary rounded-lg border-2 border-gray-150 py-2 px-10 w-full"
                 onChange={(e) => handleConfirmPassword(e)}
+                required
               />
               <LockKeyhole className="absolute left-3 top-1/2 -translate-y-1/2 text-black opacity-50 pointer-events-none" />
               {seeConfirmPassword ? (
@@ -154,7 +175,7 @@ const page = () => {
           <div className="w-full flex justify-center">
             <button
               className="p-3 rounded-lg bg-gray-50 hover:bg-gray-100"
-              onClick={() => signInWithGoogle()}
+              onClick={LoginWithGoogle}
             >
               <FcGoogle className="w-6 h-6" />
             </button>

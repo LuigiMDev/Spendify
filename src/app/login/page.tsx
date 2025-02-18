@@ -3,44 +3,39 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Eye, EyeClosed, LockKeyhole, LogIn, Mail } from "lucide-react";
 import finance from "@/assets/login/finance.svg";
-import { SaveAuth, signInUser, signInWithGoogle } from "@/lib/Firebase/auth";
+import { signInUser, signInWithGoogle } from "@/lib/Firebase/auth";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
-import { auth } from "@/lib/Firebase/firebaseConfig";
-import { UserHookContext } from "@/context/UserHookContext";
 import { useRouter } from "next/navigation";
 
 const page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [seePassword, setSeePassword] = useState(false);
-  const {setAuth} = UserHookContext()
-
-  const router = useRouter()
-
-  useEffect(() => {
-    auth.onAuthStateChanged(async (user) => {
-      if(user) {
-        const auth = SaveAuth(user)
-      setAuth(await auth)
-      console.log(user)
-      router.push("/dashboard")
-      } else {
-        router.push("/login")
-      }
-    })
-  }, [])
-
-  
+  const router = useRouter();
 
   const handleSeePassword = () => {
     setSeePassword(!seePassword);
   };
 
-  const LoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const LoginWithGoogle = async () => {
+    try {
+      await signInWithGoogle()
+      router.push("/dashboard")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const LoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    signInUser(email, password);
+    try {
+      await signInUser(email, password);
+      router.push("/dashboard");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -82,9 +77,10 @@ const page = () => {
             <div className="relative">
               <input
                 type="email"
-                placeholder="Email"
+                placeholder="E-mail"
                 className="outline-primary rounded-lg border-2 border-gray-150 p-2 pl-10 w-full"
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-black opacity-50 pointer-events-none" />
             </div>
@@ -94,6 +90,7 @@ const page = () => {
                 placeholder="Senha"
                 className="outline-primary rounded-lg border-2 border-gray-150 py-2 px-10 w-full"
                 onChange={(e) => setPassword(e.target.value)}
+                required
               />
               <LockKeyhole className="absolute left-3 top-1/2 -translate-y-1/2 text-black opacity-50 pointer-events-none" />
               {seePassword ? (
@@ -136,7 +133,7 @@ const page = () => {
           <div className="w-full flex justify-center">
             <button
               className="p-3 rounded-lg bg-gray-50 hover:bg-gray-100"
-              onClick={() => signInWithGoogle()}
+              onClick={LoginWithGoogle}
             >
               <FcGoogle className="w-6 h-6" />
             </button>

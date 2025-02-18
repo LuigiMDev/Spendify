@@ -9,7 +9,7 @@ type props = {
 
 const Navbar: React.FC<props> = ({openAside}) => {
   return (
-    <nav>
+    <nav className='h-full'>
         <ul className='w-full'>
             <li className='my-1 text-black'>
                 <Link href="/dashboard" className='flex items-center p-3 hover:bg-gray-100 rounded-lg transition-all'>
