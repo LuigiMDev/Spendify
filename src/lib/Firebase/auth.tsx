@@ -1,8 +1,9 @@
-import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut, User } from "firebase/auth"
+import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut} from "firebase/auth"
 import { auth, db } from "./firebaseConfig"
-import { doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { GoogleAuthProvider } from "firebase/auth";
-import { userData } from "@/context/UserContext";
+import cookie from "js-cookie"
+
 
 
 export const signUpUser = async (name: string, email: string, password: string) => {
@@ -25,6 +26,8 @@ export const signUpUser = async (name: string, email: string, password: string) 
                 expenses: [],
             })
         }
+
+        cookie.set("authToken", await user.getIdToken())
 
         return user
 }
@@ -54,6 +57,8 @@ export const signInWithGoogle = async () => {
             })
         }
 
+        cookie.set("authToken", await user.getIdToken())
+
         return user
 }
 
@@ -65,6 +70,8 @@ export const signInUser = async (email: string, password: string) => {
             throw new Error("Email ou senha incorretos")
         }
 
+        cookie.set("authToken", await user.getIdToken())
+
         return user
 }
 
@@ -74,5 +81,6 @@ export const ForgetPassword = async (email: string) => {
 
 export const Logout =  () => {
     signOut(auth)
+    cookie.remove("authToken")
 }
 

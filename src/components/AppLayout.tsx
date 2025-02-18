@@ -12,13 +12,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const { authUser } = UserHookContext();
   const router = useRouter();
 
-  useEffect(() => {
-    const subscribe = onAuthStateChanged(auth, (user) => {
-      if(!user) {
-        router.push("/login")
-      }
-    })
-  })
+  
 
   return (
     <>
