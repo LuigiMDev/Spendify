@@ -43,8 +43,8 @@ export const signInWithGoogle = async () => {
             const nameNormalized = user.displayName?.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             const nameReplaceded = nameNormalized?.replace(/\s+/g, "+")
 
-            const avatarResponse = await fetch(`https://ui-avatars.com/api/?name=${nameReplaceded}&background=random`);
-            const avatar = avatarResponse.url;
+            const avatarResponse = await fetch(`https://ui-avatars.com/api/?name=${nameReplaceded}&background=random&format=svg`);
+            const avatar = user.photoURL ?? avatarResponse.url;
 
             await setDoc(doc(db, "users", user.uid), {
                 name: user.displayName,
