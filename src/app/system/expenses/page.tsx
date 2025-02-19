@@ -1,9 +1,16 @@
 "use client";
+import { getExpenses } from "@/lib/Firebase/expenses";
 import { CirclePlus, CircleX, Edit, Send, Trash } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const page = () => {
   const [add, setAdd] = useState(false);
+  const [expenses, setExpenses] = useState<any>([]);
+
+  useEffect(() => {
+    const unsubscrible = getExpenses(setExpenses)
+  }, [])
+
 
   return (
     <div className="">
@@ -29,25 +36,7 @@ const page = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-          <div className="p-5 border border-gray-100 rounded-xl shadow-sm bg-white">
-            <h2 className="text-lg font-semibold opacity-80 mb-3">X-box 360</h2>
-            <p className="opacity-80 mb-3">
-              <span className="font-semibold">Descrição:</span> Lorem ipsum
-              dolor sit amet consectetur adipisicing elit. Ex doloremque cumque
-              pariatur, incidunt facere
-            </p>
-            <p className="opacity-80 mb-3">
-              <span className="font-semibold">Tipo:</span> Videogame
-            </p>
-            <div className="flex justify-end space-x-2">
-              <button className="p-3 rounded-xl bg-yellow-300 text-white">
-                <Edit className="w-5 h-5" />
-              </button>
-              <button className="p-3 rounded-xl bg-red-400 text-white">
-                <Trash className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
+          
         </div>
       </section>
 
