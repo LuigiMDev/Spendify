@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Navbar from "../Navbar";
 import { PanelRightClose, PanelRightOpen } from "lucide-react";
-import UserAsideAndHeader from "./UserAsideAndHeader";
+import UserAsideAndHeader from "../UserAsideAndHeader";
 
 
 const Aside = () => {
