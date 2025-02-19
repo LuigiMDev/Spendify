@@ -5,6 +5,7 @@ import { Mail, Send } from "lucide-react";
 import finance from "@/assets/login/finance.svg";
 import { ForgetPassword } from "@/lib/Firebase/auth";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 const page = () => {
   const [email, setEmail] = useState("");
@@ -15,8 +16,9 @@ const page = () => {
 
     try {
       ForgetPassword(email);
+      toast.success("E-mail enviado! Verifique sua caixa de entrada para as instruções de redefinição de senha.")
     } catch (error) {
-      console.log(error)
+      toast.error("Ocorreu um erro ao fazer a solicitação de recuperação de senha")
     }
   };
 

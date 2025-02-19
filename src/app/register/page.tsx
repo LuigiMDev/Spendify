@@ -7,6 +7,7 @@ import { signInWithGoogle, signUpUser } from "@/lib/Firebase/auth";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const page = () => {
   const [name, setName] = useState("");
@@ -35,9 +36,13 @@ const page = () => {
       try {
         await signInWithGoogle()
         router.push("/system/dashboard")
-      } catch (error) {
-        console.log(error)
-      }
+      } catch (error: any) {
+            if (error.code === "auth/invalid-credential") {
+              toast.error("E-mail ou senha inválidos")
+            } else {
+              toast.error("Ocorreu um erro ao fazer login")
+            }
+          }
     }
 
   const RegisterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -48,9 +53,13 @@ const page = () => {
         await signUpUser(name, email, password);
       }
       router.push("/dashboard");
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error: any) {
+      if (error.code === "auth/weak-password") {
+        toast.error("A senha precisa ter no mínimo 6 dígitos")
+      } else {
+        toast.error("Ocorreu um erro ao fazer o cadastro")
+      }
+  }
   };
 
   return (
