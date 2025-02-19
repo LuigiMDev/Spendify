@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { Eye, EyeClosed, LockKeyhole, LogIn, Mail } from "lucide-react";
 import finance from "@/assets/login/finance.svg";
@@ -7,6 +7,7 @@ import { signInUser, signInWithGoogle } from "@/lib/Firebase/auth";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const page = () => {
   const [email, setEmail] = useState("");
@@ -22,9 +23,13 @@ const page = () => {
   const LoginWithGoogle = async () => {
     try {
       await signInWithGoogle()
-      router.push("/dashboard")
-    } catch (error) {
-      console.log(error)
+      router.push("/system/dashboard")
+    } catch (error: any) {
+      if (error.code === "auth/invalid-credential") {
+        toast.error("E-mail ou senha inválidos")
+      } else {
+        toast.error("Ocorreu um erro ao fazer login")
+      }
     }
   }
 
@@ -33,9 +38,13 @@ const page = () => {
 
     try {
       await signInUser(email, password);
-      router.push("/dashboard");
-    } catch (error) {
-      console.log(error);
+      router.push("/system/dashboard");
+    } catch (error: any) {
+      if (error.code === "auth/invalid-credential") {
+        toast.error("E-mail ou senha inválidos")
+      } else {
+        toast.error("Ocorreu um erro ao fazer login")
+      }
     }
   };
 

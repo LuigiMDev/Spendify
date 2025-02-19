@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { UserProvider } from "@/context/UserContext";
+import { ToastContainer } from "react-toastify";
 
 export const metadata: Metadata = {
   title: {
@@ -20,6 +21,7 @@ export default function RootLayout({
       <body
         className={`antialiased text-black`}
       >
+        <ToastContainer position="bottom-right" />
         <UserProvider>
           {children}
         </UserProvider>

@@ -34,7 +34,7 @@ const page = () => {
   const LoginWithGoogle = async () => {
       try {
         await signInWithGoogle()
-        router.push("/dashboard")
+        router.push("/system/dashboard")
       } catch (error) {
         console.log(error)
       }
