@@ -24,6 +24,12 @@ export async function middleware(req: NextRequest) {
             throw new Error("Token inválido")
         }
 
+        const url = new URL(req.url)
+        const pathname = url.pathname
+        if(pathname === "/system" || pathname === "/system/") {
+            return NextResponse.redirect(new URL("/system/dashboard", req.url))
+        }
+
         return NextResponse.next();
     } catch (error) {
         return NextResponse.redirect(new URL("/login", req.url))
