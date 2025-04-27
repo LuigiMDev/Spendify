@@ -1,18 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "../../prismaClient";
+import { prismadb } from "../../prismaClient";
+import { User } from "../models/User";
+
+const user = new User();
 
 export async function POST(req: NextRequest) {
+  const body = await req.json();
 
-        const {name, email, password} = await req.json()
-
-        const newUser = await prisma.user.create({
-            data: {
-                name,
-                email,
-                password
-            }
-        })
-
-        return NextResponse.json(newUser, {status: 201})
-  
+  try {
+    const newUser = await user.register(body);
+    return NextResponse.json({newUser}, {status: 201})
+  } catch (err) {
+    console.log(err);
+    NextResponse.json(
+      { message: "Ocorreu um problema ao criar o usuário" },
+      { status: 500 }
+    );
+  }
 }

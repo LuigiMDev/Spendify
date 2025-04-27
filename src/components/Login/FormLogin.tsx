@@ -27,7 +27,8 @@ const FormLogin = () => {
                       type="text"
                       placeholder="Nome"
                       className="outline-primary rounded-lg border-2 border-gray-150 p-2 pl-10 w-full"
-                    onChange={(e) => setName(e.target.value)}/>
+                    onChange={(e) => setName(e.target.value)}
+                    value={name}/>
                     <User className="absolute left-3 top-1/2 -translate-y-1/2 text-black opacity-50 pointer-events-none" />
                 </div>
                 <div className="relative">
@@ -36,6 +37,7 @@ const FormLogin = () => {
                       placeholder="Email"
                       className="outline-primary rounded-lg border-2 border-gray-150 p-2 pl-10 w-full"
                       onChange={(e) => setEmail(e.target.value)}
+                      value={email}
                     />
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-black opacity-50 pointer-events-none" />
                 </div>
@@ -45,6 +47,7 @@ const FormLogin = () => {
                       placeholder="Senha"
                       className="outline-primary rounded-lg border-2 border-gray-150 py-2 px-10 w-full"
                       onChange={(e) => setPassword(e.target.value)}
+                      value={password}
                     />
                     <LockKeyhole className="absolute left-3 top-1/2 -translate-y-1/2 text-black opacity-50 pointer-events-none" />
                     {seePassword ? <Eye className="absolute right-3 top-1/2 -translate-y-1/2 text-black opacity-50 cursor-pointer" onClick={handleSeePassword} /> : <EyeClosed className="absolute right-3 top-1/2 -translate-y-1/2 text-black opacity-50 cursor-pointer" onClick={handleSeePassword} />}
