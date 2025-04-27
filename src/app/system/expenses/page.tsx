@@ -1,5 +1,4 @@
 "use client";
-import { getExpenses } from "@/lib/Firebase/expenses";
 import { CirclePlus, CircleX, Edit, Send, Trash } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
@@ -7,9 +6,7 @@ const page = () => {
   const [add, setAdd] = useState(false);
   const [expenses, setExpenses] = useState<any>([]);
 
-  useEffect(() => {
-    const unsubscrible = getExpenses(setExpenses)
-  }, [])
+  
 
 
   return (

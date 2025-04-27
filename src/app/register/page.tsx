@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { Eye, EyeClosed, LockKeyhole, LogIn, Mail, User } from "lucide-react";
 import finance from "@/assets/login/finance.svg";
-import { signInWithGoogle, signUpUser } from "@/lib/Firebase/auth";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -34,7 +33,7 @@ const page = () => {
 
   const LoginWithGoogle = async () => {
       try {
-        await signInWithGoogle()
+        
         router.push("/system/dashboard")
       } catch (error: any) {
             if (error.code === "auth/invalid-credential") {
@@ -50,7 +49,7 @@ const page = () => {
 
     try {
       if (confirmPassword) {
-        await signUpUser(name, email, password);
+        
       }
       router.push("/dashboard");
     } catch (error: any) {

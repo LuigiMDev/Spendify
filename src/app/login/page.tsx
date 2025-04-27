@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { Eye, EyeClosed, LockKeyhole, LogIn, Mail } from "lucide-react";
 import finance from "@/assets/login/finance.svg";
-import { signInUser, signInWithGoogle } from "@/lib/Firebase/auth";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -20,24 +19,12 @@ const page = () => {
     setSeePassword(!seePassword);
   };
 
-  const LoginWithGoogle = async () => {
-    try {
-      await signInWithGoogle()
-      router.push("/system/dashboard")
-    } catch (error: any) {
-      if (error.code === "auth/invalid-credential") {
-        toast.error("E-mail ou senha inválidos")
-      } else {
-        toast.error("Ocorreu um erro ao fazer login")
-      }
-    }
-  }
 
   const LoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      await signInUser(email, password);
+      
       router.push("/system/dashboard");
     } catch (error: any) {
       if (error.code === "auth/invalid-credential") {
@@ -140,14 +127,6 @@ const page = () => {
               </button>
             </div>
           </form>
-          <div className="w-full flex justify-center">
-            <button
-              className="p-3 rounded-lg bg-gray-50 hover:bg-gray-100"
-              onClick={LoginWithGoogle}
-            >
-              <FcGoogle className="w-6 h-6" />
-            </button>
-          </div>
         </div>
       </section>
     </main>

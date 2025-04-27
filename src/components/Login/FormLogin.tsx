@@ -1,4 +1,4 @@
-import { signUpUser } from '@/lib/Firebase/auth'
+
 import { Eye, EyeClosed, LockKeyhole, LogIn, Mail, User } from "lucide-react";
 import React, { useState } from 'react'
 
@@ -17,7 +17,7 @@ const FormLogin = () => {
         const RegisterSubmit = (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
     
-            signUpUser(name, email, password)
+            
         }
 
   return (

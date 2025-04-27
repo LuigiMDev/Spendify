@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  name      String
+  email     String    @unique
+  password  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  expenses  Expense[]
+
+  @@map("users")
+}
+
+model Expense {
+  id          String        @id @default(uuid())
+  title       String
+  description String
+  type        ExpenseType
+  dueDate     DateTime
+  paymentDate DateTime
+  status      ExpenseStatus
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  userId      String
+  user        User          @relation(fields: [userId], references: [id])
+
+  @@map("expenses")
+}
+
+enum ExpenseType {
+  food // Alimentação
+  transport // Transporte
+  entertainment // Entretenimento
+  bills // Contas
+  rent // Aluguel
+  health // Saúde
+  shopping // Compras
+  other // Outros
+}
+
+enum ExpenseStatus {
+  pending //Pendente
+  paid //Paga
+  cancelled //Cancelada
+}

@@ -1,6 +1,4 @@
 import React from "react";
-import { UserHookContext } from "@/context/UserHookContext";
-import { Logout } from "@/lib/Firebase/auth";
 import { useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
 import Image from "next/image";
@@ -10,18 +8,17 @@ type prop = {
 };
 
 const UserAsideAndHeader: React.FC<prop> = ({ openAside }) => {
-  const { authUser } = UserHookContext();
 
   const router = useRouter();
 
   const handleLogout = () => {
     router.push("/login");
-    Logout();
+    
   };
 
   return (
     <div className="px-5 py-10 border-t-2 border-gray-400 flex items-center justify-between w-full">
-      {authUser?.avatar && (
+      {/* {authUser?.avatar && (
         <Image
           src={authUser?.avatar}
           width={40}
@@ -29,7 +26,7 @@ const UserAsideAndHeader: React.FC<prop> = ({ openAside }) => {
           alt="Avatar"
           className="w-12 h-12 rounded-lg"
         />
-      )}
+      )} */}
       <div className={`${
             openAside ? "lg:ml-3 lg:w-full" : "lg:w-0 lg:ml-0"
           } ml-3 w-full overflow-hidden text-nowrap flex justify-between`}>
@@ -37,8 +34,8 @@ const UserAsideAndHeader: React.FC<prop> = ({ openAside }) => {
           className={`flex`}
         >
           <div className="flex flex-col">
-            <span className="text-sm">{authUser?.name}</span>
-            <span className="text-xs">{authUser?.email}</span>
+            {/* <span className="text-sm">{authUser?.name}</span>
+            <span className="text-xs">{authUser?.email}</span> */}
           </div>
         </div>
 
