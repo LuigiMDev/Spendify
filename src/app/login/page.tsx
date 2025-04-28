@@ -108,12 +108,6 @@ const page = () => {
               )}
             </div>
 
-            <Link
-              href="/forget-password"
-              className="text-primary font-semibold underline"
-            >
-              Esqueci minha senha{" "}
-            </Link>
 
             <div className="w-full flex justify-between items-center">
               <Link
