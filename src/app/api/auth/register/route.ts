@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prismadb } from "../../prismaClient";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken"
+import { cookies } from "next/headers";
 
 
 const registerUserSchema = z
@@ -50,6 +52,20 @@ export async function POST(req: NextRequest) {
         password: passwordHashed,
       },
     });
+
+    const JWT_SECRET = process.env.JWT_SECRET
+
+    if (!JWT_SECRET) {
+      throw new Error("JWT_SECRET não definido!");
+    }
+
+    const token = jwt.sign(newUser.id, JWT_SECRET);
+
+    (await cookies()).set("token", token, {
+      httpOnly: true,
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30,
+    })
 
     return NextResponse.json({ newUser }, { status: 201 });
   } catch (err) {

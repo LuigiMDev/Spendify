@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Eye, EyeClosed, LockKeyhole, LogIn, Mail, User } from "lucide-react";
 import finance from "@/assets/login/finance.svg";
@@ -12,17 +12,18 @@ const page = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState(true);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [verifyPassword, setVerifyPassword] = useState(true)
   const [seePassword, setSeePassword] = useState(false);
   const [seeConfirmPassword, setSeeConfirmPassword] = useState(false);
 
   const router = useRouter();
 
-  const handleConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.target.value === password
-      ? setConfirmPassword(true)
-      : setConfirmPassword(false);
-  };
+  useEffect(() => {
+    confirmPassword === password
+    ? setVerifyPassword(true)
+    : setVerifyPassword(false);
+  }, [confirmPassword, password])
 
   const handleSeePassword = () => {
     setSeePassword(!seePassword);
@@ -31,34 +32,25 @@ const page = () => {
     setSeeConfirmPassword(!seeConfirmPassword);
   };
 
-  const LoginWithGoogle = async () => {
-      try {
-        
-        router.push("/system/dashboard")
-      } catch (error: any) {
-            if (error.code === "auth/invalid-credential") {
-              toast.error("E-mail ou senha inválidos")
-            } else {
-              toast.error("Ocorreu um erro ao fazer login")
-            }
-          }
-    }
-
   const RegisterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      if (confirmPassword) {
-        
+      if (verifyPassword) {
+        const newUser = await fetch("/api/auth/register", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name, email, password, confirmPassword }),
+        })
+        console.log(await newUser.json());
+        router.push("/system/dashboard");
       }
-      router.push("/dashboard");
-    } catch (error: any) {
-      if (error.code === "auth/weak-password") {
-        toast.error("A senha precisa ter no mínimo 6 dígitos")
-      } else {
-        toast.error("Ocorreu um erro ao fazer o cadastro")
-      }
-  }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -143,7 +135,7 @@ const page = () => {
                 type={seeConfirmPassword ? "text" : "password"}
                 placeholder="Confirmar Senha"
                 className="outline-primary rounded-lg border-2 border-gray-150 py-2 px-10 w-full"
-                onChange={(e) => handleConfirmPassword(e)}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
               <LockKeyhole className="absolute left-3 top-1/2 -translate-y-1/2 text-black opacity-50 pointer-events-none" />
@@ -159,7 +151,7 @@ const page = () => {
                 />
               )}
             </div>
-            {!confirmPassword && (
+            {!verifyPassword && (
               <span className="text-red-600">As senhas devem ser iguais!</span>
             )}
 
@@ -180,14 +172,6 @@ const page = () => {
               </button>
             </div>
           </form>
-          <div className="w-full flex justify-center">
-            <button
-              className="p-3 rounded-lg bg-gray-50 hover:bg-gray-100"
-              onClick={LoginWithGoogle}
-            >
-              <FcGoogle className="w-6 h-6" />
-            </button>
-          </div>
         </div>
       </section>
     </main>
