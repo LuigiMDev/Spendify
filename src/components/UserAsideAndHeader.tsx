@@ -1,7 +1,6 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
-import Image from "next/image";
 
 type prop = {
   openAside?: boolean;
@@ -11,9 +10,10 @@ const UserAsideAndHeader: React.FC<prop> = ({ openAside }) => {
 
   const router = useRouter();
 
-  const handleLogout = () => {
-    router.push("/login");
-    
+  const handleLogout = async () => {
+    await fetch("/api/auth/logout")
+
+    router.push("/login")
   };
 
   return (

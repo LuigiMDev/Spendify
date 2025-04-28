@@ -41,13 +41,12 @@ export async function POST(req: NextRequest) {
       throw new Error("JWT_SECRET não definido!");
     }
 
-    const token = jwt.sign(user.id, JWT_SECRET);
+    const token = jwt.sign({id: user.id}, JWT_SECRET);
 
     (await cookies()).set("token", token, {
       httpOnly: true,
       path: "/",
       maxAge: 60 * 60 * 24 * 30,
-      sameSite: "none"
     })
 
     return NextResponse.json({ message: "Login realizado com sucesso!" }, { status: 200 });

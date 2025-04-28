@@ -1,5 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
+import {jwtVerify} from "jose"
+
+async function safeVerify(token: string, secret: Uint8Array) {
+  try {
+    return await jwtVerify(token, secret)
+  } catch (err) {
+    console.log(err)
+    return null
+  }
+}
 
 export async function middleware(req: NextRequest) {
   const cookieToken = req.cookies.get("token");
@@ -13,8 +22,10 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next()
   }
 
-  try {
-    const token = jwt.verify(cookieToken.value, JWT_SECRET);
+  const secret = new TextEncoder().encode(JWT_SECRET)
+
+    const token = await safeVerify(cookieToken.value, secret);
+
     if (
       req.nextUrl.pathname === "/login" ||
       req.nextUrl.pathname === "/register"
@@ -37,12 +48,6 @@ export async function middleware(req: NextRequest) {
     }
 
     return NextResponse.next();
-  } catch (err) {
-    return NextResponse.json(
-      { message: "Token inválido ou expirado!" },
-      { status: 401 }
-    );
-  }
 }
 
 export const config = {

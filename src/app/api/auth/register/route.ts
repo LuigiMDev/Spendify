@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
       throw new Error("JWT_SECRET não definido!");
     }
 
-    const token = jwt.sign(newUser.id, JWT_SECRET);
+    const token = jwt.sign({id: newUser.id}, JWT_SECRET);
 
     (await cookies()).set("token", token, {
       httpOnly: true,

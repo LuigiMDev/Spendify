@@ -24,14 +24,19 @@ const page = () => {
     e.preventDefault();
 
     try {
-      
+      await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email, password
+        })
+      })
       router.push("/system/dashboard");
-    } catch (error: any) {
-      if (error.code === "auth/invalid-credential") {
-        toast.error("E-mail ou senha inválidos")
-      } else {
-        toast.error("Ocorreu um erro ao fazer login")
-      }
+    } catch (err) {
+      console.log(err)
     }
   };
 
