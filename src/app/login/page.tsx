@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import { Eye, EyeClosed, LockKeyhole, LogIn, Mail } from "lucide-react";
+import { Eye, EyeClosed, LoaderCircle, LockKeyhole, LogIn, Mail } from "lucide-react";
 import finance from "@/assets/login/finance.svg";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
@@ -12,6 +12,8 @@ const page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [seePassword, setSeePassword] = useState(false);
+  const [isLoading, setIsloading] = useState(false);
+  const [unauthorized, setUnathorized] = useState(false)
   const router = useRouter();
 
 
@@ -24,7 +26,8 @@ const page = () => {
     e.preventDefault();
 
     try {
-      await fetch("/api/auth/login", {
+      setIsloading(true)
+      const userLoged = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -34,9 +37,15 @@ const page = () => {
           email, password
         })
       })
-      router.push("/system/dashboard");
+      setUnathorized(userLoged.status === 401 ? true : false)
+      if(userLoged.status !== 401) {
+        router.push("/system/dashboard");
+        toast.success("Usuário logado com sucesso!")
+      }  
+      setIsloading(false)
     } catch (err) {
       console.log(err)
+      toast.error("Ocorreu um erro ao fazer o login!")
     }
   };
 
@@ -54,7 +63,7 @@ const page = () => {
         quality={100}
       />
       <section className="flex shadow-header rounded-lg lg:max-w-[70%] max-w-[90%] bg-white w-full flex-shrink-0">
-        <div className="bg-gradient-to-br from-green-300 rounded-lg px-5 py-10 to-primary w-full flex-grow flex-1 flex-col items-center justify-around hidden lg:flex">
+        <div className="bg-gradient-to-br from-green-300 rounded-lg px-5 py-10 to-primary w-full flex-grow flex-1 flex-col items-center justify-around hidden lg:flex ">
           <Image
             className="w-48"
             src="/spendifyLogoHorizontalWhite.svg"
@@ -107,6 +116,7 @@ const page = () => {
                 />
               )}
             </div>
+            {unauthorized && <span className="text-red-600">E-mail ou senha inválidos!</span>}
 
 
             <div className="w-full flex justify-between items-center">
@@ -122,7 +132,9 @@ const page = () => {
                 className="text-white font-semibold px-4 py-2 bg-primary rounded-xl flex gap-1"
               >
                 Entrar
-                <LogIn />
+                {isLoading ?
+                <LoaderCircle className="text-white animate-spin" />
+                : <LogIn />}
               </button>
             </div>
           </form>

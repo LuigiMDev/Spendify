@@ -19,7 +19,6 @@ export default function RootLayout({
     <html lang="pt-br">
       <body className={`antialiased text-black`}>
         <ToastContainer position="bottom-right" />
-
         {children}
       </body>
     </html>

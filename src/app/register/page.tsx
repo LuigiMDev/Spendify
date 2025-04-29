@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { Eye, EyeClosed, LockKeyhole, LogIn, Mail, User } from "lucide-react";
+import { Eye, EyeClosed, LoaderCircle, LockKeyhole, LogIn, Mail, User } from "lucide-react";
 import finance from "@/assets/login/finance.svg";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
@@ -16,6 +16,7 @@ const page = () => {
   const [verifyPassword, setVerifyPassword] = useState(true)
   const [seePassword, setSeePassword] = useState(false);
   const [seeConfirmPassword, setSeeConfirmPassword] = useState(false);
+  const [isLoading, setIsloading] = useState(false)
 
   const router = useRouter();
 
@@ -37,6 +38,7 @@ const page = () => {
 
     try {
       if (verifyPassword) {
+        setIsloading(true)
         const newUser = await fetch("/api/auth/register", {
           method: "POST",
           headers: {
@@ -47,9 +49,11 @@ const page = () => {
         })
         console.log(await newUser.json());
         router.push("/system/dashboard");
+        setIsloading(false)
       }
     } catch (err) {
       console.log(err);
+      toast.error("Ocorreu um erro ao fazer o registro!")
     }
   };
 
@@ -168,7 +172,7 @@ const page = () => {
                 className="text-white font-semibold px-4 py-2 bg-primary rounded-xl flex gap-1"
               >
                 Cadastrar
-                <LogIn />
+                {isLoading ? <LoaderCircle className="text-white animate-spin"/> : <LogIn />}        
               </button>
             </div>
           </form>

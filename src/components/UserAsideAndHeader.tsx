@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { LogOut } from "lucide-react";
+import { LoaderCircle, LogOut } from "lucide-react";
 
 type prop = {
   openAside?: boolean;
@@ -8,9 +8,12 @@ type prop = {
 
 const UserAsideAndHeader: React.FC<prop> = ({ openAside }) => {
 
+  const [isLoading, setIsloading] = useState(false)
+
   const router = useRouter();
 
   const handleLogout = async () => {
+    setIsloading(true)
     await fetch("/api/auth/logout")
 
     router.push("/login")
@@ -41,9 +44,9 @@ const UserAsideAndHeader: React.FC<prop> = ({ openAside }) => {
 
         <div
           className="text-black cursor-pointer p-3 bg-gray-50 hover:bg-gray-100  rounded-lg transition-all ml-3"
-          onClick={handleLogout}
+          onClick={handleLogout} title="Sair"
         >
-          <LogOut />
+          {isLoading ? <LoaderCircle className="text-black animate-spin" /> :  <LogOut /> }   
         </div>
       </div>
     </div>

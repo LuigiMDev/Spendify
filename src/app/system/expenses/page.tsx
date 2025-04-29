@@ -6,16 +6,13 @@ const page = () => {
   const [add, setAdd] = useState(false);
   const [expenses, setExpenses] = useState<any>([]);
 
-  
-
 
   return (
     <div className="">
-      <div className="mb-10">
+      <div className="mb-5">
         <h1 className="text-4xl mb-3">Gastos</h1>
-        <p className="opacity-90">
-          Adicione, altere e exclua seus gastos. Suas alterações irão refletir
-          nos gráficos do dashboard
+        <p className="text-gray-800">
+          Adicione, altere e exclua seus gastos. Suas alterações irão refletir nos gráficos do dashboard
         </p>
       </div>
 
