@@ -8,9 +8,9 @@ import { cookies } from "next/headers";
 
 const registerUserSchema = z
   .object({
-    name: z.string().nonempty({message: "O nome é obrigatório"}),
-    email: z.string().email({message: "O e-mail é inválido!"}),
-    password: z.string().nonempty({message: "A senha é obrigatória!"}),
+    name: z.string().nonempty({message: "O nome é obrigatório"}).max(70, {message: "O nome não pode ultrapassar de 70 caracteres!"}),
+    email: z.string().email({message: "O e-mail é inválido!"}).max(100, {message: "O e-mail não pode passar de 100 caracteres!"}),
+    password: z.string().nonempty({message: "A senha é obrigatória!"}).min(8, {message: "A senha precisa ter no mínimo 8 caracteres"}).max(50, "A senha não pode passar de 50 caracteres!"),
     confirmPassword: z.string().nonempty({message: "A confirmação da senha é obrigatória!"}),
   })
   .refine((data) => data.password === data.confirmPassword, {

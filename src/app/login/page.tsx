@@ -90,6 +90,7 @@ const page = () => {
               <input
                 type="email"
                 placeholder="E-mail"
+                maxLength={100}
                 className="outline-primary rounded-lg border-2 border-gray-150 p-2 pl-10 w-full"
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -100,6 +101,8 @@ const page = () => {
               <input
                 type={seePassword ? "text" : "password"}
                 placeholder="Senha"
+                maxLength={50}
+                minLength={8}
                 className="outline-primary rounded-lg border-2 border-gray-150 py-2 px-10 w-full"
                 onChange={(e) => setPassword(e.target.value)}
                 required
