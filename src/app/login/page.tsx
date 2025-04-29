@@ -13,7 +13,6 @@ const page = () => {
   const [password, setPassword] = useState("");
   const [seePassword, setSeePassword] = useState(false);
   const [isLoading, setIsloading] = useState(false);
-  const [unauthorized, setUnathorized] = useState(false)
   const router = useRouter();
 
 
@@ -37,15 +36,17 @@ const page = () => {
           email, password
         })
       })
-      setUnathorized(userLoged.status === 401 ? true : false)
-      if(userLoged.status !== 401) {
+      if(userLoged.status == 401) {
+        toast.error("E-mail ou senha inválidos!")
+        setIsloading(false)
+      } else {
         router.push("/system/dashboard");
         toast.success("Usuário logado com sucesso!")
-      }  
-      setIsloading(false)
+      }
     } catch (err) {
       console.log(err)
       toast.error("Ocorreu um erro ao fazer o login!")
+      setIsloading(false)
     }
   };
 
@@ -116,7 +117,6 @@ const page = () => {
                 />
               )}
             </div>
-            {unauthorized && <span className="text-red-600">E-mail ou senha inválidos!</span>}
 
 
             <div className="w-full flex justify-between items-center">

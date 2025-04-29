@@ -45,10 +45,16 @@ export async function POST(req: NextRequest) {
 
     const passwordHashed = await bcrypt.hash(password, 10);
 
+    const FTwoNames = name.trim().split(/\s+/).slice(0, 2).join(" ")
+
+    const avatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(FTwoNames)}&background=06E35E&color=FFFFFF&size=128&format=svg`
+
     const newUser = await prismadb.user.create({
       data: {
         name,
+        FTwoNames,
         email,
+        avatar,
         password: passwordHashed,
       },
     });

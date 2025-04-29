@@ -47,13 +47,18 @@ const page = () => {
           },
           body: JSON.stringify({ name, email, password, confirmPassword }),
         })
-        console.log(await newUser.json());
-        router.push("/system/dashboard");
-        setIsloading(false)
+        if(newUser.status === 409) {
+          toast.error("Já existe um usuário cadastrado com este e-mail!")
+          setIsloading(false)
+        } else {
+          console.log(await newUser.json());
+          router.push("/system/dashboard");
+        }
       }
     } catch (err) {
       console.log(err);
       toast.error("Ocorreu um erro ao fazer o registro!")
+      setIsloading(false)
     }
   };
 
