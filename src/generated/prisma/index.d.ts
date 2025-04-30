@@ -2139,8 +2139,18 @@ export namespace Prisma {
 
   export type AggregateExpense = {
     _count: ExpenseCountAggregateOutputType | null
+    _avg: ExpenseAvgAggregateOutputType | null
+    _sum: ExpenseSumAggregateOutputType | null
     _min: ExpenseMinAggregateOutputType | null
     _max: ExpenseMaxAggregateOutputType | null
+  }
+
+  export type ExpenseAvgAggregateOutputType = {
+    value: number | null
+  }
+
+  export type ExpenseSumAggregateOutputType = {
+    value: number | null
   }
 
   export type ExpenseMinAggregateOutputType = {
@@ -2149,8 +2159,9 @@ export namespace Prisma {
     description: string | null
     type: $Enums.ExpenseType | null
     dueDate: Date | null
-    paymentDate: Date | null
     status: $Enums.ExpenseStatus | null
+    paymentDate: Date | null
+    value: number | null
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
@@ -2162,8 +2173,9 @@ export namespace Prisma {
     description: string | null
     type: $Enums.ExpenseType | null
     dueDate: Date | null
-    paymentDate: Date | null
     status: $Enums.ExpenseStatus | null
+    paymentDate: Date | null
+    value: number | null
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
@@ -2175,8 +2187,9 @@ export namespace Prisma {
     description: number
     type: number
     dueDate: number
-    paymentDate: number
     status: number
+    paymentDate: number
+    value: number
     createdAt: number
     updatedAt: number
     userId: number
@@ -2184,14 +2197,23 @@ export namespace Prisma {
   }
 
 
+  export type ExpenseAvgAggregateInputType = {
+    value?: true
+  }
+
+  export type ExpenseSumAggregateInputType = {
+    value?: true
+  }
+
   export type ExpenseMinAggregateInputType = {
     id?: true
     title?: true
     description?: true
     type?: true
     dueDate?: true
-    paymentDate?: true
     status?: true
+    paymentDate?: true
+    value?: true
     createdAt?: true
     updatedAt?: true
     userId?: true
@@ -2203,8 +2225,9 @@ export namespace Prisma {
     description?: true
     type?: true
     dueDate?: true
-    paymentDate?: true
     status?: true
+    paymentDate?: true
+    value?: true
     createdAt?: true
     updatedAt?: true
     userId?: true
@@ -2216,8 +2239,9 @@ export namespace Prisma {
     description?: true
     type?: true
     dueDate?: true
-    paymentDate?: true
     status?: true
+    paymentDate?: true
+    value?: true
     createdAt?: true
     updatedAt?: true
     userId?: true
@@ -2262,6 +2286,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: ExpenseAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ExpenseSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: ExpenseMinAggregateInputType
@@ -2292,6 +2328,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: ExpenseCountAggregateInputType | true
+    _avg?: ExpenseAvgAggregateInputType
+    _sum?: ExpenseSumAggregateInputType
     _min?: ExpenseMinAggregateInputType
     _max?: ExpenseMaxAggregateInputType
   }
@@ -2302,12 +2340,15 @@ export namespace Prisma {
     description: string
     type: $Enums.ExpenseType
     dueDate: Date
-    paymentDate: Date
     status: $Enums.ExpenseStatus
+    paymentDate: Date | null
+    value: number
     createdAt: Date
     updatedAt: Date
     userId: string
     _count: ExpenseCountAggregateOutputType | null
+    _avg: ExpenseAvgAggregateOutputType | null
+    _sum: ExpenseSumAggregateOutputType | null
     _min: ExpenseMinAggregateOutputType | null
     _max: ExpenseMaxAggregateOutputType | null
   }
@@ -2332,8 +2373,9 @@ export namespace Prisma {
     description?: boolean
     type?: boolean
     dueDate?: boolean
-    paymentDate?: boolean
     status?: boolean
+    paymentDate?: boolean
+    value?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
@@ -2346,8 +2388,9 @@ export namespace Prisma {
     description?: boolean
     type?: boolean
     dueDate?: boolean
-    paymentDate?: boolean
     status?: boolean
+    paymentDate?: boolean
+    value?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
@@ -2360,8 +2403,9 @@ export namespace Prisma {
     description?: boolean
     type?: boolean
     dueDate?: boolean
-    paymentDate?: boolean
     status?: boolean
+    paymentDate?: boolean
+    value?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
@@ -2374,14 +2418,15 @@ export namespace Prisma {
     description?: boolean
     type?: boolean
     dueDate?: boolean
-    paymentDate?: boolean
     status?: boolean
+    paymentDate?: boolean
+    value?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
   }
 
-  export type ExpenseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "type" | "dueDate" | "paymentDate" | "status" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["expense"]>
+  export type ExpenseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "type" | "dueDate" | "status" | "paymentDate" | "value" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["expense"]>
   export type ExpenseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -2403,8 +2448,9 @@ export namespace Prisma {
       description: string
       type: $Enums.ExpenseType
       dueDate: Date
-      paymentDate: Date
       status: $Enums.ExpenseStatus
+      paymentDate: Date | null
+      value: number
       createdAt: Date
       updatedAt: Date
       userId: string
@@ -2837,8 +2883,9 @@ export namespace Prisma {
     readonly description: FieldRef<"Expense", 'String'>
     readonly type: FieldRef<"Expense", 'ExpenseType'>
     readonly dueDate: FieldRef<"Expense", 'DateTime'>
-    readonly paymentDate: FieldRef<"Expense", 'DateTime'>
     readonly status: FieldRef<"Expense", 'ExpenseStatus'>
+    readonly paymentDate: FieldRef<"Expense", 'DateTime'>
+    readonly value: FieldRef<"Expense", 'Float'>
     readonly createdAt: FieldRef<"Expense", 'DateTime'>
     readonly updatedAt: FieldRef<"Expense", 'DateTime'>
     readonly userId: FieldRef<"Expense", 'String'>
@@ -3285,8 +3332,9 @@ export namespace Prisma {
     description: 'description',
     type: 'type',
     dueDate: 'dueDate',
-    paymentDate: 'paymentDate',
     status: 'status',
+    paymentDate: 'paymentDate',
+    value: 'value',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     userId: 'userId'
@@ -3301,6 +3349,14 @@ export namespace Prisma {
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+  export const NullsOrder: {
+    first: 'first',
+    last: 'last'
+  };
+
+  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
   /**
@@ -3333,6 +3389,13 @@ export namespace Prisma {
    * Reference to a field of type 'ExpenseStatus'
    */
   export type EnumExpenseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExpenseStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
     
 
 
@@ -3425,8 +3488,9 @@ export namespace Prisma {
     description?: StringFilter<"Expense"> | string
     type?: EnumExpenseTypeFilter<"Expense"> | $Enums.ExpenseType
     dueDate?: DateTimeFilter<"Expense"> | Date | string
-    paymentDate?: DateTimeFilter<"Expense"> | Date | string
     status?: EnumExpenseStatusFilter<"Expense"> | $Enums.ExpenseStatus
+    paymentDate?: DateTimeNullableFilter<"Expense"> | Date | string | null
+    value?: FloatFilter<"Expense"> | number
     createdAt?: DateTimeFilter<"Expense"> | Date | string
     updatedAt?: DateTimeFilter<"Expense"> | Date | string
     userId?: StringFilter<"Expense"> | string
@@ -3439,8 +3503,9 @@ export namespace Prisma {
     description?: SortOrder
     type?: SortOrder
     dueDate?: SortOrder
-    paymentDate?: SortOrder
     status?: SortOrder
+    paymentDate?: SortOrderInput | SortOrder
+    value?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
@@ -3456,8 +3521,9 @@ export namespace Prisma {
     description?: StringFilter<"Expense"> | string
     type?: EnumExpenseTypeFilter<"Expense"> | $Enums.ExpenseType
     dueDate?: DateTimeFilter<"Expense"> | Date | string
-    paymentDate?: DateTimeFilter<"Expense"> | Date | string
     status?: EnumExpenseStatusFilter<"Expense"> | $Enums.ExpenseStatus
+    paymentDate?: DateTimeNullableFilter<"Expense"> | Date | string | null
+    value?: FloatFilter<"Expense"> | number
     createdAt?: DateTimeFilter<"Expense"> | Date | string
     updatedAt?: DateTimeFilter<"Expense"> | Date | string
     userId?: StringFilter<"Expense"> | string
@@ -3470,14 +3536,17 @@ export namespace Prisma {
     description?: SortOrder
     type?: SortOrder
     dueDate?: SortOrder
-    paymentDate?: SortOrder
     status?: SortOrder
+    paymentDate?: SortOrderInput | SortOrder
+    value?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
     _count?: ExpenseCountOrderByAggregateInput
+    _avg?: ExpenseAvgOrderByAggregateInput
     _max?: ExpenseMaxOrderByAggregateInput
     _min?: ExpenseMinOrderByAggregateInput
+    _sum?: ExpenseSumOrderByAggregateInput
   }
 
   export type ExpenseScalarWhereWithAggregatesInput = {
@@ -3489,8 +3558,9 @@ export namespace Prisma {
     description?: StringWithAggregatesFilter<"Expense"> | string
     type?: EnumExpenseTypeWithAggregatesFilter<"Expense"> | $Enums.ExpenseType
     dueDate?: DateTimeWithAggregatesFilter<"Expense"> | Date | string
-    paymentDate?: DateTimeWithAggregatesFilter<"Expense"> | Date | string
     status?: EnumExpenseStatusWithAggregatesFilter<"Expense"> | $Enums.ExpenseStatus
+    paymentDate?: DateTimeNullableWithAggregatesFilter<"Expense"> | Date | string | null
+    value?: FloatWithAggregatesFilter<"Expense"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Expense"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Expense"> | Date | string
     userId?: StringWithAggregatesFilter<"Expense"> | string
@@ -3583,8 +3653,9 @@ export namespace Prisma {
     description: string
     type: $Enums.ExpenseType
     dueDate: Date | string
-    paymentDate: Date | string
     status: $Enums.ExpenseStatus
+    paymentDate?: Date | string | null
+    value: number
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutExpensesInput
@@ -3596,8 +3667,9 @@ export namespace Prisma {
     description: string
     type: $Enums.ExpenseType
     dueDate: Date | string
-    paymentDate: Date | string
     status: $Enums.ExpenseStatus
+    paymentDate?: Date | string | null
+    value: number
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
@@ -3609,8 +3681,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     type?: EnumExpenseTypeFieldUpdateOperationsInput | $Enums.ExpenseType
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    value?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutExpensesNestedInput
@@ -3622,8 +3695,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     type?: EnumExpenseTypeFieldUpdateOperationsInput | $Enums.ExpenseType
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    value?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
@@ -3635,8 +3709,9 @@ export namespace Prisma {
     description: string
     type: $Enums.ExpenseType
     dueDate: Date | string
-    paymentDate: Date | string
     status: $Enums.ExpenseStatus
+    paymentDate?: Date | string | null
+    value: number
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
@@ -3648,8 +3723,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     type?: EnumExpenseTypeFieldUpdateOperationsInput | $Enums.ExpenseType
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    value?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3660,8 +3736,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     type?: EnumExpenseTypeFieldUpdateOperationsInput | $Enums.ExpenseType
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    value?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
@@ -3780,9 +3857,36 @@ export namespace Prisma {
     not?: NestedEnumExpenseStatusFilter<$PrismaModel> | $Enums.ExpenseStatus
   }
 
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
   }
 
   export type ExpenseCountOrderByAggregateInput = {
@@ -3791,11 +3895,16 @@ export namespace Prisma {
     description?: SortOrder
     type?: SortOrder
     dueDate?: SortOrder
-    paymentDate?: SortOrder
     status?: SortOrder
+    paymentDate?: SortOrder
+    value?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+  }
+
+  export type ExpenseAvgOrderByAggregateInput = {
+    value?: SortOrder
   }
 
   export type ExpenseMaxOrderByAggregateInput = {
@@ -3804,8 +3913,9 @@ export namespace Prisma {
     description?: SortOrder
     type?: SortOrder
     dueDate?: SortOrder
-    paymentDate?: SortOrder
     status?: SortOrder
+    paymentDate?: SortOrder
+    value?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
@@ -3817,11 +3927,16 @@ export namespace Prisma {
     description?: SortOrder
     type?: SortOrder
     dueDate?: SortOrder
-    paymentDate?: SortOrder
     status?: SortOrder
+    paymentDate?: SortOrder
+    value?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+  }
+
+  export type ExpenseSumOrderByAggregateInput = {
+    value?: SortOrder
   }
 
   export type EnumExpenseTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -3842,6 +3957,36 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumExpenseStatusFilter<$PrismaModel>
     _max?: NestedEnumExpenseStatusFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type ExpenseCreateNestedManyWithoutUserInput = {
@@ -3906,6 +4051,18 @@ export namespace Prisma {
 
   export type EnumExpenseStatusFieldUpdateOperationsInput = {
     set?: $Enums.ExpenseStatus
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type UserUpdateOneRequiredWithoutExpensesNestedInput = {
@@ -3997,6 +4154,28 @@ export namespace Prisma {
     not?: NestedEnumExpenseStatusFilter<$PrismaModel> | $Enums.ExpenseStatus
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type NestedEnumExpenseTypeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.ExpenseType | EnumExpenseTypeFieldRefInput<$PrismaModel>
     in?: $Enums.ExpenseType[]
@@ -4017,14 +4196,56 @@ export namespace Prisma {
     _max?: NestedEnumExpenseStatusFilter<$PrismaModel>
   }
 
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type ExpenseCreateWithoutUserInput = {
     id?: string
     title: string
     description: string
     type: $Enums.ExpenseType
     dueDate: Date | string
-    paymentDate: Date | string
     status: $Enums.ExpenseStatus
+    paymentDate?: Date | string | null
+    value: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -4035,8 +4256,9 @@ export namespace Prisma {
     description: string
     type: $Enums.ExpenseType
     dueDate: Date | string
-    paymentDate: Date | string
     status: $Enums.ExpenseStatus
+    paymentDate?: Date | string | null
+    value: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -4075,8 +4297,9 @@ export namespace Prisma {
     description?: StringFilter<"Expense"> | string
     type?: EnumExpenseTypeFilter<"Expense"> | $Enums.ExpenseType
     dueDate?: DateTimeFilter<"Expense"> | Date | string
-    paymentDate?: DateTimeFilter<"Expense"> | Date | string
     status?: EnumExpenseStatusFilter<"Expense"> | $Enums.ExpenseStatus
+    paymentDate?: DateTimeNullableFilter<"Expense"> | Date | string | null
+    value?: FloatFilter<"Expense"> | number
     createdAt?: DateTimeFilter<"Expense"> | Date | string
     updatedAt?: DateTimeFilter<"Expense"> | Date | string
     userId?: StringFilter<"Expense"> | string
@@ -4148,8 +4371,9 @@ export namespace Prisma {
     description: string
     type: $Enums.ExpenseType
     dueDate: Date | string
-    paymentDate: Date | string
     status: $Enums.ExpenseStatus
+    paymentDate?: Date | string | null
+    value: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -4160,8 +4384,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     type?: EnumExpenseTypeFieldUpdateOperationsInput | $Enums.ExpenseType
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    value?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -4172,8 +4397,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     type?: EnumExpenseTypeFieldUpdateOperationsInput | $Enums.ExpenseType
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    value?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -4184,8 +4410,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     type?: EnumExpenseTypeFieldUpdateOperationsInput | $Enums.ExpenseType
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    value?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

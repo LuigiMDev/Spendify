@@ -1,6 +1,7 @@
 import { CircleX, Send } from "lucide-react";
-import React, { ChangeEvent, ReactElement } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { NumericFormat } from "react-number-format";
 
 type props = {
   add: boolean;
@@ -8,22 +9,25 @@ type props = {
 };
 
 const AddExpense = ({ add, setAdd }: props) => {
+  const [paid, setPaid] = useState(false);
+
   return (
     <AnimatePresence>
       {add && (
         <>
           <motion.div
-          initial={{opacity: 0}}
-          animate={{opacity: 0.3}}
-          exit={{opacity: 0}}
-          transition={{duration: 0.2}}
-          className="absolute z-30 bg-black h-screen top-0 w-screen opacity-30 left-0"></motion.div>
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.3 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed z-30 bg-black h-[100dvh] top-0 w-screen opacity-30 left-0"
+          ></motion.div>
           <motion.div
             initial={{ opacity: 0, top: "60%" }}
-            animate={{ opacity: 1, top: "50%"  }}
-            exit={{ opacity: 0, top: "60%"  }}
+            animate={{ opacity: 1, top: "50%" }}
+            exit={{ opacity: 0, top: "60%" }}
             transition={{ duration: 0.2 }}
-            className="absolute shadow-header z-40 px-5 py-10 rounded-xl left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[90%] max-w-[700px]"
+            className="absolute shadow-header z-40 px-5 py-10 rounded-xl left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[90%] max-w-[700px] max-h-[430px] overflow-y-auto"
           >
             <div className="flex justify-between mb-5">
               <h2 className="text-3xl font-bold opacity-80 ">
@@ -35,23 +39,127 @@ const AddExpense = ({ add, setAdd }: props) => {
             </div>
             <form className="flex flex-col gap-4 w-full">
               <div className="relative">
-                <span className="mb-2 block">Título</span>
+                <label htmlFor="title-expense" className="mb-2 inline-block">
+                  Título <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="text"
                   placeholder="Escreva o título do seu gasto"
                   className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full"
                   required
+                  id="title-expense"
                 />
               </div>
               <div className="relative">
-                <span className="mb-2 block">Tipo de gasto</span>
-                <input
-                  type="text"
-                  placeholder="Escreva o tipo de gasto"
-                  className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full"
-                  required
+                <label
+                  htmlFor="description-expense"
+                  className="mb-2 inline-block"
+                >
+                  Descrição
+                </label>
+                <textarea
+                  className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block h-20"
+                  maxLength={1000}
+                  placeholder="Escreva a descrição do seu gasto"
                 />
               </div>
+              <div className="relative">
+                <label htmlFor="select-expense" className="mb-2 inline-block">
+                  Tipo de gasto <span className="text-red-500">*</span>
+                </label>
+                <select
+                  id="select-expense"
+                  className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block"
+                  required
+                >
+                  <option value="" selected disabled hidden>
+                    Selecione o tipo de gasto
+                  </option>
+                  <option value="food">Alimentação</option>
+                  <option value="transport">Transporte</option>
+                  <option value="entertainment">Entretenimento</option>
+                  <option value="bills">Contas</option>
+                  <option value="rent">Aluguel</option>
+                  <option value="helth">Saúde</option>
+                  <option value="shopping">Compras</option>
+                  <option value="other">Outros</option>
+                </select>
+              </div>
+              <div className="relative">
+                <label htmlFor="select-expense" className="mb-2 inline-block">
+                  Status <span className="text-red-500">*</span>
+                </label>
+                <select
+                  id="select-expense"
+                  className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block"
+                  required
+                >
+                  <option value="" selected disabled hidden>
+                    Selecione o tipo de gasto
+                  </option>
+                  <option value="" selected disabled hidden>
+                    Pendente
+                  </option>
+                  <option value="pending">Pendente</option>
+                  <option value="paid">Pago</option>
+                </select>
+              </div>
+
+              <div className="relative flex gap-4 flex-wrap">
+                <div className="flex-1">
+                  <label
+                    htmlFor="dueDate-expense"
+                    className="mb-2 inline-block"
+                  >
+                    Data de vencimento <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    id="dueDate-expense"
+                    className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block"
+                  />
+                </div>
+                <div
+                  className={`flex-1 ${
+                    !paid && "opacity-40 cursor-not-allowed"
+                  }`}
+                >
+                  <label
+                    htmlFor="paymentDate-expense"
+                    className={`mb-2 inline-block ${
+                      !paid && "cursor-not-allowed"
+                    }`}
+                  >
+                    Data de pagamento <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    disabled
+                    id="paymentDate-expense"
+                    className={`outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block disabled:group:opacity-40 ${
+                      !paid && "cursor-not-allowed"
+                    }`}
+                  />
+                </div>
+              </div>
+
+              <div className="relative">
+                <label htmlFor="value-expense" className="mb-2 inline-block">
+                  Valor <span className="text-red-500">*</span>
+                </label>
+                <NumericFormat
+                  thousandSeparator="."
+                  decimalSeparator=","
+                  prefix="R$"
+                  decimalScale={2}
+                  fixedDecimalScale
+                  placeholder="R$ 0,00"
+                  className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full"
+                  required
+                  id="value-expense"
+                />
+              </div>
+
               <div className="flex justify-end">
                 <button
                   type="submit"
@@ -63,7 +171,7 @@ const AddExpense = ({ add, setAdd }: props) => {
               </div>
             </form>
           </motion.div>
-          </>
+        </>
       )}
     </AnimatePresence>
   );

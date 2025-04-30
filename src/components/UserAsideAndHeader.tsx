@@ -49,7 +49,7 @@ const UserAsideAndHeader: React.FC<prop> = ({ openAside }) => {
         } ml-3 w-full overflow-hidden flex justify-between`}
       >
         
-          <div className="flex flex-col  w-full flex-shrink overflow-hidden">
+          <div className="flex flex-col w-full flex-shrink overflow-hidden">
             <span className="text-sm truncate ">{user?.FTwoNames}</span>
             <span className="text-xs truncate ">{user?.email}</span>
           </div>

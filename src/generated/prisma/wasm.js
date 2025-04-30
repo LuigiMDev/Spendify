@@ -131,8 +131,9 @@ exports.Prisma.ExpenseScalarFieldEnum = {
   description: 'description',
   type: 'type',
   dueDate: 'dueDate',
-  paymentDate: 'paymentDate',
   status: 'status',
+  paymentDate: 'paymentDate',
+  value: 'value',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId'
@@ -141,6 +142,11 @@ exports.Prisma.ExpenseScalarFieldEnum = {
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
 };
 exports.ExpenseType = exports.$Enums.ExpenseType = {
   food: 'food',

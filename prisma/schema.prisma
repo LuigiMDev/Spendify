@@ -31,8 +31,9 @@ model Expense {
   description String
   type        ExpenseType
   dueDate     DateTime
-  paymentDate DateTime
   status      ExpenseStatus
+  paymentDate DateTime?
+  value       Float
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   userId      String
