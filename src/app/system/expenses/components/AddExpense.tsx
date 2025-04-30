@@ -23,10 +23,10 @@ const AddExpense = ({ add, setAdd }: props) => {
             animate={{ opacity: 1, top: "50%"  }}
             exit={{ opacity: 0, top: "60%"  }}
             transition={{ duration: 0.2 }}
-            className="absolute shadow-header z-40 px-5 py-10 rounded-xl left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-full max-w-[700px]"
+            className="absolute shadow-header z-40 px-5 py-10 rounded-xl left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[90%] max-w-[700px]"
           >
-            <div className="flex justify-between">
-              <h2 className="text-3xl font-bold opacity-80 mb-5">
+            <div className="flex justify-between mb-5">
+              <h2 className="text-3xl font-bold opacity-80 ">
                 Adicionar gasto
               </h2>
               <button onClick={() => setAdd(false)}>
