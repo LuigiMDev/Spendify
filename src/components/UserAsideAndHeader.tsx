@@ -48,12 +48,12 @@ const UserAsideAndHeader: React.FC<prop> = ({ openAside }) => {
           openAside ? "lg:ml-3 lg:w-full" : "lg:w-0 lg:ml-0"
         } ml-3 w-full overflow-hidden flex justify-between`}
       >
-        <div className={`flex flex-1`}>
-          <div className="flex flex-col w-[150px] overflow-hidden">
+        
+          <div className="flex flex-col max-w-[150px] w-full flex-shrink overflow-hidden">
             <span className="text-sm truncate ">{user?.FTwoNames}</span>
             <span className="text-xs truncate ">{user?.email}</span>
           </div>
-        </div>
+        
 
         <div
           className="text-black cursor-pointer p-3 bg-gray-50 hover:bg-gray-100  rounded-lg transition-all ml-3 flex-shrink-0"
