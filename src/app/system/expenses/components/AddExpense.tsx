@@ -1,41 +1,47 @@
-import { CirclePlus, CircleX, Send } from "lucide-react";
+import { CirclePlus, CircleX, LoaderCircle } from "lucide-react";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { NumericFormat } from "react-number-format";
 import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
 import {zodResolver} from "@hookform/resolvers/zod"
+import { AddExpenseSchema } from "@/zod/Expense/AddExpense";
 
 type props = {
   add: boolean;
   setAdd: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const AddExpenseSchema = z.object({
-  "title-expense": z.string().nonempty(),
-  "description-expense": z.string().optional(),
-  "type-expense": z.string().nonempty(),
-  "status-expense": z.string().nonempty(),
-  "dueDate-expense": z.string().nonempty(),
-  "paymentDate-expense": z.string().optional(),
-  "value-expense": z.number()
-})
-
-type AddExpenseSchema = z.infer<typeof AddExpenseSchema>
-
 const AddExpense = ({ add, setAdd }: props) => {
   const [paid, setPaid] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   const handlePaidExpense = (e: string) => {
     setPaid(e === "paid" ? true : false);
   };
 
-  const { register, handleSubmit, control } = useForm<AddExpenseSchema>({
+  const { register, handleSubmit, control, reset } = useForm<AddExpenseSchema>({
     resolver: zodResolver(AddExpenseSchema)
   });
 
-  const handleAddExpense = (data: AddExpenseSchema) => {
-    console.log(data);
+  const handleAddExpense = async (data: AddExpenseSchema) => {
+    try {
+      setIsLoading(true)
+      const newExpense = await fetch("/api/expense/addExpense", {
+        method: "POST",
+        headers: {
+          Accept: "json/application",
+          "Content-Type": "json/application"
+        },
+        body: JSON.stringify(data)
+      }).then(res => res.json())
+  
+      console.log(newExpense)
+      setAdd(false)
+    } catch (err) {
+      console.error(err)
+    }
+    setIsLoading(false)
+    reset()
   };
 
   return (
@@ -71,7 +77,7 @@ const AddExpense = ({ add, setAdd }: props) => {
               className="flex flex-col gap-4 w-full overflow-y-auto h-[310px] pr-4"
             >
               <div className="relative">
-                <label htmlFor="title-expense" className="mb-2 inline-block">
+                <label htmlFor="titleExpense" className="mb-2 inline-block">
                   Título <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -79,13 +85,13 @@ const AddExpense = ({ add, setAdd }: props) => {
                   placeholder="Escreva o título do seu gasto"
                   className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full"
                   required
-                  id="title-expense"
-                  {...register("title-expense")}
+                  id="titleExpense"
+                  {...register("titleExpense")}
                 />
               </div>
               <div className="relative">
                 <label
-                  htmlFor="description-expense"
+                  htmlFor="descriptionExpense"
                   className="mb-2 inline-block"
                 >
                   Descrição
@@ -94,19 +100,19 @@ const AddExpense = ({ add, setAdd }: props) => {
                   className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block h-20"
                   maxLength={1000}
                   placeholder="Escreva a descrição do seu gasto"
-                  id="description-expense"
-                  {...register("description-expense")}
+                  id="descriptionExpense"
+                  {...register("descriptionExpense")}
                 />
               </div>
               <div className="relative">
-                <label htmlFor="type-expense" className="mb-2 inline-block">
+                <label htmlFor="typeExpense" className="mb-2 inline-block">
                   Tipo de gasto <span className="text-red-500">*</span>
                 </label>
                 <select
-                  id="type-expense"
+                  id="typeExpense"
                   className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block"
                   required
-                  {...register("type-expense")} defaultValue=""
+                  {...register("typeExpense")} defaultValue=""
                 >
                   <option value="" disabled hidden>
                     Selecione o tipo de gasto
@@ -116,20 +122,20 @@ const AddExpense = ({ add, setAdd }: props) => {
                   <option value="entertainment">Entretenimento</option>
                   <option value="bills">Contas</option>
                   <option value="rent">Aluguel</option>
-                  <option value="helth">Saúde</option>
+                  <option value="health">Saúde</option>
                   <option value="shopping">Compras</option>
                   <option value="other">Outros</option>
                 </select>
               </div>
               <div className="relative">
-                <label htmlFor="status-expense" className="mb-2 inline-block">
+                <label htmlFor="statusExpense" className="mb-2 inline-block">
                   Status <span className="text-red-500">*</span>
                 </label>
                 <select
-                  id="status-expense"
+                  id="statusExpense"
                   className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block"
                   required
-                  {...register("status-expense")}
+                  {...register("statusExpense")}
                   onChange={(e) => handlePaidExpense(e.target.value)} defaultValue=""
                 >
                   <option value="" disabled hidden>
@@ -143,16 +149,16 @@ const AddExpense = ({ add, setAdd }: props) => {
               <div className="relative flex gap-4 flex-wrap">
                 <div className="flex-1">
                   <label
-                    htmlFor="dueDate-expense"
+                    htmlFor="dueDateExpense"
                     className="mb-2 inline-block"
                   >
                     Data de vencimento <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="date"
-                    id="dueDate-expense"
+                    id="dueDateExpense"
                     className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block"
-                    {...register("dueDate-expense")}
+                    {...register("dueDateExpense")}
                   />
                 </div>
                 <div
@@ -161,7 +167,7 @@ const AddExpense = ({ add, setAdd }: props) => {
                   }`}
                 >
                   <label
-                    htmlFor="paymentDate-expense"
+                    htmlFor="paymentDateExpense"
                     className={`mb-2 inline-block ${
                       !paid && "cursor-not-allowed"
                     }`}
@@ -170,9 +176,9 @@ const AddExpense = ({ add, setAdd }: props) => {
                   </label>
                   <input
                     type="date"
-                    disabled={paid}
-                    id="paymentDate-expense"
-                    {...(paid && register("paymentDate-expense"))}
+                    disabled={!paid}
+                    id="paymentDateExpense"
+                    {...(paid && register("paymentDateExpense"))}
                     className={`outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block disabled:group:opacity-40 ${
                       !paid && "cursor-not-allowed"
                     }`}
@@ -181,11 +187,11 @@ const AddExpense = ({ add, setAdd }: props) => {
               </div>
 
               <div className="relative">
-                <label htmlFor="value-expense" className="mb-2 inline-block">
+                <label htmlFor="valueExpense" className="mb-2 inline-block">
                   Valor <span className="text-red-500">*</span>
                 </label>
                 <Controller
-                  name="value-expense"
+                  name="valueExpense"
                   control={control}
                   render={({ field }) => (
                     <NumericFormat
@@ -197,7 +203,7 @@ const AddExpense = ({ add, setAdd }: props) => {
                       placeholder="R$ 0,00"
                       className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full"
                       required
-                      id="value-expense"
+                      id="valueExpense"
                       onValueChange={(values) => {
                         field.onChange(values.floatValue);
                       }}
@@ -212,7 +218,7 @@ const AddExpense = ({ add, setAdd }: props) => {
                   className="text-white font-semibold px-4 py-2 bg-primary rounded-xl flex gap-1"
                 >
                   Criar
-                  <CirclePlus />
+                  {isLoading ? <LoaderCircle className="animate-spin text-white" /> : <CirclePlus className="text-white" />}
                 </button>
               </div>
             </form>

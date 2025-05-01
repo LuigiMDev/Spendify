@@ -2337,7 +2337,7 @@ export namespace Prisma {
   export type ExpenseGroupByOutputType = {
     id: string
     title: string
-    description: string
+    description: string | null
     type: $Enums.ExpenseType
     dueDate: Date
     status: $Enums.ExpenseStatus
@@ -2445,7 +2445,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       title: string
-      description: string
+      description: string | null
       type: $Enums.ExpenseType
       dueDate: Date
       status: $Enums.ExpenseStatus
@@ -3485,7 +3485,7 @@ export namespace Prisma {
     NOT?: ExpenseWhereInput | ExpenseWhereInput[]
     id?: StringFilter<"Expense"> | string
     title?: StringFilter<"Expense"> | string
-    description?: StringFilter<"Expense"> | string
+    description?: StringNullableFilter<"Expense"> | string | null
     type?: EnumExpenseTypeFilter<"Expense"> | $Enums.ExpenseType
     dueDate?: DateTimeFilter<"Expense"> | Date | string
     status?: EnumExpenseStatusFilter<"Expense"> | $Enums.ExpenseStatus
@@ -3500,7 +3500,7 @@ export namespace Prisma {
   export type ExpenseOrderByWithRelationInput = {
     id?: SortOrder
     title?: SortOrder
-    description?: SortOrder
+    description?: SortOrderInput | SortOrder
     type?: SortOrder
     dueDate?: SortOrder
     status?: SortOrder
@@ -3518,7 +3518,7 @@ export namespace Prisma {
     OR?: ExpenseWhereInput[]
     NOT?: ExpenseWhereInput | ExpenseWhereInput[]
     title?: StringFilter<"Expense"> | string
-    description?: StringFilter<"Expense"> | string
+    description?: StringNullableFilter<"Expense"> | string | null
     type?: EnumExpenseTypeFilter<"Expense"> | $Enums.ExpenseType
     dueDate?: DateTimeFilter<"Expense"> | Date | string
     status?: EnumExpenseStatusFilter<"Expense"> | $Enums.ExpenseStatus
@@ -3533,7 +3533,7 @@ export namespace Prisma {
   export type ExpenseOrderByWithAggregationInput = {
     id?: SortOrder
     title?: SortOrder
-    description?: SortOrder
+    description?: SortOrderInput | SortOrder
     type?: SortOrder
     dueDate?: SortOrder
     status?: SortOrder
@@ -3555,7 +3555,7 @@ export namespace Prisma {
     NOT?: ExpenseScalarWhereWithAggregatesInput | ExpenseScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Expense"> | string
     title?: StringWithAggregatesFilter<"Expense"> | string
-    description?: StringWithAggregatesFilter<"Expense"> | string
+    description?: StringNullableWithAggregatesFilter<"Expense"> | string | null
     type?: EnumExpenseTypeWithAggregatesFilter<"Expense"> | $Enums.ExpenseType
     dueDate?: DateTimeWithAggregatesFilter<"Expense"> | Date | string
     status?: EnumExpenseStatusWithAggregatesFilter<"Expense"> | $Enums.ExpenseStatus
@@ -3650,7 +3650,7 @@ export namespace Prisma {
   export type ExpenseCreateInput = {
     id?: string
     title: string
-    description: string
+    description?: string | null
     type: $Enums.ExpenseType
     dueDate: Date | string
     status: $Enums.ExpenseStatus
@@ -3664,7 +3664,7 @@ export namespace Prisma {
   export type ExpenseUncheckedCreateInput = {
     id?: string
     title: string
-    description: string
+    description?: string | null
     type: $Enums.ExpenseType
     dueDate: Date | string
     status: $Enums.ExpenseStatus
@@ -3678,7 +3678,7 @@ export namespace Prisma {
   export type ExpenseUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumExpenseTypeFieldUpdateOperationsInput | $Enums.ExpenseType
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
@@ -3692,7 +3692,7 @@ export namespace Prisma {
   export type ExpenseUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumExpenseTypeFieldUpdateOperationsInput | $Enums.ExpenseType
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
@@ -3706,7 +3706,7 @@ export namespace Prisma {
   export type ExpenseCreateManyInput = {
     id?: string
     title: string
-    description: string
+    description?: string | null
     type: $Enums.ExpenseType
     dueDate: Date | string
     status: $Enums.ExpenseStatus
@@ -3720,7 +3720,7 @@ export namespace Prisma {
   export type ExpenseUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumExpenseTypeFieldUpdateOperationsInput | $Enums.ExpenseType
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
@@ -3733,7 +3733,7 @@ export namespace Prisma {
   export type ExpenseUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumExpenseTypeFieldUpdateOperationsInput | $Enums.ExpenseType
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
@@ -3843,6 +3843,20 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type EnumExpenseTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.ExpenseType | EnumExpenseTypeFieldRefInput<$PrismaModel>
     in?: $Enums.ExpenseType[]
@@ -3937,6 +3951,23 @@ export namespace Prisma {
 
   export type ExpenseSumOrderByAggregateInput = {
     value?: SortOrder
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type EnumExpenseTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -4045,6 +4076,10 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
   export type EnumExpenseTypeFieldUpdateOperationsInput = {
     set?: $Enums.ExpenseType
   }
@@ -4140,6 +4175,20 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type NestedEnumExpenseTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.ExpenseType | EnumExpenseTypeFieldRefInput<$PrismaModel>
     in?: $Enums.ExpenseType[]
@@ -4176,6 +4225,34 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedEnumExpenseTypeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.ExpenseType | EnumExpenseTypeFieldRefInput<$PrismaModel>
     in?: $Enums.ExpenseType[]
@@ -4210,17 +4287,6 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
     in?: number[]
@@ -4240,7 +4306,7 @@ export namespace Prisma {
   export type ExpenseCreateWithoutUserInput = {
     id?: string
     title: string
-    description: string
+    description?: string | null
     type: $Enums.ExpenseType
     dueDate: Date | string
     status: $Enums.ExpenseStatus
@@ -4253,7 +4319,7 @@ export namespace Prisma {
   export type ExpenseUncheckedCreateWithoutUserInput = {
     id?: string
     title: string
-    description: string
+    description?: string | null
     type: $Enums.ExpenseType
     dueDate: Date | string
     status: $Enums.ExpenseStatus
@@ -4294,7 +4360,7 @@ export namespace Prisma {
     NOT?: ExpenseScalarWhereInput | ExpenseScalarWhereInput[]
     id?: StringFilter<"Expense"> | string
     title?: StringFilter<"Expense"> | string
-    description?: StringFilter<"Expense"> | string
+    description?: StringNullableFilter<"Expense"> | string | null
     type?: EnumExpenseTypeFilter<"Expense"> | $Enums.ExpenseType
     dueDate?: DateTimeFilter<"Expense"> | Date | string
     status?: EnumExpenseStatusFilter<"Expense"> | $Enums.ExpenseStatus
@@ -4368,7 +4434,7 @@ export namespace Prisma {
   export type ExpenseCreateManyUserInput = {
     id?: string
     title: string
-    description: string
+    description?: string | null
     type: $Enums.ExpenseType
     dueDate: Date | string
     status: $Enums.ExpenseStatus
@@ -4381,7 +4447,7 @@ export namespace Prisma {
   export type ExpenseUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumExpenseTypeFieldUpdateOperationsInput | $Enums.ExpenseType
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
@@ -4394,7 +4460,7 @@ export namespace Prisma {
   export type ExpenseUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumExpenseTypeFieldUpdateOperationsInput | $Enums.ExpenseType
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
@@ -4407,7 +4473,7 @@ export namespace Prisma {
   export type ExpenseUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumExpenseTypeFieldUpdateOperationsInput | $Enums.ExpenseType
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumExpenseStatusFieldUpdateOperationsInput | $Enums.ExpenseStatus
