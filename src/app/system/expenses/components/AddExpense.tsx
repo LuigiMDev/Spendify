@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { NumericFormat } from "react-number-format";
 import { Controller, useForm } from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod"
-import { AddExpenseSchema } from "@/zod/Expense/AddExpense";
+import { AddExpenseSchema, Expense } from "@/zod/Expense/AddExpense";
 
 type props = {
   add: boolean;
@@ -19,11 +19,11 @@ const AddExpense = ({ add, setAdd }: props) => {
     setPaid(e === "paid" ? true : false);
   };
 
-  const { register, handleSubmit, control, reset } = useForm<AddExpenseSchema>({
+  const { register, handleSubmit, control, reset } = useForm<Expense>({
     resolver: zodResolver(AddExpenseSchema)
   });
 
-  const handleAddExpense = async (data: AddExpenseSchema) => {
+  const handleAddExpense = async (data: Expense) => {
     try {
       setIsLoading(true)
       const newExpense = await fetch("/api/expense/addExpense", {

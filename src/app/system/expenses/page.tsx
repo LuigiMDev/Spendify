@@ -1,12 +1,32 @@
 "use client";
-import { CirclePlus, CircleX, Edit, Send, Trash } from "lucide-react";
+import { CirclePlus} from "lucide-react";
 import React, { useEffect, useState } from "react";
 import AddExpense from "./components/AddExpense";
-import { AnimatePresence } from "framer-motion";
+import { Expense } from "@/generated/prisma";
 
 const page = () => {
   const [add, setAdd] = useState(false);
-  const [expenses, setExpenses] = useState<any>([]);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+
+  useEffect(() => {
+    const handleFetchExpenses = async () => {
+      try {
+        const fetchExpenses = await fetch("/api/expense/searchExpenses")
+
+      if(fetchExpenses.ok) {
+        const expensesJson = await fetchExpenses.json()
+        setExpenses(expensesJson.expenses)
+      } else {
+        console.error("Ocorreu um erro ao buscar os dados!", fetchExpenses.status)
+      }
+      } catch {
+        console.error("Ocorreu um erro ao buscar os dados!")
+      }
+    }
+
+
+    handleFetchExpenses()
+  }, [])
 
   return (
     <div className="">
@@ -34,6 +54,12 @@ const page = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5"></div>
       </section>
       <AddExpense add={add} setAdd={setAdd} />
+
+      <div className="flex flex-wrap">
+      {expenses.map((expense) => (
+        <p>{expense.title}</p>
+      ))}
+      </div>
     </div>
   );
 };
