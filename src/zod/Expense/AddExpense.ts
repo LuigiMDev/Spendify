@@ -11,4 +11,4 @@ export const AddExpenseSchema = z.object({
   valueExpense: z.number()
 })
 
-export type Expense = z.infer<typeof AddExpenseSchema>
+export type ExpenseZodType = z.infer<typeof AddExpenseSchema>

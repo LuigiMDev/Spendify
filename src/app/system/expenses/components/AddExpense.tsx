@@ -4,14 +4,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import { NumericFormat } from "react-number-format";
 import { Controller, useForm } from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod"
-import { AddExpenseSchema, Expense } from "@/zod/Expense/AddExpense";
+import { AddExpenseSchema, ExpenseZodType } from "@/zod/Expense/AddExpense";
+import { Expense } from "@/generated/prisma";
 
 type props = {
   add: boolean;
   setAdd: React.Dispatch<React.SetStateAction<boolean>>;
+  expenses: Expense[]
+  setExpenses: React.Dispatch<React.SetStateAction<Expense[]>>;
 };
 
-const AddExpense = ({ add, setAdd }: props) => {
+const AddExpense = ({ add, setAdd, setExpenses, expenses }: props) => {
   const [paid, setPaid] = useState(false);
   const [isLoading, setIsLoading] = useState(false)
 
@@ -19,11 +22,11 @@ const AddExpense = ({ add, setAdd }: props) => {
     setPaid(e === "paid" ? true : false);
   };
 
-  const { register, handleSubmit, control, reset } = useForm<Expense>({
+  const { register, handleSubmit, control, reset } = useForm<ExpenseZodType>({
     resolver: zodResolver(AddExpenseSchema)
   });
 
-  const handleAddExpense = async (data: Expense) => {
+  const handleAddExpense = async (data: ExpenseZodType) => {
     try {
       setIsLoading(true)
       const newExpense = await fetch("/api/expense/addExpense", {
@@ -36,6 +39,7 @@ const AddExpense = ({ add, setAdd }: props) => {
       }).then(res => res.json())
   
       console.log(newExpense)
+      setExpenses([newExpense, ...expenses])
       setAdd(false)
     } catch (err) {
       console.error(err)

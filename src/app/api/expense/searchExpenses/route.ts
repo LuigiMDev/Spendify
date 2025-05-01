@@ -21,7 +21,7 @@ export async function GET() {
         const payload = jwt.verify(cookieToken.value, JWT_SECRET)
         const {id} = payload as {id: string}
 
-        const expenses = await prismadb.expense.findMany({where: {userId: id}})
+        const expenses = await prismadb.expense.findMany({where: {userId: id}, orderBy: {createdAt: "desc"}})
 
         return NextResponse.json({expenses}, {status: 200})
     } catch (err) {
