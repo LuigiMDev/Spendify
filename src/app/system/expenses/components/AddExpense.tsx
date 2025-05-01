@@ -1,15 +1,42 @@
-import { CircleX, Send } from "lucide-react";
+import { CirclePlus, CircleX, Send } from "lucide-react";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { NumericFormat } from "react-number-format";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
+import {zodResolver} from "@hookform/resolvers/zod"
 
 type props = {
   add: boolean;
   setAdd: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+const AddExpenseSchema = z.object({
+  "title-expense": z.string().nonempty(),
+  "description-expense": z.string().optional(),
+  "type-expense": z.string().nonempty(),
+  "status-expense": z.string().nonempty(),
+  "dueDate-expense": z.string().nonempty(),
+  "paymentDate-expense": z.string().optional(),
+  "value-expense": z.number()
+})
+
+type AddExpenseSchema = z.infer<typeof AddExpenseSchema>
+
 const AddExpense = ({ add, setAdd }: props) => {
   const [paid, setPaid] = useState(false);
+
+  const handlePaidExpense = (e: string) => {
+    setPaid(e === "paid" ? true : false);
+  };
+
+  const { register, handleSubmit, control } = useForm<AddExpenseSchema>({
+    resolver: zodResolver(AddExpenseSchema)
+  });
+
+  const handleAddExpense = (data: AddExpenseSchema) => {
+    console.log(data);
+  };
 
   return (
     <AnimatePresence>
@@ -27,7 +54,7 @@ const AddExpense = ({ add, setAdd }: props) => {
             animate={{ opacity: 1, top: "50%" }}
             exit={{ opacity: 0, top: "60%" }}
             transition={{ duration: 0.2 }}
-            className="absolute shadow-header z-40 px-5 py-10 rounded-xl left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[90%] max-w-[700px] max-h-[430px] overflow-y-auto"
+            className="absolute shadow-header z-40 px-5 py-10 rounded-xl left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[90%] max-w-[700px] max-h-[430px]"
           >
             <div className="flex justify-between mb-5">
               <h2 className="text-3xl font-bold opacity-80 ">
@@ -37,7 +64,11 @@ const AddExpense = ({ add, setAdd }: props) => {
                 <CircleX />
               </button>
             </div>
-            <form className="flex flex-col gap-4 w-full">
+
+            <form
+              onSubmit={handleSubmit(handleAddExpense)}
+              className="flex flex-col gap-4 w-full overflow-y-auto h-[310px] pr-4"
+            >
               <div className="relative">
                 <label htmlFor="title-expense" className="mb-2 inline-block">
                   Título <span className="text-red-500">*</span>
@@ -48,6 +79,7 @@ const AddExpense = ({ add, setAdd }: props) => {
                   className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full"
                   required
                   id="title-expense"
+                  {...register("title-expense")}
                 />
               </div>
               <div className="relative">
@@ -61,18 +93,21 @@ const AddExpense = ({ add, setAdd }: props) => {
                   className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block h-20"
                   maxLength={1000}
                   placeholder="Escreva a descrição do seu gasto"
+                  id="description-expense"
+                  {...register("description-expense")}
                 />
               </div>
               <div className="relative">
-                <label htmlFor="select-expense" className="mb-2 inline-block">
+                <label htmlFor="type-expense" className="mb-2 inline-block">
                   Tipo de gasto <span className="text-red-500">*</span>
                 </label>
                 <select
-                  id="select-expense"
+                  id="type-expense"
                   className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block"
                   required
+                  {...register("type-expense")} defaultValue=""
                 >
-                  <option value="" selected disabled hidden>
+                  <option value="" disabled hidden>
                     Selecione o tipo de gasto
                   </option>
                   <option value="food">Alimentação</option>
@@ -86,19 +121,18 @@ const AddExpense = ({ add, setAdd }: props) => {
                 </select>
               </div>
               <div className="relative">
-                <label htmlFor="select-expense" className="mb-2 inline-block">
+                <label htmlFor="status-expense" className="mb-2 inline-block">
                   Status <span className="text-red-500">*</span>
                 </label>
                 <select
-                  id="select-expense"
+                  id="status-expense"
                   className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block"
                   required
+                  {...register("status-expense")}
+                  onChange={(e) => handlePaidExpense(e.target.value)} defaultValue=""
                 >
-                  <option value="" selected disabled hidden>
+                  <option value="" disabled hidden>
                     Selecione o tipo de gasto
-                  </option>
-                  <option value="" selected disabled hidden>
-                    Pendente
                   </option>
                   <option value="pending">Pendente</option>
                   <option value="paid">Pago</option>
@@ -117,6 +151,7 @@ const AddExpense = ({ add, setAdd }: props) => {
                     type="date"
                     id="dueDate-expense"
                     className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block"
+                    {...register("dueDate-expense")}
                   />
                 </div>
                 <div
@@ -134,8 +169,9 @@ const AddExpense = ({ add, setAdd }: props) => {
                   </label>
                   <input
                     type="date"
-                    disabled
+                    disabled={paid}
                     id="paymentDate-expense"
+                    {...(paid && register("paymentDate-expense"))}
                     className={`outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block disabled:group:opacity-40 ${
                       !paid && "cursor-not-allowed"
                     }`}
@@ -147,16 +183,25 @@ const AddExpense = ({ add, setAdd }: props) => {
                 <label htmlFor="value-expense" className="mb-2 inline-block">
                   Valor <span className="text-red-500">*</span>
                 </label>
-                <NumericFormat
-                  thousandSeparator="."
-                  decimalSeparator=","
-                  prefix="R$"
-                  decimalScale={2}
-                  fixedDecimalScale
-                  placeholder="R$ 0,00"
-                  className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full"
-                  required
-                  id="value-expense"
+                <Controller
+                  name="value-expense"
+                  control={control}
+                  render={({ field }) => (
+                    <NumericFormat
+                      thousandSeparator="."
+                      decimalSeparator=","
+                      prefix="R$"
+                      decimalScale={2}
+                      fixedDecimalScale
+                      placeholder="R$ 0,00"
+                      className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full"
+                      required
+                      id="value-expense"
+                      onValueChange={(values) => {
+                        field.onChange(values.floatValue);
+                      }}
+                    />
+                  )}
                 />
               </div>
 
@@ -165,8 +210,8 @@ const AddExpense = ({ add, setAdd }: props) => {
                   type="submit"
                   className="text-white font-semibold px-4 py-2 bg-primary rounded-xl flex gap-1"
                 >
-                  Enviar
-                  <Send />
+                  Criar
+                  <CirclePlus />
                 </button>
               </div>
             </form>
