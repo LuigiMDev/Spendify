@@ -8,13 +8,13 @@ const page = () => {
   const [add, setAdd] = useState(false);
   const [expenses, setExpenses] = useState<any>([]);
 
-
   return (
     <div className="">
       <div className="mb-5">
         <h1 className="text-4xl mb-3">Gastos</h1>
         <p className="text-gray-800">
-          Adicione, altere e exclua seus gastos. Suas alterações irão refletir nos gráficos do dashboard
+          Adicione, altere e exclua seus gastos. Suas alterações irão refletir
+          nos gráficos do dashboard
         </p>
       </div>
 
@@ -31,12 +31,9 @@ const page = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-          
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5"></div>
       </section>
-<AddExpense add={add} setAdd={setAdd} />
-     
+      <AddExpense add={add} setAdd={setAdd} />
     </div>
   );
 };

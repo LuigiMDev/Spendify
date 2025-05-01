@@ -48,6 +48,7 @@ const AddExpense = ({ add, setAdd }: props) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             className="fixed z-30 bg-black h-[100dvh] top-0 w-screen opacity-30 left-0"
+            onClick={() => setAdd(false)}
           ></motion.div>
           <motion.div
             initial={{ opacity: 0, top: "60%" }}

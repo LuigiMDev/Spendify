@@ -41,7 +41,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
         <div className="flex justify-between items-center">
           <Link
             href="/dashboard"
-            className={`flex items-center gap-3 w-auto  transition-all overflow-hidden`}
+            className={`flex items-center gap-3 w-auto  transition-all overflow-hidden`} 
           >
             <Image
               className={`h-16 ${!openAside && "w-0"} transition-all`}
