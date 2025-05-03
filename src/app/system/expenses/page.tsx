@@ -4,7 +4,8 @@ import AddExpense from "./components/AddExpense";
 import { Expense } from "@/generated/prisma";
 import { TranslateTypeExpense } from "../helpers/translateExpense";
 import useSWR from "swr";
-import { LoaderCircle } from "lucide-react";
+import { LoaderCircle, Trash } from "lucide-react";
+import ExcludeExpense from "./components/ExcludeExpense";
 
 const page = () => {
   const getStatusBg = (status: string) => {
@@ -58,7 +59,8 @@ const page = () => {
             className="bg-white shadow-lg rounded-lg overflow-hidden border border-e-gray-300"
           >
             <div className={`h-2 w-full ${getStatusBg(expense.status)}`} />
-            <div className="p-5">
+            <div className="p-5 flex justify-between w-full">
+              <div className="w-[80%]">
               <h3 className="text-lg truncate">{expense.title}</h3>
               <p className="text-red-500 font-semibold">
                 -
@@ -81,6 +83,8 @@ const page = () => {
                   {new Date(expense.paymentDate).toLocaleDateString("pt-BR")}
                 </p>
               )}
+              </div>
+              <ExcludeExpense id={expense.id} mutate={mutate} />
             </div>
           </div>
         ))}
