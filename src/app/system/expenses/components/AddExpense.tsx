@@ -217,6 +217,7 @@ const AddExpense = ({mutate, dataSWR }: props) => {
                         decimalSeparator=","
                         prefix="R$"
                         decimalScale={2}
+                        allowNegative={false}
                         fixedDecimalScale
                         placeholder="R$ 0,00"
                         className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full"
