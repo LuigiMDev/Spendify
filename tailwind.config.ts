@@ -18,6 +18,12 @@ export default {
       },
       fontFamily : {
         leagueSpartan: "'League Spartan', serif"
+      },
+      gridTemplateColumns: {
+        "auto-fit-320": 'repeat(auto-fit, minmax(320px, 1fr))'
+      },
+      height: {
+        "100vh-96px": "calc(100vh - 96px)"
       }
     },
   },
