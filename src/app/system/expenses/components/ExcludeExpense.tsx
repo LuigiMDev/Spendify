@@ -17,7 +17,7 @@ const ExcludeExpense = ({ id, mutate }: props) => {
   const handleExcludeExpense = async () => {
     try {
       setIsLoading(true);
-      await fetch("/api/expense/expenseById", {
+      const response = await fetch("/api/expense/expenseById", {
         method: "DELETE",
         headers: {
           Accept: "application/json",
@@ -25,6 +25,10 @@ const ExcludeExpense = ({ id, mutate }: props) => {
         },
         body: JSON.stringify({ id }),
       });
+
+      if(response.status !== 200) {
+        throw new Error("Ocorreu um erro ao excluir seu gasto!")
+      }
 
       mutate((prev) => prev?.filter((expense) => expense.id !== id));
       toast.success("Gasto excluído com sucesso!")

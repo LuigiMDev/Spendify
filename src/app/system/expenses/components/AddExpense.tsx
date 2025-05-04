@@ -4,18 +4,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import { NumericFormat } from "react-number-format";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AddExpenseSchema, ExpenseZodType } from "@/zod/Expense/AddExpense";
+import { ExpenseFormSchema, ExpenseZodType } from "@/zod/Expense/FormExpense";
 import { Expense } from "@/generated/prisma";
 import { KeyedMutator } from "swr";
 import { toast } from "react-toastify";
 
 type props = {
-  mutate: KeyedMutator<Expense[]>
-  dataSWR: Expense[]
+  mutate: KeyedMutator<Expense[]>;
+  dataSWR: Expense[];
 };
 
-const AddExpense = ({mutate, dataSWR }: props) => {
-  const [openModal, setOpenModal] = useState(false)
+const AddExpense = ({ mutate, dataSWR }: props) => {
+  const [openModal, setOpenModal] = useState(false);
   const [paid, setPaid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -24,28 +24,34 @@ const AddExpense = ({mutate, dataSWR }: props) => {
   };
 
   const { register, handleSubmit, control, reset } = useForm<ExpenseZodType>({
-    resolver: zodResolver(AddExpenseSchema),
+    resolver: zodResolver(ExpenseFormSchema),
   });
 
   const handleAddExpense = async (data: ExpenseZodType) => {
     try {
       setIsLoading(true);
-      const newExpense = await fetch("/api/expense/addExpense", {
+      const response = await fetch("/api/expense/addExpense", {
         method: "POST",
         headers: {
-          Accept: "json/application",
-          "Content-Type": "json/application",
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-      }).then((res) => res.json());
+      })
+
+      if(response.status !== 201) {
+        throw new Error("Ocorreu um erro ao atualizar seu gasto!")
+      }
+
+      const newExpense = await response.json()
 
       console.log(newExpense);
       mutate([newExpense, ...dataSWR], false);
       setOpenModal(false);
-      toast.success("Gasto criado com sucesso!")
+      toast.success("Gasto criado com sucesso!");
     } catch (err) {
       console.error(err);
-      toast.error("Ocorreu um erro ao criar o gasto!")
+      toast.error("Ocorreu um erro ao criar o gasto!");
     }
     setIsLoading(false);
     reset();

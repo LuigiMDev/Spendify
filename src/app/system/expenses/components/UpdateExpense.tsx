@@ -4,19 +4,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import { NumericFormat } from "react-number-format";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AddExpenseSchema, ExpenseZodType } from "@/zod/Expense/AddExpense";
+import { ExpenseFormSchema, ExpenseZodType } from "@/zod/Expense/FormExpense";
 import { Expense } from "@/generated/prisma";
 import { KeyedMutator } from "swr";
 import { toast } from "react-toastify";
 
 type props = {
-  mutate: KeyedMutator<Expense[]>
-  dataSWR: Expense[]
-  expense: Expense
+  mutate: KeyedMutator<Expense[]>;
+  dataSWR: Expense[];
+  expense: Expense;
 };
 
-const UpdateExpense = ({mutate, dataSWR, expense }: props) => {
-  const [openModal, setOpenModal] = useState(false)
+const UpdateExpense = ({ mutate, dataSWR, expense }: props) => {
+  const [openModal, setOpenModal] = useState(false);
   const [paid, setPaid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -25,40 +25,47 @@ const UpdateExpense = ({mutate, dataSWR, expense }: props) => {
   };
 
   const { register, handleSubmit, control, reset } = useForm<ExpenseZodType>({
-    resolver: zodResolver(AddExpenseSchema),
+    resolver: zodResolver(ExpenseFormSchema),
     defaultValues: {
-        titleExpense: expense.title,
-        descriptionExpense: expense.description || "",
-        typeExpense: expense.type,
-        statusExpense: expense.status,
-        dueDateExpense: new Date (expense.dueDate).toISOString().slice(0, 10),
-        paymentDateExpense: expense.paymentDate ? new Date (expense.paymentDate).toISOString().slice(0, 10) : "",
-        valueExpense: expense.value
-    }
+      titleExpense: expense.title,
+      descriptionExpense: expense.description || "",
+      typeExpense: expense.type,
+      statusExpense: expense.status,
+      dueDateExpense: new Date(expense.dueDate).toISOString().slice(0, 10),
+      paymentDateExpense: expense.paymentDate
+        ? new Date(expense.paymentDate).toISOString().slice(0, 10)
+        : "",
+      valueExpense: expense.value,
+    },
   });
 
   const handleAddExpense = async (data: ExpenseZodType) => {
     try {
       setIsLoading(true);
-      const newExpense = await fetch("/api/expense/addExpense", {
-        method: "POST",
+      const response = await fetch("/api/expense/updateExpense", {
+        method: "PUT",
         headers: {
-          Accept: "json/application",
-          "Content-Type": "json/application",
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
-      }).then((res) => res.json());
+        body: JSON.stringify({idExpense: expense.id, ...data}),
+      })
 
-      console.log(newExpense);
-      mutate([newExpense, ...dataSWR], false);
+      if(response.status !== 200) {
+        throw new Error("Ocorreu um erro ao atualizar seu gasto!")
+      }
+
+      const updatedExpense = await response.json()
+
+      console.log(updatedExpense);
+      mutate(dataSWR.map(prevExpense => prevExpense.id === updatedExpense.id ? updatedExpense : prevExpense), false);
       setOpenModal(false);
-      toast.success("Gasto criado com sucesso!")
+      toast.success("Gasto criado com sucesso!");
     } catch (err) {
       console.error(err);
-      toast.error("Ocorreu um erro ao criar o gasto!")
+      toast.error("Ocorreu um erro ao atualizar o gasto!");
     }
     setIsLoading(false);
-    reset();
   };
 
   return (
@@ -245,11 +252,11 @@ const UpdateExpense = ({mutate, dataSWR, expense }: props) => {
                     type="submit"
                     className="text-white font-semibold px-4 py-2 bg-primary rounded-xl flex gap-1"
                   >
-                    Criar
+                    Atualizar
                     {isLoading ? (
                       <LoaderCircle className="animate-spin text-white" />
                     ) : (
-                      <CirclePlus className="text-white" />
+                      <Pencil className="text-white" />
                     )}
                   </button>
                 </div>

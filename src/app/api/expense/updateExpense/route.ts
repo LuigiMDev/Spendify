@@ -1,13 +1,12 @@
 import { ExpenseFormSchema } from "@/zod/Expense/FormExpense";
-import { NextRequest, NextResponse } from "next/server";
-import { prismadb } from "../../prismaClient";
 import { cookies } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
+import { prismadb } from "../../prismaClient";
 
-export async function POST(req: NextRequest) {
+export async function PUT(req: NextRequest) {
   try {
     const body = await req.json();
-
     const parsed = ExpenseFormSchema.safeParse(body);
 
     if (!parsed.success) {
@@ -20,6 +19,7 @@ export async function POST(req: NextRequest) {
     }
 
     const {
+      idExpense,
       titleExpense,
       descriptionExpense,
       typeExpense,
@@ -51,7 +51,8 @@ export async function POST(req: NextRequest) {
 
     const { id } = payload as { id: string };
 
-    const newExpense = await prismadb.expense.create({
+    const updatedExpense = await prismadb.expense.update({
+      where: { id: idExpense },
       data: {
         title: titleExpense,
         description: descriptionExpense || undefined,
@@ -65,8 +66,7 @@ export async function POST(req: NextRequest) {
         userId: id,
       },
     });
-
-    return NextResponse.json({ ...newExpense }, { status: 201 });
+    return NextResponse.json({ ...updatedExpense }, { status: 200 });
   } catch (err) {
     console.log(err);
     return NextResponse.json(

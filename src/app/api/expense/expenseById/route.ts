@@ -7,9 +7,9 @@ export async function DELETE(req: NextRequest) {
 
     await prismadb.expense.delete({ where: { id } });
 
-    return NextResponse.json({ message: "de boa" }, { status: 200 });
+    return NextResponse.json({ message: "Gasto excluído com sucesso!" }, { status: 200 });
   } catch (err) {
     console.log(err);
-    return NextResponse.json({ message: "não deu boa" }, { status: 500 });
+    return NextResponse.json({ message: "Ocorreu um erro ao excluir o gasto!" }, { status: 500 });
   }
 }
