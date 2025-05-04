@@ -20,7 +20,7 @@ export default {
         leagueSpartan: "'League Spartan', serif"
       },
       gridTemplateColumns: {
-        "auto-fit-320": 'repeat(auto-fit, minmax(320px, 1fr))'
+        "auto-fit-320": 'repeat(auto-fill, minmax(320px, 1fr))'
       },
       height: {
         "100vh-96px": "calc(100vh - 96px)"

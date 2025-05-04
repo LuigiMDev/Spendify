@@ -6,6 +6,7 @@ import { TranslateTypeExpense } from "../helpers/translateExpense";
 import useSWR from "swr";
 import { LoaderCircle, Trash } from "lucide-react";
 import ExcludeExpense from "./components/ExcludeExpense";
+import UpdateExpense from "./components/UpdateExpense";
 
 const page = () => {
   const getStatusBg = (status: string) => {
@@ -84,7 +85,10 @@ const page = () => {
                 </p>
               )}
               </div>
+              <div>
+              <UpdateExpense expense={expense} dataSWR={data} mutate={mutate} />
               <ExcludeExpense id={expense.id} mutate={mutate} />
+              </div>
             </div>
           </div>
         ))}

@@ -1,4 +1,4 @@
-import { CirclePlus, CircleX, LoaderCircle } from "lucide-react";
+import { CirclePlus, CircleX, LoaderCircle, Pencil } from "lucide-react";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { NumericFormat } from "react-number-format";
@@ -12,9 +12,10 @@ import { toast } from "react-toastify";
 type props = {
   mutate: KeyedMutator<Expense[]>
   dataSWR: Expense[]
+  expense: Expense
 };
 
-const AddExpense = ({mutate, dataSWR }: props) => {
+const UpdateExpense = ({mutate, dataSWR, expense }: props) => {
   const [openModal, setOpenModal] = useState(false)
   const [paid, setPaid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,6 +26,15 @@ const AddExpense = ({mutate, dataSWR }: props) => {
 
   const { register, handleSubmit, control, reset } = useForm<ExpenseZodType>({
     resolver: zodResolver(AddExpenseSchema),
+    defaultValues: {
+        titleExpense: expense.title,
+        descriptionExpense: expense.description || "",
+        typeExpense: expense.type,
+        statusExpense: expense.status,
+        dueDateExpense: new Date (expense.dueDate).toISOString().slice(0, 10),
+        paymentDateExpense: expense.paymentDate ? new Date (expense.paymentDate).toISOString().slice(0, 10) : "",
+        valueExpense: expense.value
+    }
   });
 
   const handleAddExpense = async (data: ExpenseZodType) => {
@@ -53,17 +63,12 @@ const AddExpense = ({mutate, dataSWR }: props) => {
 
   return (
     <>
-      <div className="mb-5">
-        <button
-          className="flex items-center p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-all"
-          onClick={() => setOpenModal(true)}
-        >
-          <CirclePlus className="flex flex-shrink-0 w-6 h-6" />
-          <span className={`ml-3 w-full overflow-hidden text-nowrap`}>
-            Adicionar gasto
-          </span>
-        </button>
-      </div>
+      <button
+        className="flex h-fit p-2 bg-gray-50 hover:bg-orange-400 group rounded-lg transition-all"
+        onClick={() => setOpenModal(true)}
+      >
+        <Pencil className="flex flex-shrink-0 w-5 h-5 group-hover:text-white transition-all" />
+      </button>
       <AnimatePresence>
         {openModal && (
           <>
@@ -84,7 +89,7 @@ const AddExpense = ({mutate, dataSWR }: props) => {
             >
               <div className="flex justify-between mb-5">
                 <h2 className="text-3xl font-bold opacity-80 ">
-                  Adicionar gasto
+                  Atualizar gasto
                 </h2>
                 <button onClick={() => setOpenModal(false)}>
                   <CircleX />
@@ -229,6 +234,7 @@ const AddExpense = ({mutate, dataSWR }: props) => {
                         onValueChange={(values) => {
                           field.onChange(values.floatValue);
                         }}
+                        value={field.value}
                       />
                     )}
                   />
@@ -256,4 +262,4 @@ const AddExpense = ({mutate, dataSWR }: props) => {
   );
 };
 
-export default AddExpense;
+export default UpdateExpense;
