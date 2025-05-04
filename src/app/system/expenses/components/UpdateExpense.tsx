@@ -176,6 +176,7 @@ const UpdateExpense = ({ mutate, dataSWR, expense }: props) => {
                     </option>
                     <option value="pending">Pendente</option>
                     <option value="paid">Pago</option>
+                    <option value="cancelled">Cancelado</option>
                   </select>
                 </div>
 
