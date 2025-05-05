@@ -43,7 +43,7 @@ const ExcludeExpense = ({ id, mutate }: props) => {
     <>
       <button
         className="flex h-fit p-2 bg-gray-50 hover:bg-red-500 group rounded-lg transition-all"
-        onClick={() => setOpenModal(true)}
+        onClick={() => setOpenModal(true)} title="Excluir"
       >
         <Trash2 className="flex flex-shrink-0 w-5 h-5 group-hover:text-white transition-all" />
       </button>
@@ -64,7 +64,7 @@ const ExcludeExpense = ({ id, mutate }: props) => {
               animate={{ opacity: 1, top: "50%" }}
               exit={{ opacity: 0, top: "60%" }}
               transition={{ duration: 0.2 }}
-              className="absolute shadow-header z-40 px-5 py-10 rounded-xl left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[90%] max-w-[700px] "
+              className="fixed shadow-header z-40 px-5 py-10 rounded-xl left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[90%] max-w-[700px] "
             >
               <div className="flex justify-between mb-5">
                 <h2 className="text-3xl font-bold opacity-80 ">

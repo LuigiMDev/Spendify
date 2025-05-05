@@ -35,11 +35,11 @@ const UpdateExpense = ({ mutate, dataSWR, expense }: props) => {
     },
   });
 
-  const statusValue = watch("statusExpense")
+  const statusValue = watch("statusExpense");
 
   useEffect(() => {
     setPaid(statusValue === "paid" ? true : false);
-  }, [statusValue])
+  }, [statusValue]);
 
   const handleAddExpense = async (data: ExpenseZodType) => {
     try {
@@ -50,19 +50,24 @@ const UpdateExpense = ({ mutate, dataSWR, expense }: props) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({idExpense: expense.id, ...data}),
-      })
+        body: JSON.stringify({ idExpense: expense.id, ...data }),
+      });
 
-      if(response.status !== 200) {
-        throw new Error("Ocorreu um erro ao atualizar seu gasto!")
+      if (response.status !== 200) {
+        throw new Error("Ocorreu um erro ao atualizar seu gasto!");
       }
 
-      const updatedExpense = await response.json()
+      const updatedExpense = await response.json();
 
       console.log(updatedExpense);
-      mutate(dataSWR.map(prevExpense => prevExpense.id === updatedExpense.id ? updatedExpense : prevExpense), false);
+      mutate(
+        dataSWR.map((prevExpense) =>
+          prevExpense.id === updatedExpense.id ? updatedExpense : prevExpense
+        ),
+        false
+      );
       setOpenModal(false);
-      toast.success("Gasto criado com sucesso!");
+      toast.success("Gasto atualizado com sucesso!");
     } catch (err) {
       console.error(err);
       toast.error("Ocorreu um erro ao atualizar o gasto!");
@@ -75,6 +80,7 @@ const UpdateExpense = ({ mutate, dataSWR, expense }: props) => {
       <button
         className="flex h-fit p-2 bg-gray-50 hover:bg-orange-400 group rounded-lg transition-all"
         onClick={() => setOpenModal(true)}
+        title="Atualizar"
       >
         <Pencil className="flex flex-shrink-0 w-5 h-5 group-hover:text-white transition-all" />
       </button>
@@ -94,7 +100,7 @@ const UpdateExpense = ({ mutate, dataSWR, expense }: props) => {
               animate={{ opacity: 1, top: "50%" }}
               exit={{ opacity: 0, top: "60%" }}
               transition={{ duration: 0.2 }}
-              className="absolute shadow-header z-40 px-5 py-10 rounded-xl left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[90%] max-w-[700px] max-h-[430px]"
+              className="fixed shadow-header z-40 px-5 py-10 rounded-xl left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[90%] max-w-[700px] max-h-[430px]"
             >
               <div className="flex justify-between mb-5">
                 <h2 className="text-3xl font-bold opacity-80 ">

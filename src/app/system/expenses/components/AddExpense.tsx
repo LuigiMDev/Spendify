@@ -86,7 +86,7 @@ const AddExpense = ({ mutate, dataSWR }: props) => {
               animate={{ opacity: 1, top: "50%" }}
               exit={{ opacity: 0, top: "60%" }}
               transition={{ duration: 0.2 }}
-              className="absolute shadow-header z-40 px-5 py-10 rounded-xl left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[90%] max-w-[700px] max-h-[430px]"
+              className="fixed shadow-header z-40 px-5 py-10 rounded-xl left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[90%] max-w-[700px] max-h-[430px]"
             >
               <div className="flex justify-between mb-5">
                 <h2 className="text-3xl font-bold opacity-80 ">
