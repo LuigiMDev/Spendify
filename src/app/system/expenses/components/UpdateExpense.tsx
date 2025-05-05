@@ -1,5 +1,5 @@
 import { CirclePlus, CircleX, LoaderCircle, Pencil } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { NumericFormat } from "react-number-format";
 import { Controller, useForm } from "react-hook-form";
@@ -20,11 +20,7 @@ const UpdateExpense = ({ mutate, dataSWR, expense }: props) => {
   const [paid, setPaid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handlePaidExpense = (e: string) => {
-    setPaid(e === "paid" ? true : false);
-  };
-
-  const { register, handleSubmit, control, reset } = useForm<ExpenseZodType>({
+  const { register, handleSubmit, control, watch } = useForm<ExpenseZodType>({
     resolver: zodResolver(ExpenseFormSchema),
     defaultValues: {
       titleExpense: expense.title,
@@ -38,6 +34,12 @@ const UpdateExpense = ({ mutate, dataSWR, expense }: props) => {
       valueExpense: expense.value,
     },
   });
+
+  const statusValue = watch("statusExpense")
+
+  useEffect(() => {
+    setPaid(statusValue === "paid" ? true : false);
+  }, [statusValue])
 
   const handleAddExpense = async (data: ExpenseZodType) => {
     try {
@@ -168,7 +170,6 @@ const UpdateExpense = ({ mutate, dataSWR, expense }: props) => {
                     className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block"
                     required
                     {...register("statusExpense")}
-                    onChange={(e) => handlePaidExpense(e.target.value)}
                     defaultValue=""
                   >
                     <option value="" disabled hidden>
