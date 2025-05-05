@@ -23,7 +23,7 @@ export default {
         "auto-fit-320": 'repeat(auto-fill, minmax(320px, 1fr))'
       },
       height: {
-        "100vh-96px": "calc(100vh - 96px)"
+        "100vh-260px": "calc(100vh - 260px)"
       }
     },
   },

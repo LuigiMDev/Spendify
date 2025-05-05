@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 
 type props = {
   mutate: KeyedMutator<Expense[]>;
-  dataSWR: Expense[];
+  dataSWR?: Expense[];
 };
 
 const AddExpense = ({ mutate, dataSWR }: props) => {
@@ -29,26 +29,30 @@ const AddExpense = ({ mutate, dataSWR }: props) => {
 
   const handleAddExpense = async (data: ExpenseZodType) => {
     try {
-      setIsLoading(true);
-      const response = await fetch("/api/expense/addExpense", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
+      if (dataSWR) {
+        setIsLoading(true);
+        const response = await fetch("/api/expense/addExpense", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
 
-      if(response.status !== 201) {
-        throw new Error("Ocorreu um erro ao atualizar seu gasto!")
+        if (response.status !== 201) {
+          throw new Error("Ocorreu um erro ao atualizar seu gasto!");
+        }
+
+        const newExpense = await response.json();
+
+        console.log(newExpense);
+        mutate([newExpense, ...dataSWR], false);
+        setOpenModal(false);
+        toast.success("Gasto criado com sucesso!");
+      } else {
+        throw new Error("Não foi possível acessar os dados!")
       }
-
-      const newExpense = await response.json()
-
-      console.log(newExpense);
-      mutate([newExpense, ...dataSWR], false);
-      setOpenModal(false);
-      toast.success("Gasto criado com sucesso!");
     } catch (err) {
       console.error(err);
       toast.error("Ocorreu um erro ao criar o gasto!");
