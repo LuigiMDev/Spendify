@@ -1,16 +1,15 @@
-import { Expense } from "@/generated/prisma";
 import { AnimatePresence, motion } from "framer-motion";
 import { CircleX, LoaderCircle, Trash2 } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { KeyedMutator } from "swr";
+import { Expense } from "@/generated/prisma";
 
 type props = {
   id: string;
-  mutate: KeyedMutator<Expense[]>;
+  setExpenses: React.Dispatch<React.SetStateAction<Expense[]>>;
 };
 
-const ExcludeExpense = ({ id, mutate }: props) => {
+const ExcludeExpense = ({ id, setExpenses }: props) => {
   const [openModal, setOpenModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -26,15 +25,19 @@ const ExcludeExpense = ({ id, mutate }: props) => {
         body: JSON.stringify({ id }),
       });
 
-      if(response.status !== 200) {
-        throw new Error("Ocorreu um erro ao excluir seu gasto!")
+      if (response.status !== 200) {
+        throw new Error("Ocorreu um erro ao excluir seu gasto!");
       }
 
-      mutate((prev) => prev?.filter((expense) => expense.id !== id));
-      toast.success("Gasto excluído com sucesso!")
+      setExpenses((prev) => {
+        if (!prev) return prev;
+
+        return prev.filter((expense) => expense.id !== id);
+      });
+      toast.success("Gasto excluído com sucesso!");
     } catch (err) {
       console.log(err);
-      toast.error("Ocorreu um erro ao excluir o gasto!")
+      toast.error("Ocorreu um erro ao excluir o gasto!");
     }
     setIsLoading(false);
   };
@@ -43,7 +46,8 @@ const ExcludeExpense = ({ id, mutate }: props) => {
     <>
       <button
         className="flex h-fit p-2 bg-gray-50 hover:bg-red-500 group rounded-lg transition-all"
-        onClick={() => setOpenModal(true)} title="Excluir"
+        onClick={() => setOpenModal(true)}
+        title="Excluir"
       >
         <Trash2 className="flex flex-shrink-0 w-5 h-5 group-hover:text-white transition-all" />
       </button>

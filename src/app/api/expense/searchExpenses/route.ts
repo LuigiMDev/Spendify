@@ -2,11 +2,22 @@ import { NextRequest, NextResponse } from "next/server";
 import { prismadb } from "../../prismaClient";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
+import { ExpenseStatus, ExpenseType } from "@/generated/prisma";
 
 export async function GET(req: NextRequest) {
   try {
     const cookieToken = (await cookies()).get("token");
-    const search = req.nextUrl.searchParams.get("search");
+    const searchInput = req.nextUrl.searchParams.get("searchInput") || "";
+    const page = parseInt(req.nextUrl.searchParams.get("page") || "1");
+    const limit = 15;
+    const searchStatus = req.nextUrl.searchParams.get("searchStatus") || "";
+
+
+      const validStatus = ["pending", "paid", "cancelled"]
+      const isValidStatus = validStatus.includes(searchStatus)
+
+      console.log(searchStatus)
+    
 
     if (!cookieToken) {
       return NextResponse.json(
@@ -30,18 +41,24 @@ export async function GET(req: NextRequest) {
     const expenses = await prismadb.expense.findMany({
       where: {
         userId: id,
-        ...(search && {
-          OR: [
-            {
-              title: {
-                contains: search,
-              },
-              description: {
-                contains: search
-              }
+        OR: [
+          {
+            title: {
+              contains: searchInput,
             },
-          ],
-        }),
+          },
+          {
+            description: {
+              contains: searchInput,
+            },
+          },
+          {
+            
+          }
+        ],
+        ...(isValidStatus && {
+          status: searchStatus as ExpenseStatus
+        })
       },
       orderBy: { createdAt: "desc" },
     });

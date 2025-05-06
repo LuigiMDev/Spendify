@@ -6,16 +6,14 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ExpenseFormSchema, ExpenseZodType } from "@/zod/Expense/FormExpense";
 import { Expense } from "@/generated/prisma";
-import { KeyedMutator } from "swr";
 import { toast } from "react-toastify";
 
 type props = {
-  mutate: KeyedMutator<Expense[]>;
-  dataSWR: Expense[];
   expense: Expense;
+  setExpenses: React.Dispatch<React.SetStateAction<Expense[]>>
 };
 
-const UpdateExpense = ({ mutate, dataSWR, expense }: props) => {
+const UpdateExpense = ({ expense, setExpenses }: props) => {
   const [openModal, setOpenModal] = useState(false);
   const [paid, setPaid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -60,12 +58,7 @@ const UpdateExpense = ({ mutate, dataSWR, expense }: props) => {
       const updatedExpense = await response.json();
 
       console.log(updatedExpense);
-      mutate(
-        dataSWR.map((prevExpense) =>
-          prevExpense.id === updatedExpense.id ? updatedExpense : prevExpense
-        ),
-        false
-      );
+      setExpenses(prevData => prevData.map((prevExpense) => prevExpense.id === updatedExpense.id ? updatedExpense : prevExpense))
       setOpenModal(false);
       toast.success("Gasto atualizado com sucesso!");
     } catch (err) {

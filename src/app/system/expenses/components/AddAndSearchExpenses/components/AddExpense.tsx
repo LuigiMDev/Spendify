@@ -6,15 +6,14 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ExpenseFormSchema, ExpenseZodType } from "@/zod/Expense/FormExpense";
 import { Expense } from "@/generated/prisma";
-import { KeyedMutator } from "swr";
 import { toast } from "react-toastify";
 
 type props = {
-  mutate: KeyedMutator<Expense[]>;
-  dataSWR?: Expense[];
+  expenses: Expense[]
+  setExpenses: React.Dispatch<React.SetStateAction<Expense[]>>
 };
 
-const AddExpense = ({ mutate, dataSWR }: props) => {
+const AddExpense = ({ expenses, setExpenses }: props) => {
   const [openModal, setOpenModal] = useState(false);
   const [paid, setPaid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -29,7 +28,7 @@ const AddExpense = ({ mutate, dataSWR }: props) => {
 
   const handleAddExpense = async (data: ExpenseZodType) => {
     try {
-      if (dataSWR) {
+      if (expenses) {
         setIsLoading(true);
         const response = await fetch("/api/expense/addExpense", {
           method: "POST",
@@ -47,7 +46,7 @@ const AddExpense = ({ mutate, dataSWR }: props) => {
         const newExpense = await response.json();
 
         console.log(newExpense);
-        mutate([newExpense, ...dataSWR], false);
+        setExpenses([newExpense, ...expenses])
         setOpenModal(false);
         toast.success("Gasto criado com sucesso!");
       } else {
@@ -63,7 +62,7 @@ const AddExpense = ({ mutate, dataSWR }: props) => {
 
   return (
     <>
-      <div className="mb-5">
+      <div className="flex-1">
         <button
           className="flex items-center p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-all"
           onClick={() => setOpenModal(true)}

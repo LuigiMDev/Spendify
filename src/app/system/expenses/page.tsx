@@ -1,25 +1,43 @@
 "use client";
-import React, { useState } from "react";
-import AddExpense from "./components/AddExpense";
+import React, { useEffect, useState } from "react";
+import AddExpense from "./components/AddAndSearchExpenses/components/AddExpense";
 import { Expense } from "@/generated/prisma";
-import useSWR from "swr";
-import { LoaderCircle } from "lucide-react";
-import SearchExpenses from "./components/SearchExpenses";
+import SearchExpenses from "./components/AddAndSearchExpenses/components/SearchExpenses";
 import ShowExpenses from "./components/ShowExpenses";
+import { toast } from "react-toastify";
+
+export type SWRResponseType = {
+  expenses: Expense[];
+};
 
 const page = () => {
+  const [error, setError] = useState(false);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [isLoadingHook, setIsLoadingHook] = useState(true);
 
-  const fetcher = (url: string) =>
-    fetch(url)
-      .then((res) => res.json())
-      .then((res) => res.expenses);
+  const handleSearchExpenses = async () => {
+    try {
+      const response = await fetch("/api/expense/searchExpenses");
 
-  const { data, error, mutate, isLoading } = useSWR<Expense[]>(
-    "/api/expense/searchExpenses",
-    fetcher
-  );
+      if (response.status !== 200) {
+        throw new Error("Ocorreu um erro ao buscar os dados!");
+      }
 
-  const [isLoadingHook, setIsLoadingHook] = useState(false);
+      const expensesResponse = await response.json()
+
+      setExpenses(expensesResponse.expenses);
+    } catch (err) {
+      setError(true);
+      toast.error("Ocorreu um erro ao buscar os dados!");
+      console.log(err);
+    }
+    setIsLoadingHook(false);
+  };
+
+  useEffect(() => {
+    handleSearchExpenses();
+  }, []);
+
 
   return (
     <div className="">
@@ -31,13 +49,20 @@ const page = () => {
         </p>
       </div>
 
-      <div className="flex justify-between">
-        <AddExpense mutate={mutate} dataSWR={data} />
-        <SearchExpenses setIsLoadingHook={setIsLoadingHook} mutate={mutate} />
+      <div className="flex gap-x-5 gap-y-3 flex-wrap mb-5 ">
+        <AddExpense expenses={expenses} setExpenses={setExpenses} />
+        <SearchExpenses
+          setIsLoadingHook={setIsLoadingHook}
+          setExpenses={setExpenses}
+        />
       </div>
 
-    <ShowExpenses data={data} mutate={mutate} isLoading={isLoading} error={error} isLoadingHook={isLoadingHook} />
-      
+      <ShowExpenses
+        expenses={expenses}
+        setExpenses={setExpenses}
+        error={error}
+        isLoadingHook={isLoadingHook}
+      />
     </div>
   );
 };
