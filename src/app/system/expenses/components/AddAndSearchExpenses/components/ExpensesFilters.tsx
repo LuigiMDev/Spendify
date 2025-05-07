@@ -108,7 +108,7 @@ const ExpensesFilters = ({
           htmlFor="dueDateFilterExpense"
           className="absolute left-3 -top-[7px] bg-white text-slate-600 group-focus-within:text-primary transition-all text-xs"
         >
-          Status
+          Vencimento
         </label>
         <select
           className=" focus:border-primary outline-primary rounded-lg border-2 border-gray-150 p-2 w-fit block transition-all"

@@ -12,11 +12,8 @@ type props = {
   error: boolean;
 };
 
-const ShowExpenses = ({
-  isLoadingHook,
-  error,
-}: props) => {
-  const {expenses, setExpenses} = useExpenses()
+const ShowExpenses = ({ isLoadingHook, error }: props) => {
+  const { expenses, setExpenses } = useExpenses();
 
   const getStatusBg = (status: string) => {
     switch (status) {
@@ -71,22 +68,25 @@ const ShowExpenses = ({
                   </p>
                   <p>
                     <span className="font-semibold">Vencimento:</span>{" "}
-                    {new Date(expense.dueDate).toLocaleDateString("pt-BR")}
+                    {new Date(expense.dueDate).toLocaleDateString("pt-BR", {
+                      timeZone: "UTC",
+                    })}
                   </p>
                   {expense.status === "paid" && expense.paymentDate && (
                     <p>
                       <span className="font-semibold">Pagamento:</span>{" "}
                       {new Date(expense.paymentDate).toLocaleDateString(
-                        "pt-BR"
+                        "pt-BR",
+                        {
+                          timeZone: "UTC",
+                        }
                       )}
                     </p>
                   )}
                 </div>
                 <div>
                   <DetailsExpense expense={expense} />
-                  <UpdateExpense
-                    expense={expense}
-                  />
+                  <UpdateExpense expense={expense} />
                   <ExcludeExpense id={expense.id} />
                 </div>
               </div>

@@ -2,7 +2,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import { CircleX, Info } from "lucide-react";
 import React, { useState } from "react";
 import { Expense } from "@/generated/prisma";
-import { TranslateStatusExpense, TranslateTypeExpense } from "../../helpers/translateExpense";
+import {
+  TranslateStatusExpense,
+  TranslateTypeExpense,
+} from "../../helpers/translateExpense";
 
 type props = {
   expense: Expense;
@@ -62,20 +65,26 @@ const DetailsExpense = ({ expense }: props) => {
                     <dt className="text-sm font-semibold text-gray-500">
                       Tipo de gasto
                     </dt>
-                    <dd className="text-gray-900">{TranslateTypeExpense[expense.type]}</dd>
+                    <dd className="text-gray-900">
+                      {TranslateTypeExpense[expense.type]}
+                    </dd>
                   </div>
                   <div>
                     <dt className="text-sm font-semibold text-gray-500">
                       Status
                     </dt>
-                    <dd className="text-gray-900">{TranslateStatusExpense[expense.status]}</dd>
+                    <dd className="text-gray-900">
+                      {TranslateStatusExpense[expense.status]}
+                    </dd>
                   </div>
                   <div>
                     <dt className="text-sm font-semibold text-gray-500">
                       Data de vencimento
                     </dt>
                     <dd className="text-gray-900">
-                      {new Date(expense.dueDate).toLocaleDateString()}
+                      {new Date(expense.dueDate).toLocaleDateString("pt-BR", {
+                        timeZone: "UTC",
+                      })}
                     </dd>
                   </div>
                   {expense.paymentDate && (
@@ -84,7 +93,12 @@ const DetailsExpense = ({ expense }: props) => {
                         Data de Pagamento
                       </dt>
                       <dd className="text-gray-900">
-                        {new Date(expense.paymentDate).toLocaleDateString()}
+                        {new Date(expense.paymentDate).toLocaleDateString(
+                          "pt-BR",
+                          {
+                            timeZone: "UTC",
+                          }
+                        )}
                       </dd>
                     </div>
                   )}
