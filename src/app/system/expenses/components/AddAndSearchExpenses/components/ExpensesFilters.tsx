@@ -9,7 +9,7 @@ type props = {
 const ExpensesFilters = ({ searchStatus, setSearchStatus, className }: props) => {
   return (
     <div className={`${className} relative group`}>
-      <label htmlFor="statusFilterExpense" className="absolute left-3 -top-3 bg-white text-slate-600 group-focus-within:text-primary transition-all">
+      <label htmlFor="statusFilterExpense" className="absolute left-3 -top-[7px] bg-white text-slate-600 group-focus-within:text-primary transition-all text-xs">
         Status
       </label>
       <select

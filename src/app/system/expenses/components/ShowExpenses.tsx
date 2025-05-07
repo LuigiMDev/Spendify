@@ -4,6 +4,7 @@ import ExcludeExpense from "./ExcludeExpense";
 import { TranslateTypeExpense } from "../../helpers/translateExpense";
 import { Expense } from "@/generated/prisma";
 import { LoaderCircle } from "lucide-react";
+import DetailsExpense from "./DetailsExpense";
 
 type props = {
   isLoadingHook: boolean;
@@ -83,6 +84,7 @@ const ShowExpenses = ({
                   )}
                 </div>
                 <div>
+                  <DetailsExpense expense={expense} />
                   <UpdateExpense
                     expense={expense}
                     setExpenses={setExpenses}
