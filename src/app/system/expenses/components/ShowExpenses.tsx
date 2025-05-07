@@ -13,7 +13,7 @@ type props = {
 };
 
 const ShowExpenses = ({ isLoadingHook, error }: props) => {
-  const { expenses, setExpenses } = useExpenses();
+  const { expenses } = useExpenses();
 
   const getStatusBg = (status: string) => {
     switch (status) {
@@ -28,14 +28,14 @@ const ShowExpenses = ({ isLoadingHook, error }: props) => {
 
   if (isLoadingHook)
     return (
-      <div className="flex items-center justify-center h-100vh-260px">
+      <div className="flex pt-10 justify-center">
         <LoaderCircle className="text-primary animate-spin h-10 w-10" />
       </div>
     );
 
   if (error)
     return (
-      <div className="flex items-center justify-center h-100vh-260px">
+      <div className="flex pt-10 justify-center">
         <h3 className="text-xl">Não foi possível buscar os dados!</h3>
       </div>
     );
@@ -94,7 +94,7 @@ const ShowExpenses = ({ isLoadingHook, error }: props) => {
           ))}
         </section>
       ) : (
-        <div className="flex items-center justify-center h-100vh-260px">
+        <div className="flex pt-10 justify-center">
           <h3 className="text-3xl">Não foram encontrados gastos!</h3>
         </div>
       )}

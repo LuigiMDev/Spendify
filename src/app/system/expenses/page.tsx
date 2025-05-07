@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import AddExpense from "./components/AddAndSearchExpenses/components/AddExpense";
-import { Expense } from "@/generated/prisma";
 import SearchExpenses from "./components/AddAndSearchExpenses/components/SearchExpenses";
 import ShowExpenses from "./components/ShowExpenses";
 import { toast } from "react-toastify";
@@ -9,7 +8,7 @@ import useExpenses from "./context/useExpenses";
 
 const page = () => {
   const [error, setError] = useState(false);
-  const {expenses, setExpenses} = useExpenses()
+  const {setExpenses} = useExpenses()
   const [isLoadingHook, setIsLoadingHook] = useState(true);
 
   const handleSearchExpenses = async () => {
@@ -57,6 +56,8 @@ const page = () => {
         error={error}
         isLoadingHook={isLoadingHook}
       />
+
+      <div></div>
     </div>
   );
 };
