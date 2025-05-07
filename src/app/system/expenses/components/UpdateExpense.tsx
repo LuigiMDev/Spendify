@@ -119,6 +119,7 @@ const UpdateExpense = ({ expense }: props) => {
                     className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full"
                     required
                     id="titleExpense"
+                    maxLength={60}
                     {...register("titleExpense")}
                   />
                 </div>
@@ -131,7 +132,7 @@ const UpdateExpense = ({ expense }: props) => {
                   </label>
                   <textarea
                     className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block h-20"
-                    maxLength={1000}
+                    maxLength={500}
                     placeholder="Escreva a descrição do seu gasto"
                     id="descriptionExpense"
                     {...register("descriptionExpense")}
@@ -237,6 +238,7 @@ const UpdateExpense = ({ expense }: props) => {
                         allowNegative={false}
                         fixedDecimalScale
                         placeholder="R$ 0,00"
+                        maxLength={17}
                         className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full"
                         required
                         id="valueExpense"
