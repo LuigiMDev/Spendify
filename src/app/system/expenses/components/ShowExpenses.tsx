@@ -5,20 +5,19 @@ import { TranslateTypeExpense } from "../../helpers/translateExpense";
 import { Expense } from "@/generated/prisma";
 import { LoaderCircle } from "lucide-react";
 import DetailsExpense from "./DetailsExpense";
+import useExpenses from "../context/useExpenses";
 
 type props = {
   isLoadingHook: boolean;
   error: boolean;
-  expenses: Expense[]
-  setExpenses: React.Dispatch<React.SetStateAction<Expense[]>>
 };
 
 const ShowExpenses = ({
   isLoadingHook,
   error,
-  expenses,
-  setExpenses
 }: props) => {
+  const {expenses, setExpenses} = useExpenses()
+
   const getStatusBg = (status: string) => {
     switch (status) {
       case "pending":
@@ -87,9 +86,8 @@ const ShowExpenses = ({
                   <DetailsExpense expense={expense} />
                   <UpdateExpense
                     expense={expense}
-                    setExpenses={setExpenses}
                   />
-                  <ExcludeExpense id={expense.id} setExpenses={setExpenses} />
+                  <ExcludeExpense id={expense.id} />
                 </div>
               </div>
             </div>

@@ -2,23 +2,25 @@ import { Search } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Expense } from "@/generated/prisma";
 import ExpensesFilters from "./ExpensesFilters";
+import useExpenses from "../../../context/useExpenses";
 
 type props = {
   setIsLoadingHook: React.Dispatch<React.SetStateAction<boolean>>;
-  setExpenses: React.Dispatch<React.SetStateAction<Expense[]>>;
 };
 
-const SearchExpenses = ({ setIsLoadingHook, setExpenses }: props) => {
+const SearchExpenses = ({ setIsLoadingHook }: props) => {
+  const {setExpenses} = useExpenses()
   const [searchType, setSearchType] = useState("")
   const [searchStatus, setSearchStatus] = useState("");
   const [searchInput, setSearchInput] = useState("");
+  const [searchDueDate, setSearchDueDate] = useState("")
 
   const handleSearchSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {
     e && e.preventDefault();
     setIsLoadingHook(true);
 
     const expensesSearched = await fetch(
-      `/api/expense/searchExpenses?searchInput=${searchInput}&searchStatus=${searchStatus}&searchType=${searchType}`
+      `/api/expense/searchExpenses?searchInput=${searchInput}&searchStatus=${searchStatus}&searchType=${searchType}&searchDueDate=${searchDueDate}`
     ).then((res) => res.json());
 
     setExpenses(expensesSearched.expenses);
@@ -27,15 +29,17 @@ const SearchExpenses = ({ setIsLoadingHook, setExpenses }: props) => {
 
   useEffect(() => {
     handleSearchSubmit();
-  }, [searchType, searchStatus]);
+  }, [searchType, searchStatus, searchDueDate]);
 
   return (
     <>
       <ExpensesFilters
         searchStatus={searchStatus}
+        setSearchStatus={setSearchStatus}
         searchType={searchType}
         setSearchType={setSearchType}
-        setSearchStatus={setSearchStatus}
+        searchDueDate={searchDueDate}
+        setSearchDueDate={setSearchDueDate}
         className="flex items-start gap-3"
       />
       <form onSubmit={(e) => handleSearchSubmit(e)} className="flex">

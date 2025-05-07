@@ -5,14 +5,11 @@ import { Expense } from "@/generated/prisma";
 import SearchExpenses from "./components/AddAndSearchExpenses/components/SearchExpenses";
 import ShowExpenses from "./components/ShowExpenses";
 import { toast } from "react-toastify";
-
-export type SWRResponseType = {
-  expenses: Expense[];
-};
+import useExpenses from "./context/useExpenses";
 
 const page = () => {
   const [error, setError] = useState(false);
-  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const {expenses, setExpenses} = useExpenses()
   const [isLoadingHook, setIsLoadingHook] = useState(true);
 
   const handleSearchExpenses = async () => {
@@ -50,16 +47,13 @@ const page = () => {
       </div>
 
       <div className="flex gap-x-5 gap-y-3 flex-wrap mb-5 ">
-        <AddExpense expenses={expenses} setExpenses={setExpenses} />
+        <AddExpense/>
         <SearchExpenses
           setIsLoadingHook={setIsLoadingHook}
-          setExpenses={setExpenses}
         />
       </div>
 
       <ShowExpenses
-        expenses={expenses}
-        setExpenses={setExpenses}
         error={error}
         isLoadingHook={isLoadingHook}
       />

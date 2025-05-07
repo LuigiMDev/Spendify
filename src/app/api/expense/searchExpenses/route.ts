@@ -12,6 +12,7 @@ export async function GET(req: NextRequest) {
     const limit = 15;
     const searchType = req.nextUrl.searchParams.get("searchType") || "";
     const searchStatus = req.nextUrl.searchParams.get("searchStatus") || "";
+    const searchDueDate = req.nextUrl.searchParams.get("searchDueDate") || "";
 
     const isValidType = Object.values(ExpenseType).includes(
       searchType as ExpenseType
@@ -20,6 +21,18 @@ export async function GET(req: NextRequest) {
     const isValidStatus = Object.values(ExpenseStatus).includes(
       searchStatus as ExpenseStatus
     );
+
+    const regexDueDate = /^\d{4}-(0[1-9]|1[0-2])$/;
+    const isValidDueDate = regexDueDate.test(searchDueDate);
+    let startDate: Date | undefined
+    let endDate: Date | undefined
+
+    if (isValidDueDate) {
+      const [year, month] = searchDueDate.split("-").map(Number);
+
+      startDate = new Date(Date.UTC(year, month - 1, 1));
+      endDate = new Date(Date.UTC(year, month, 1));
+    }
 
     if (!cookieToken) {
       return NextResponse.json(
@@ -61,6 +74,12 @@ export async function GET(req: NextRequest) {
         ...(isValidStatus && {
           status: searchStatus as ExpenseStatus,
         }),
+        ...(isValidDueDate && {
+          dueDate: {
+            gte: startDate,
+            lt: endDate
+          }
+        })
       },
       orderBy: { createdAt: "desc" },
     });

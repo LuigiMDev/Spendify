@@ -5,15 +5,11 @@ import { NumericFormat } from "react-number-format";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ExpenseFormSchema, ExpenseZodType } from "@/zod/Expense/FormExpense";
-import { Expense } from "@/generated/prisma";
 import { toast } from "react-toastify";
+import useExpenses from "../../../context/useExpenses";
 
-type props = {
-  expenses: Expense[]
-  setExpenses: React.Dispatch<React.SetStateAction<Expense[]>>
-};
-
-const AddExpense = ({ expenses, setExpenses }: props) => {
+const AddExpense = () => {
+  const {expenses, setExpenses} = useExpenses()
   const [openModal, setOpenModal] = useState(false);
   const [paid, setPaid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

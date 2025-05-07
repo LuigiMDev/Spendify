@@ -1,7 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { CircleX, Info, LoaderCircle, Trash2 } from "lucide-react";
+import { CircleX, Info } from "lucide-react";
 import React, { useState } from "react";
-import { toast } from "react-toastify";
 import { Expense } from "@/generated/prisma";
 import { TranslateStatusExpense, TranslateTypeExpense } from "../../helpers/translateExpense";
 

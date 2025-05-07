@@ -2,14 +2,14 @@ import { AnimatePresence, motion } from "framer-motion";
 import { CircleX, LoaderCircle, Trash2 } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { Expense } from "@/generated/prisma";
+import useExpenses from "../context/useExpenses";
 
 type props = {
   id: string;
-  setExpenses: React.Dispatch<React.SetStateAction<Expense[]>>;
 };
 
-const ExcludeExpense = ({ id, setExpenses }: props) => {
+const ExcludeExpense = ({ id }: props) => {
+  const {setExpenses} = useExpenses()
   const [openModal, setOpenModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
