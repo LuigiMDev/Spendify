@@ -33,17 +33,8 @@ const SearchExpenses = ({ setIsLoadingHook }: props) => {
 
   return (
     <>
-      <ExpensesFilters
-        searchStatus={searchStatus}
-        setSearchStatus={setSearchStatus}
-        searchType={searchType}
-        setSearchType={setSearchType}
-        searchDueDate={searchDueDate}
-        setSearchDueDate={setSearchDueDate}
-        className="flex items-start gap-3"
-      />
-      <form onSubmit={(e) => handleSearchSubmit(e)} className="flex">
-        <div className="w-30 sm:w-80 relative h-fit">
+      <form onSubmit={(e) => handleSearchSubmit(e)} className="flex w-full md:w-80">
+        <div className="w-full relative h-fit">
           <input
             type="text"
             placeholder="Buscar"
@@ -54,6 +45,15 @@ const SearchExpenses = ({ setIsLoadingHook }: props) => {
           <Search className="absolute right-0 top-1/2 -translate-y-1/2 bg-white pointer-events-none h-10 mr-2 text-gray-700" />
         </div>
       </form>
+      <ExpensesFilters
+        searchStatus={searchStatus}
+        setSearchStatus={setSearchStatus}
+        searchType={searchType}
+        setSearchType={setSearchType}
+        searchDueDate={searchDueDate}
+        setSearchDueDate={setSearchDueDate}
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full md:w-auto items-start gap-3"
+      />
     </>
   );
 };

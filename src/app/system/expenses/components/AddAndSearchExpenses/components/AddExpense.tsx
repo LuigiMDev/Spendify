@@ -58,7 +58,7 @@ const AddExpense = () => {
 
   return (
     <>
-      <div className="flex-1">
+      <div className="w-full">
         <button
           className="flex items-center p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-all"
           onClick={() => setOpenModal(true)}
