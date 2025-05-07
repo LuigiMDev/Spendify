@@ -10,14 +10,16 @@ export async function GET(req: NextRequest) {
     const searchInput = req.nextUrl.searchParams.get("searchInput") || "";
     const page = parseInt(req.nextUrl.searchParams.get("page") || "1");
     const limit = 15;
+    const searchType = req.nextUrl.searchParams.get("searchType") || "";
     const searchStatus = req.nextUrl.searchParams.get("searchStatus") || "";
 
+    const isValidType = Object.values(ExpenseType).includes(
+      searchType as ExpenseType
+    );
 
-      const validStatus = ["pending", "paid", "cancelled"]
-      const isValidStatus = validStatus.includes(searchStatus)
-
-      console.log(searchStatus)
-    
+    const isValidStatus = Object.values(ExpenseStatus).includes(
+      searchStatus as ExpenseStatus
+    );
 
     if (!cookieToken) {
       return NextResponse.json(
@@ -52,13 +54,13 @@ export async function GET(req: NextRequest) {
               contains: searchInput,
             },
           },
-          {
-            
-          }
         ],
+        ...(isValidType && {
+          type: searchType as ExpenseType,
+        }),
         ...(isValidStatus && {
-          status: searchStatus as ExpenseStatus
-        })
+          status: searchStatus as ExpenseStatus,
+        }),
       },
       orderBy: { createdAt: "desc" },
     });

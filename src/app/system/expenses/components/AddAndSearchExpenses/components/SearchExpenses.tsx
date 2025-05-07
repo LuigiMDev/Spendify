@@ -9,15 +9,16 @@ type props = {
 };
 
 const SearchExpenses = ({ setIsLoadingHook, setExpenses }: props) => {
-  const [searchInput, setSearchInput] = useState("");
+  const [searchType, setSearchType] = useState("")
   const [searchStatus, setSearchStatus] = useState("");
+  const [searchInput, setSearchInput] = useState("");
 
   const handleSearchSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {
     e && e.preventDefault();
     setIsLoadingHook(true);
 
     const expensesSearched = await fetch(
-      `/api/expense/searchExpenses?searchInput=${searchInput}&searchStatus=${searchStatus}`
+      `/api/expense/searchExpenses?searchInput=${searchInput}&searchStatus=${searchStatus}&searchType=${searchType}`
     ).then((res) => res.json());
 
     setExpenses(expensesSearched.expenses);
@@ -26,14 +27,16 @@ const SearchExpenses = ({ setIsLoadingHook, setExpenses }: props) => {
 
   useEffect(() => {
     handleSearchSubmit();
-  }, [searchStatus]);
+  }, [searchType, searchStatus]);
 
   return (
     <>
       <ExpensesFilters
         searchStatus={searchStatus}
+        searchType={searchType}
+        setSearchType={setSearchType}
         setSearchStatus={setSearchStatus}
-        className="flex items-start"
+        className="flex items-start gap-3"
       />
       <form onSubmit={(e) => handleSearchSubmit(e)} className="flex">
         <div className="w-30 sm:w-80 relative h-fit">
