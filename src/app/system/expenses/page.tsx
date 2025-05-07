@@ -1,40 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import AddExpense from "./components/AddAndSearchExpenses/components/AddExpense";
 import SearchExpenses from "./components/AddAndSearchExpenses/components/SearchExpenses";
 import ShowExpenses from "./components/ShowExpenses";
-import { toast } from "react-toastify";
-import useExpenses from "./context/useExpenses";
 
 const page = () => {
-  const [error, setError] = useState(false);
-  const {setExpenses} = useExpenses()
-  const [isLoadingHook, setIsLoadingHook] = useState(true);
-
-  const handleSearchExpenses = async () => {
-    try {
-      const response = await fetch("/api/expense/searchExpenses");
-
-      if (response.status !== 200) {
-        throw new Error("Ocorreu um erro ao buscar os dados!");
-      }
-
-      const expensesResponse = await response.json()
-
-      setExpenses(expensesResponse.expenses);
-    } catch (err) {
-      setError(true);
-      toast.error("Ocorreu um erro ao buscar os dados!");
-      console.log(err);
-    }
-    setIsLoadingHook(false);
-  };
-
-  useEffect(() => {
-    handleSearchExpenses();
-  }, []);
-
-
   return (
     <div className="">
       <div className="mb-5">
@@ -46,18 +16,13 @@ const page = () => {
       </div>
 
       <div className="flex gap-x-5 gap-y-3 flex-wrap mb-5 ">
-        <AddExpense/>
-        <SearchExpenses
-          setIsLoadingHook={setIsLoadingHook}
-        />
+        <AddExpense />
+        <SearchExpenses />
       </div>
 
-      <ShowExpenses
-        error={error}
-        isLoadingHook={isLoadingHook}
-      />
+      <ShowExpenses />
 
-      <div></div>
+      <div>TESTE</div>
     </div>
   );
 };

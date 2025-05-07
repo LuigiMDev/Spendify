@@ -7,13 +7,8 @@ import { LoaderCircle } from "lucide-react";
 import DetailsExpense from "./DetailsExpense";
 import useExpenses from "../context/useExpenses";
 
-type props = {
-  isLoadingHook: boolean;
-  error: boolean;
-};
-
-const ShowExpenses = ({ isLoadingHook, error }: props) => {
-  const { expenses } = useExpenses();
+const ShowExpenses = () => {
+  const { expenses, error, isLoadingHook } = useExpenses();
 
   const getStatusBg = (status: string) => {
     switch (status) {

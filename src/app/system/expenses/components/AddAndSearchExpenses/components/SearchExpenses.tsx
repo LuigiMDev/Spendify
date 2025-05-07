@@ -1,39 +1,27 @@
 import { Search } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import { Expense } from "@/generated/prisma";
+import React from "react";
 import ExpensesFilters from "./ExpensesFilters";
 import useExpenses from "../../../context/useExpenses";
 
-type props = {
-  setIsLoadingHook: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-const SearchExpenses = ({ setIsLoadingHook }: props) => {
-  const {setExpenses} = useExpenses()
-  const [searchType, setSearchType] = useState("")
-  const [searchStatus, setSearchStatus] = useState("");
-  const [searchInput, setSearchInput] = useState("");
-  const [searchDueDate, setSearchDueDate] = useState("")
-
-  const handleSearchSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {
-    e && e.preventDefault();
-    setIsLoadingHook(true);
-
-    const expensesSearched = await fetch(
-      `/api/expense/searchExpenses?searchInput=${searchInput}&searchStatus=${searchStatus}&searchType=${searchType}&searchDueDate=${searchDueDate}`
-    ).then((res) => res.json());
-
-    setExpenses(expensesSearched.expenses);
-    setIsLoadingHook(false);
-  };
-
-  useEffect(() => {
-    handleSearchSubmit();
-  }, [searchType, searchStatus, searchDueDate]);
+const SearchExpenses = () => {
+  const {
+    searchDueDate,
+    searchInput,
+    searchStatus,
+    searchType,
+    setSearchDueDate,
+    setSearchInput,
+    setSearchStatus,
+    setSearchType,
+    handleSearchExpenses,
+  } = useExpenses();
 
   return (
     <>
-      <form onSubmit={(e) => handleSearchSubmit(e)} className="flex w-full md:w-80">
+      <form
+        onSubmit={(e) => handleSearchExpenses(e)}
+        className="flex w-full md:w-80"
+      >
         <div className="w-full relative h-fit">
           <input
             type="text"
