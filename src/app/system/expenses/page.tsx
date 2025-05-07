@@ -22,7 +22,6 @@ const page = () => {
 
       <ShowExpenses />
 
-      <div>TESTE</div>
     </div>
   );
 };
