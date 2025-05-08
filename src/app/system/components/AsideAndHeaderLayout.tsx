@@ -19,7 +19,7 @@ const AsideAndHeaderLayout = () => {
   return (
     
     <>
-      <header className="fixed w-full py-3 px-5 shadow-header lg:hidden bg-white select-none h-[85px] top-0">
+      <header className="fixed w-full py-3 px-5 shadow-header lg:hidden bg-white select-none h-[85px] top-0 z-50">
         <div className="w-full flex justify-between items-center ">
           <Link href="/dashboard">
           <Image

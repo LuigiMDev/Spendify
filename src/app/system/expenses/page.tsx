@@ -15,7 +15,7 @@ const page = () => {
         </p>
       </div>
 
-      <div className="flex gap-x-5 gap-y-3 flex-wrap mb-5 ">
+      <div className="flex gap-x-5 gap-y-3 flex-wrap mb-5">
         <AddExpense />
         <SearchExpenses />
       </div>
