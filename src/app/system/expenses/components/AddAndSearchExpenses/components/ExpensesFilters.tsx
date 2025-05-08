@@ -156,7 +156,7 @@ const ExpensesFilters = ({
           ))}
         </select>
       </div>
-      <div className="w-fit flex gap-1">
+      <div className="flex gap-1 justify-center">
         <button
           disabled={page === 1}
           className="flex items-center p-1 bg-gray-50 enabled:hover:bg-gray-100 rounded-lg transition-all disabled:cursor-not-allowed disabled:opacity-70"
