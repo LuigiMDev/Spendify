@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
     const cookieToken = (await cookies()).get("token");
     const searchInput = req.nextUrl.searchParams.get("searchInput") || "";
     const page = parseInt(req.nextUrl.searchParams.get("page") || "1");
-    const limit = 15;
+    const limit = 30;
     const searchType = req.nextUrl.searchParams.get("searchType") || "";
     const searchStatus = req.nextUrl.searchParams.get("searchStatus") || "";
     const searchDueDate = req.nextUrl.searchParams.get("searchDueDate") || "";
@@ -53,6 +53,10 @@ export async function GET(req: NextRequest) {
     const payload = jwt.verify(cookieToken.value, JWT_SECRET);
     const { id } = payload as { id: string };
 
+    const totalExpenses = await prismadb.expense.count({where: {userId: id}})
+
+    const totalPages = Math.ceil(totalExpenses / limit)
+
     const expenses = await prismadb.expense.findMany({
       where: {
         userId: id,
@@ -82,9 +86,11 @@ export async function GET(req: NextRequest) {
         })
       },
       orderBy: { createdAt: "desc" },
+      skip: (page - 1) * limit,
+      take: limit
     });
 
-    return NextResponse.json({ expenses }, { status: 200 });
+    return NextResponse.json({ expenses, totalPages }, { status: 200 });
   } catch (err) {
     return NextResponse.json(
       { message: "Ocorreu um erro ao carregar os gastos!" },

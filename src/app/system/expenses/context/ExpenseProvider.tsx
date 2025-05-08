@@ -16,6 +16,10 @@ type ContextType = {
   setSearchDueDate: React.Dispatch<React.SetStateAction<string>>;
   isLoadingHook: boolean;
   setIsLoadingHook: React.Dispatch<React.SetStateAction<boolean>>;
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  totalPages: number,
+  setTotalPages: React.Dispatch<React.SetStateAction<number>>;
   error: boolean;
   setError: React.Dispatch<React.SetStateAction<boolean>>;
   handleSearchExpenses: (e?: React.FormEvent<HTMLFormElement>) => Promise<void>;
@@ -31,13 +35,15 @@ const ExpenseProvider = ({ children }: { children: React.ReactNode }) => {
   const [searchDueDate, setSearchDueDate] = useState("");
   const [isLoadingHook, setIsLoadingHook] = useState(true);
   const [error, setError] = useState(false);
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
 
   const handleSearchExpenses = async (e?: React.FormEvent<HTMLFormElement>) => {
     try {
       e?.preventDefault()
       setIsLoadingHook(true)
       const response = await fetch(
-        `/api/expense/searchExpenses?searchInput=${searchInput}&searchStatus=${searchStatus}&searchType=${searchType}&searchDueDate=${searchDueDate}`
+        `/api/expense/searchExpenses?searchInput=${searchInput}&searchStatus=${searchStatus}&searchType=${searchType}&searchDueDate=${searchDueDate}&page=${page}`
       );
 
       if (response.status !== 200) {
@@ -47,6 +53,7 @@ const ExpenseProvider = ({ children }: { children: React.ReactNode }) => {
       const expensesResponse = await response.json();
 
       setExpenses(expensesResponse.expenses);
+      setTotalPages(expensesResponse.totalPages)
     } catch (err) {
       setError(true);
       toast.error("Ocorreu um erro ao buscar os dados!");
@@ -57,7 +64,7 @@ const ExpenseProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     handleSearchExpenses();
-  }, [searchType, searchStatus, searchDueDate]);
+  }, [searchType, searchStatus, searchDueDate, page]);
 
   return (
     <expenseContext.Provider
@@ -74,6 +81,10 @@ const ExpenseProvider = ({ children }: { children: React.ReactNode }) => {
         setSearchDueDate,
         isLoadingHook,
         setIsLoadingHook,
+        page,
+        setPage,
+        totalPages,
+        setTotalPages,
         error,
         setError,
         handleSearchExpenses,
