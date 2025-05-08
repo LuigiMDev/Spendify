@@ -24,8 +24,8 @@ export async function GET(req: NextRequest) {
 
     const regexDueDate = /^\d{4}-(0[1-9]|1[0-2])$/;
     const isValidDueDate = regexDueDate.test(searchDueDate);
-    let startDate: Date | undefined
-    let endDate: Date | undefined
+    let startDate: Date | undefined;
+    let endDate: Date | undefined;
 
     if (isValidDueDate) {
       const [year, month] = searchDueDate.split("-").map(Number);
@@ -53,9 +53,37 @@ export async function GET(req: NextRequest) {
     const payload = jwt.verify(cookieToken.value, JWT_SECRET);
     const { id } = payload as { id: string };
 
-    const totalExpenses = await prismadb.expense.count({where: {userId: id}})
+    const totalExpenses = await prismadb.expense.count({
+      where: {
+        userId: id,
+        OR: [
+          {
+            title: {
+              contains: searchInput,
+            },
+          },
+          {
+            description: {
+              contains: searchInput,
+            },
+          },
+        ],
+        ...(isValidType && {
+          type: searchType as ExpenseType,
+        }),
+        ...(isValidStatus && {
+          status: searchStatus as ExpenseStatus,
+        }),
+        ...(isValidDueDate && {
+          dueDate: {
+            gte: startDate,
+            lt: endDate,
+          },
+        }),
+      },
+    });
 
-    const totalPages = Math.ceil(totalExpenses / limit)
+    const totalPages = Math.ceil(totalExpenses / limit);
 
     const expenses = await prismadb.expense.findMany({
       where: {
@@ -81,13 +109,13 @@ export async function GET(req: NextRequest) {
         ...(isValidDueDate && {
           dueDate: {
             gte: startDate,
-            lt: endDate
-          }
-        })
+            lt: endDate,
+          },
+        }),
       },
       orderBy: { createdAt: "desc" },
       skip: (page - 1) * limit,
-      take: limit
+      take: limit,
     });
 
     return NextResponse.json({ expenses, totalPages }, { status: 200 });

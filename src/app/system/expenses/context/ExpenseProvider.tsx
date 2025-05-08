@@ -50,10 +50,10 @@ const ExpenseProvider = ({ children }: { children: React.ReactNode }) => {
         throw new Error("Ocorreu um erro ao buscar os dados!");
       }
 
-      const expensesResponse = await response.json();
+      const expenseJson = await response.json();
 
-      setExpenses(expensesResponse.expenses);
-      setTotalPages(expensesResponse.totalPages)
+      setExpenses(expenseJson.expenses);
+      setTotalPages(expenseJson.totalPages || 1)
     } catch (err) {
       setError(true);
       toast.error("Ocorreu um erro ao buscar os dados!");
@@ -63,8 +63,13 @@ const ExpenseProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
+    setPage(1)
     handleSearchExpenses();
-  }, [searchType, searchStatus, searchDueDate, page]);
+  }, [searchType, searchStatus, searchDueDate]);
+
+  useEffect(() => {
+    handleSearchExpenses();
+  },[page])
 
   return (
     <expenseContext.Provider
