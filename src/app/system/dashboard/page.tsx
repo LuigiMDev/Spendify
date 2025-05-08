@@ -1,6 +1,8 @@
+import TypeValueChart from "./components/TypeValueChart"
+
 const page = () => {
   return (
-  null
+  <TypeValueChart />
   )
 }
 
