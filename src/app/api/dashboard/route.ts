@@ -2,22 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { prismadb } from "../prismaClient";
 import { getUserAuthentication } from "../helpers/getUserAuthentication";
 import { getTypeChart } from "../helpers/dashboard/getTypeChart";
+import { validateDueDate } from "../helpers/validateDueDate";
 
 export async function GET(req: NextRequest) {
   try {
     const searchDueDate = req.nextUrl.searchParams.get("searchDueDate") || "";
 
-    const regexDueDate = /^\d{4}-(0[1-9]|1[0-2])$/;
-    const isValidDueDate = regexDueDate.test(searchDueDate);
-    let startDate: Date | undefined;
-    let endDate: Date | undefined;
-
-    if (isValidDueDate) {
-      const [year, month] = searchDueDate.split("-").map(Number);
-
-      startDate = new Date(Date.UTC(year, month - 1, 1));
-      endDate = new Date(Date.UTC(year, month, 1));
-    }
+    const {isValidDueDate, startDate, endDate} = validateDueDate(searchDueDate)
 
     const {id} = await getUserAuthentication() as {id: string}
 
