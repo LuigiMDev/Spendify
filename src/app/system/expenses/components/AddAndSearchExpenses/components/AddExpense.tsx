@@ -6,7 +6,7 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ExpenseFormSchema, ExpenseZodType } from "@/zod/Expense/FormExpense";
 import { toast } from "react-toastify";
-import useExpenses from "../../../context/useExpenses";
+import useExpenses from "@/app/system/context/expenses/useExpenses";
 
 const AddExpense = () => {
   const {expenses, setExpenses} = useExpenses()

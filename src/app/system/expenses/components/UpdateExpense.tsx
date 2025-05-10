@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ExpenseFormSchema, ExpenseZodType } from "@/zod/Expense/FormExpense";
 import { Expense } from "@/generated/prisma";
 import { toast } from "react-toastify";
-import useExpenses from "../context/useExpenses";
+import useExpenses from "../../context/expenses/useExpenses";
 
 type props = {
   expense: Expense;

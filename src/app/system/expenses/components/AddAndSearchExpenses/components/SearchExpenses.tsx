@@ -1,7 +1,7 @@
 import { Search } from "lucide-react";
 import React from "react";
 import ExpensesFilters from "./ExpensesFilters";
-import useExpenses from "../../../context/useExpenses";
+import useExpenses from "@/app/system/context/expenses/useExpenses";
 
 const SearchExpenses = () => {
   const {

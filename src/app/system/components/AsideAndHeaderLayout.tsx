@@ -6,7 +6,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import { PanelRightClose, PanelRightOpen } from "lucide-react";
 import UserAsideAndHeader from "@/components/UserAsideAndHeader";
-import HookContext from "../context/HookContext";
+import HookContext from "../context/Aside/HookContext";
 
 const AsideAndHeaderLayout = () => {
 

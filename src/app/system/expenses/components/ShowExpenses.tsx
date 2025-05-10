@@ -5,7 +5,7 @@ import { TranslateTypeExpense } from "../../helpers/translateExpense";
 import { Expense } from "@/generated/prisma";
 import { LoaderCircle } from "lucide-react";
 import DetailsExpense from "./DetailsExpense";
-import useExpenses from "../context/useExpenses";
+import useExpenses from "../../context/expenses/useExpenses";
 
 const ShowExpenses = () => {
   const { expenses, error, isLoadingHook } = useExpenses();

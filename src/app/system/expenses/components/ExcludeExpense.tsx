@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { CircleX, LoaderCircle, Trash2 } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import useExpenses from "../context/useExpenses";
+import useExpenses from "../../context/expenses/useExpenses";
 
 type props = {
   id: string;

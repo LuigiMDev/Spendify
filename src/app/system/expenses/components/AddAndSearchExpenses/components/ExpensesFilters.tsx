@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import useExpenses from "../../../context/useExpenses";
+import useExpenses from "@/app/system/context/expenses/useExpenses";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 type props = {

@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import HookContext from '../context/HookContext';
+import HookContext from '../context/Aside/HookContext';
 
 const MainLayout = ({children}: {children: React.ReactNode}) => {
     const {openAside} = HookContext();
