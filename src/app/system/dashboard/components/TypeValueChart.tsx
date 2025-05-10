@@ -112,9 +112,12 @@ export function TypeValueChart() {
                         <tspan
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="fill-foreground text-3xl font-bold"
+                          className="fill-foreground text-lg font-bold"
                         >
-                          {typeChartData?.totalValue}
+                          {typeChartData?.totalValue.toLocaleString("pt-BR", {
+                            style: "currency",
+                            currency: "BRL"
+                          })}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
