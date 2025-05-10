@@ -18,37 +18,40 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 190, fill: "var(--color-other)" },
-]
+import useDashboard from "../../context/dashboard/useDashboard"
 
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  chrome: {
-    label: "Chrome",
+  food: {
+    label: "Comida",
     color: "hsl(var(--chart-1))",
   },
-  safari: {
-    label: "Safari",
+  transport: {
+    label: "Transporte",
     color: "hsl(var(--chart-2))",
   },
-  firefox: {
-    label: "Firefox",
+  entertainment: {
+    label: "Entretenimento",
     color: "hsl(var(--chart-3))",
   },
-  edge: {
-    label: "Edge",
+  bills: {
+    label: "Contas",
     color: "hsl(var(--chart-4))",
+  },
+  rent: {
+    label: "Aluguel",
+    color: "hsl(var(--chart-5))",
+  },
+  health: {
+    label: "Saúde",
+    color: "hsl(var(--chart-6))",
+  },
+  shopping: {
+    label: "Compras",
+    color: "hsl(var(--chart-7))",
   },
   other: {
     label: "Other",
-    color: "hsl(var(--chart-5))",
+    color: "hsl(var(--chart-8))",
   },
 } satisfies ChartConfig
 
@@ -61,9 +64,17 @@ const getFormatedDate = () => {
 }
 
 export function TypeValueChart() {
-  const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.visitors, 0)
-  }, [])
+  const {typeChartData} = useDashboard()
+  let chartData: object[] = []
+  if(typeChartData) {
+    chartData = Object.entries(typeChartData).filter(([key]) => key !== "totalValue").map(([key, value]) => (
+      {
+        type: key,
+        value,
+        fill: `var(--color-${key})`
+      }
+    ))
+  }
 
   return (
     <Card className="flex flex-col">
@@ -83,8 +94,8 @@ export function TypeValueChart() {
             />
             <Pie
               data={chartData}
-              dataKey="visitors"
-              nameKey="browser"
+              dataKey="value"
+              nameKey="type"
               innerRadius={60}
               strokeWidth={5}
             >
@@ -103,7 +114,7 @@ export function TypeValueChart() {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {totalVisitors.toLocaleString()}
+                          {typeChartData?.totalValue}
                         </tspan>
                         <tspan
                           x={viewBox.cx}

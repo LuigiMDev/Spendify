@@ -38,12 +38,15 @@ body {
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
-    --chart-1: 144 94% 45.7%; /* Cor base: #06E35E */
-    --chart-2: 144 84% 37%; /* Um pouco mais escura e menos saturada */
-    --chart-3: 144 74% 55%; /* Um pouco mais clara e menos saturada */
-    --chart-4: 144 64% 65%; /* Mais clara e suave */
-    --chart-5: 144 54% 75%; /* Bem clara*/
-    --chart-6: 144 44% 27%; /* Escura*/
+  --chart-1: 144 94% 45.7%;   /* Cor base: #06E35E */
+--chart-2: 144 70% 35%;     /* Verde mais fechado, mas ainda com vida */
+--chart-3: 144 85% 45%;     /* Mais vibrante, ajustado para mais saturação e luminosidade */
+--chart-4: 144 75% 55%;     /* Mais claro e mais saturado do que o chart-3 */
+--chart-5: 144 55% 70%;     /* Verde claro, ainda visível, mas com um tom suave */
+--chart-6: 144 45% 20%;     /* Tom escuro, ótimo para contraste */
+--chart-7: 144 40% 15%;     /* Ainda mais escuro, bom para detalhes mais discretos */
+--chart-8: 144 65% 75%;     /* Verde bem claro, mais suave, ideal para detalhes suaves */
+
     --radius: 0.5rem;
   }
   .dark {
@@ -71,6 +74,9 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --chart-6: 140 55% 50%;
+    --chart-7: 150 60% 45%;
+    --chart-8: 130 50% 55%;
   }
 }
 
