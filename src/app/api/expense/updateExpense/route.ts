@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { prismadb } from "../../prismaClient";
+import { getUserAuthentication } from "../../helpers/auth/getUserAuthentication";
 
 export async function PUT(req: NextRequest) {
   try {
@@ -29,27 +30,7 @@ export async function PUT(req: NextRequest) {
       valueExpense,
     } = parsed.data;
 
-    const cookieToken = (await cookies()).get("token");
-
-    const JWT_SECRET = process.env.JWT_SECRET;
-
-    if (!JWT_SECRET) {
-      return NextResponse.json(
-        { message: "JWT_SECRET não definido!" },
-        { status: 500 }
-      );
-    }
-
-    if (!cookieToken) {
-      return NextResponse.json(
-        { message: "Token iválido ou inexistente" },
-        { status: 400 }
-      );
-    }
-
-    const payload = jwt.verify(cookieToken?.value, JWT_SECRET);
-
-    const { id } = payload as { id: string };
+    const { id } = (await getUserAuthentication()) as { id: string };
 
     const updatedExpense = await prismadb.expense.update({
       where: { id: idExpense },

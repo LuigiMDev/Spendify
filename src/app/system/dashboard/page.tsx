@@ -1,13 +1,8 @@
-'use server'
-import TypeValueChart from "./components/TypeValueChart"
+"use server";
+import TypeValueChart from "./components/TypeValueChart";
 
 const page = () => {
+  return <TypeValueChart />;
+};
 
-
-
-  return (
-  <TypeValueChart />
-  )
-}
-
-export default page
+export default page;

@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prismadb } from "../../prismaClient";
-import { cookies } from "next/headers";
-import jwt from "jsonwebtoken";
 import { ExpenseStatus, ExpenseType } from "@/generated/prisma";
+import { getUserAuthentication } from "../../helpers/auth/getUserAuthentication";
 
 export async function GET(req: NextRequest) {
   try {
-    const cookieToken = (await cookies()).get("token");
     const searchInput = req.nextUrl.searchParams.get("searchInput") || "";
     const page = parseInt(req.nextUrl.searchParams.get("page") || "1");
     const limit = 30;
@@ -34,24 +32,7 @@ export async function GET(req: NextRequest) {
       endDate = new Date(Date.UTC(year, month, 1));
     }
 
-    if (!cookieToken) {
-      return NextResponse.json(
-        { message: "Token inválido ou não definido!" },
-        { status: 401 }
-      );
-    }
-
-    const JWT_SECRET = process.env.JWT_SECRET;
-
-    if (!JWT_SECRET) {
-      return NextResponse.json(
-        { message: "JWT_SECRET não definido!" },
-        { status: 500 }
-      );
-    }
-
-    const payload = jwt.verify(cookieToken.value, JWT_SECRET);
-    const { id } = payload as { id: string };
+    const { id } = (await getUserAuthentication()) as { id: string };
 
     const totalExpenses = await prismadb.expense.count({
       where: {
