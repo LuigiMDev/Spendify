@@ -1,9 +1,15 @@
+type spendEvolutionDate = {
+    date: string
+    value: number
+}
+
+export type spendEvolution = spendEvolutionDate[]
+
 export type statusData = {
     pending: number,
     paid: number
     cancelled: number
 }
-
 
 export type typeChartData = {
     totalValue: number;

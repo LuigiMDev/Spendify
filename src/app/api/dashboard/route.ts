@@ -4,6 +4,7 @@ import { getUserAuthentication } from "../helpers/auth/getUserAuthentication";
 import { getTypeChart } from "../helpers/dashboard/getTypeChart";
 import { validateDueDate } from "../helpers/validateDueDate";
 import { getStatusData } from "../helpers/dashboard/getStatusData";
+import { getSpendEvolution } from "../helpers/dashboard/getSpendEvolution";
 
 export async function GET(req: NextRequest) {
   try {
@@ -24,12 +25,14 @@ export async function GET(req: NextRequest) {
           },
         }),
       },
+      orderBy: {createdAt: "desc"}
     });
 
     const statusData = getStatusData(data)
+    const spendEvolution = getSpendEvolution(data)
     const typeChart = getTypeChart(data);
 
-    return NextResponse.json({ statusData, typeChart }, { status: 200 });
+    return NextResponse.json({ statusData, spendEvolution, typeChart }, { status: 200 });
   } catch (err) {
     return NextResponse.json(
       { message: "Ocorreu um erro ao carregar os gastos!" },
