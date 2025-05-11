@@ -214,6 +214,7 @@ const UpdateExpense = ({ expense }: props) => {
                       type="date"
                       disabled={!paid}
                       id="paymentDateExpense"
+                      required={paid}
                       {...(paid && register("paymentDateExpense"))}
                       className={`outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block disabled:group:opacity-40 ${
                         !paid && "cursor-not-allowed"

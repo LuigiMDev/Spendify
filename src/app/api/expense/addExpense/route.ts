@@ -28,6 +28,10 @@ export async function POST(req: NextRequest) {
       valueExpense,
     } = parsed.data;
 
+    if(statusExpense === "paid" && !paymentDateExpense) {
+      return NextResponse.json({message: "Data de pagamento inválida"}, {status: 400})
+    }
+
     const {id} = await getUserAuthentication() as {id: string}
 
     const newExpense = await prismadb.expense.create({

@@ -204,6 +204,7 @@ const AddExpense = () => {
                     <input
                       type="date"
                       disabled={!paid}
+                      required={paid}
                       id="paymentDateExpense"
                       {...(paid && register("paymentDateExpense"))}
                       className={`outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block disabled:group:opacity-40 ${
