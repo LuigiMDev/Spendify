@@ -1,3 +1,10 @@
+export type statusData = {
+    pending: number,
+    paid: number
+    cancelled: number
+}
+
+
 export type typeChartData = {
     totalValue: number;
     food: number;

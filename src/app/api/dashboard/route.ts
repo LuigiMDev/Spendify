@@ -3,6 +3,7 @@ import { prismadb } from "../prismaClient";
 import { getUserAuthentication } from "../helpers/auth/getUserAuthentication";
 import { getTypeChart } from "../helpers/dashboard/getTypeChart";
 import { validateDueDate } from "../helpers/validateDueDate";
+import { getStatusData } from "../helpers/dashboard/getStatusData";
 
 export async function GET(req: NextRequest) {
   try {
@@ -25,9 +26,10 @@ export async function GET(req: NextRequest) {
       },
     });
 
+    const statusData = getStatusData(data)
     const typeChart = getTypeChart(data);
 
-    return NextResponse.json({ typeChart }, { status: 200 });
+    return NextResponse.json({ statusData, typeChart }, { status: 200 });
   } catch (err) {
     return NextResponse.json(
       { message: "Ocorreu um erro ao carregar os gastos!" },

@@ -39,7 +39,7 @@ const ShowExpenses = () => {
     <>
       {expenses.length > 0 ? (
         <section
-          className={`grid grid-cols-auto-fit-320 gap-5 transition-all `}
+          className={`grid grid-cols-auto-fill-320 gap-5 transition-all `}
         >
           {expenses.map((expense: Expense) => (
             <div

@@ -1,8 +1,10 @@
 'use client'
 import React, { createContext, useEffect, useState } from "react";
-import { typeChartData } from "../../dashboard/types/charts";
+import { statusData, typeChartData } from "../../types/dashboard";
 
 type contextProp = {
+  statusData: statusData | undefined;
+  setStatusData: React.Dispatch<React.SetStateAction<statusData| undefined>>
   typeChartData: typeChartData | undefined;
   setTypeChartData: React.Dispatch<React.SetStateAction<typeChartData | undefined>>
 };
@@ -10,6 +12,7 @@ type contextProp = {
 export const dashboardContext = createContext<contextProp | null>(null)
 
 const DashboardProvider = ({children}: {children: React.ReactNode}) => {
+  const [statusData, setStatusData] = useState<statusData>()
     const [typeChartData, setTypeChartData] = useState<typeChartData>()
 
     const handleSearchData = async () => {
@@ -19,6 +22,7 @@ const DashboardProvider = ({children}: {children: React.ReactNode}) => {
         }
         const data = await response.json()
         setTypeChartData(data.typeChart)
+        setStatusData(data.statusData)
     }
 
     useEffect(() => {
@@ -26,7 +30,7 @@ const DashboardProvider = ({children}: {children: React.ReactNode}) => {
     }, [])
 
   return (
-    <dashboardContext.Provider value={{typeChartData, setTypeChartData}}>
+    <dashboardContext.Provider value={{statusData, setStatusData,typeChartData, setTypeChartData}}>
         {children}
     </dashboardContext.Provider>
   )
