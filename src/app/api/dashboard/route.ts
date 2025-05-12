@@ -2,16 +2,24 @@ import { NextRequest, NextResponse } from "next/server";
 import { prismadb } from "../prismaClient";
 import { getUserAuthentication } from "../helpers/auth/getUserAuthentication";
 import { getTypeChart } from "../helpers/dashboard/getTypeChart";
-import { validateDueDate } from "../helpers/validateDueDate";
 import { getStatusData } from "../helpers/dashboard/getStatusData";
 import { getSpendEvolution } from "../helpers/dashboard/getSpendEvolution";
+import { validateDate } from "../helpers/validateDate";
 
 export async function GET(req: NextRequest) {
   try {
     const searchDueDate = req.nextUrl.searchParams.get("searchDueDate") || "";
+    const searchPaymentDate =
+      req.nextUrl.searchParams.get("searchPaymentDate") || "";
 
-    const { isValidDueDate, startDate, endDate } =
-      validateDueDate(searchDueDate);
+    const {
+      isValidDueDate,
+      startDueDate,
+      endDueDate,
+      isValidPaymentDate,
+      startPaymentDate,
+      endPaymentDate,
+    } = validateDate(searchDueDate, searchPaymentDate);
 
     const { id } = (await getUserAuthentication()) as { id: string };
 
@@ -20,8 +28,14 @@ export async function GET(req: NextRequest) {
         userId: id,
         ...(isValidDueDate && {
           dueDate: {
-            gte: startDate,
-            lt: endDate,
+            gte: startDueDate,
+            lt: endDueDate,
+          },
+        }),
+        ...(isValidPaymentDate && {
+          paymentDate: {
+            gte: startPaymentDate,
+            lt: endPaymentDate,
           },
         }),
       },

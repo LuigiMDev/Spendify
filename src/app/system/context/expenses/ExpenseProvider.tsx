@@ -14,6 +14,8 @@ type ContextType = {
   setSearchInput: React.Dispatch<React.SetStateAction<string>>;
   searchDueDate: string;
   setSearchDueDate: React.Dispatch<React.SetStateAction<string>>;
+  searchPaymentDate: string;
+  setSearchPaymentDate: React.Dispatch<React.SetStateAction<string>>;
   isLoadingHook: boolean;
   setIsLoadingHook: React.Dispatch<React.SetStateAction<boolean>>;
   page: number;
@@ -33,6 +35,7 @@ const ExpenseProvider = ({ children }: { children: React.ReactNode }) => {
   const [searchStatus, setSearchStatus] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [searchDueDate, setSearchDueDate] = useState("");
+  const [searchPaymentDate, setSearchPaymentDate] = useState("")
   const [isLoadingHook, setIsLoadingHook] = useState(true);
   const [error, setError] = useState(false);
   const [page, setPage] = useState(1)
@@ -43,7 +46,7 @@ const ExpenseProvider = ({ children }: { children: React.ReactNode }) => {
       e?.preventDefault()
       setIsLoadingHook(true)
       const response = await fetch(
-        `/api/expense/searchExpenses?searchInput=${searchInput}&searchStatus=${searchStatus}&searchType=${searchType}&searchDueDate=${searchDueDate}&page=${page}`
+        `/api/expense/searchExpenses?searchInput=${searchInput}&searchStatus=${searchStatus}&searchType=${searchType}&searchDueDate=${searchDueDate}&searchPaymentDate=${searchPaymentDate}&page=${page}`
       );
 
       if (response.status !== 200) {
@@ -65,7 +68,7 @@ const ExpenseProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     setPage(1)
     handleSearchExpenses();
-  }, [searchType, searchStatus, searchDueDate]);
+  }, [searchType, searchStatus, searchDueDate, searchPaymentDate]);
 
   useEffect(() => {
     handleSearchExpenses();
@@ -84,6 +87,8 @@ const ExpenseProvider = ({ children }: { children: React.ReactNode }) => {
         setSearchInput,
         searchDueDate,
         setSearchDueDate,
+        searchPaymentDate,
+        setSearchPaymentDate,
         isLoadingHook,
         setIsLoadingHook,
         page,

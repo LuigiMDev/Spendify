@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prismadb } from "../../prismaClient";
 import { ExpenseStatus, ExpenseType } from "@/generated/prisma";
 import { getUserAuthentication } from "../../helpers/auth/getUserAuthentication";
+import { validateDate } from "../../helpers/validateDate";
 
 export async function GET(req: NextRequest) {
   try {
@@ -11,6 +12,8 @@ export async function GET(req: NextRequest) {
     const searchType = req.nextUrl.searchParams.get("searchType") || "";
     const searchStatus = req.nextUrl.searchParams.get("searchStatus") || "";
     const searchDueDate = req.nextUrl.searchParams.get("searchDueDate") || "";
+    const searchPaymentDate =
+      req.nextUrl.searchParams.get("searchPaymentDate") || "";
 
     const isValidType = Object.values(ExpenseType).includes(
       searchType as ExpenseType
@@ -20,17 +23,14 @@ export async function GET(req: NextRequest) {
       searchStatus as ExpenseStatus
     );
 
-    const regexDueDate = /^\d{4}-(0[1-9]|1[0-2])$/;
-    const isValidDueDate = regexDueDate.test(searchDueDate);
-    let startDate: Date | undefined;
-    let endDate: Date | undefined;
-
-    if (isValidDueDate) {
-      const [year, month] = searchDueDate.split("-").map(Number);
-
-      startDate = new Date(Date.UTC(year, month - 1, 1));
-      endDate = new Date(Date.UTC(year, month, 1));
-    }
+    const {
+      isValidDueDate,
+      isValidPaymentDate,
+      startDueDate,
+      endDueDate,
+      startPaymentDate,
+      endPaymentDate,
+    } = validateDate(searchDueDate, searchPaymentDate);
 
     const { id } = (await getUserAuthentication()) as { id: string };
 
@@ -57,8 +57,14 @@ export async function GET(req: NextRequest) {
         }),
         ...(isValidDueDate && {
           dueDate: {
-            gte: startDate,
-            lt: endDate,
+            gte: startDueDate,
+            lt: endDueDate,
+          },
+        }),
+        ...(isValidPaymentDate && {
+          paymentDate: {
+            gte: startPaymentDate,
+            lt: endPaymentDate,
           },
         }),
       },
@@ -89,8 +95,14 @@ export async function GET(req: NextRequest) {
         }),
         ...(isValidDueDate && {
           dueDate: {
-            gte: startDate,
-            lt: endDate,
+            gte: startDueDate,
+            lt: endDueDate,
+          },
+        }),
+        ...(isValidPaymentDate && {
+          paymentDate: {
+            gte: startPaymentDate,
+            lt: endPaymentDate,
           },
         }),
       },

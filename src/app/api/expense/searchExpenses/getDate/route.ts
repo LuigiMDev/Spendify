@@ -8,16 +8,21 @@ export async function GET(req: NextRequest) {
 
     const dates = await prismadb.expense.findMany({
       where: { userId: id },
-      select: { dueDate: true },
+      select: { dueDate: true, paymentDate: true },
     });
 
-    const formatedDates = dates.map((obj) => {
+    const formatedDueDates = dates.map((obj) => {
       return obj.dueDate.toISOString().slice(0, 7);
     });
 
-    const unicFormatedDates = [...new Set(formatedDates)];
+    const unicFormatedDueDates = [...new Set(formatedDueDates)];
 
-    return NextResponse.json({ unicFormatedDates }, { status: 200 });
+    const formatedPaymentDates = dates.map((obj) => {
+      return obj.paymentDate?.toISOString().slice(0, 7);
+    });
+    const unicFormatedPaymentDates = [...new Set(formatedPaymentDates)];
+
+    return NextResponse.json({ unicFormatedDueDates, unicFormatedPaymentDates }, { status: 200 });
   } catch (err) {
     console.log(err);
     return NextResponse.json(
