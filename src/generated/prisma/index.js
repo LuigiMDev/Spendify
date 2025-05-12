@@ -84,6 +84,9 @@ Prisma.NullTypes = {
  * Enums
  */
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
+  ReadUncommitted: 'ReadUncommitted',
+  ReadCommitted: 'ReadCommitted',
+  RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
 });
 
@@ -115,6 +118,11 @@ exports.Prisma.ExpenseScalarFieldEnum = {
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
 };
 
 exports.Prisma.NullsOrder = {
@@ -180,18 +188,17 @@ const config = {
   "datasourceNames": [
     "db"
   ],
-  "activeProvider": "sqlite",
-  "postinstall": false,
+  "activeProvider": "postgresql",
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": null
+        "value": "postgresql://spendify_owner:npg_Sv9hXwgoJ5bt@ep-ancient-frost-acctxhpx-pooler.sa-east-1.aws.neon.tech/spendify?sslmode=require"
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id        String    @id @default(uuid())\n  name      String\n  FTwoNames String\n  avatar    String\n  email     String    @unique\n  password  String\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n  expenses  Expense[]\n\n  @@map(\"users\")\n}\n\nmodel Expense {\n  id          String        @id @default(uuid())\n  title       String\n  description String?\n  type        ExpenseType\n  dueDate     DateTime\n  status      ExpenseStatus\n  paymentDate DateTime?\n  value       Float\n  createdAt   DateTime      @default(now())\n  updatedAt   DateTime      @updatedAt\n  userId      String\n  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@map(\"expenses\")\n}\n\nenum ExpenseType {\n  food // Alimentação\n  transport // Transporte\n  entertainment // Entretenimento\n  bills // Contas\n  rent // Aluguel\n  health // Saúde\n  shopping // Compras\n  other // Outros\n}\n\nenum ExpenseStatus {\n  pending //Pendente\n  paid //Paga\n  cancelled //Cancelada\n}\n",
-  "inlineSchemaHash": "884559bb9d3b25d7baa934f66050e9eb9a3790923d5f244047be10f41afc4a08",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id        String    @id @default(uuid())\n  name      String\n  FTwoNames String\n  avatar    String\n  email     String    @unique\n  password  String\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n  expenses  Expense[]\n\n  @@map(\"users\")\n}\n\nmodel Expense {\n  id          String        @id @default(uuid())\n  title       String\n  description String?\n  type        ExpenseType\n  dueDate     DateTime\n  status      ExpenseStatus\n  paymentDate DateTime?\n  value       Float\n  createdAt   DateTime      @default(now())\n  updatedAt   DateTime      @updatedAt\n  userId      String\n  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@map(\"expenses\")\n}\n\nenum ExpenseType {\n  food // Alimentação\n  transport // Transporte\n  entertainment // Entretenimento\n  bills // Contas\n  rent // Aluguel\n  health // Saúde\n  shopping // Compras\n  other // Outros\n}\n\nenum ExpenseStatus {\n  pending //Pendente\n  paid //Paga\n  cancelled //Cancelada\n}\n",
+  "inlineSchemaHash": "537cf19aaaa4c55c3b51955f5ea482f534c2dfa8d767f1fc48739597e012e559",
   "copyEngine": true
 }
 

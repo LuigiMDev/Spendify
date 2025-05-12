@@ -41,11 +41,13 @@ export async function GET(req: NextRequest) {
           {
             title: {
               contains: searchInput,
+              mode: "insensitive",
             },
           },
           {
             description: {
               contains: searchInput,
+              mode: "insensitive",
             },
           },
         ],
@@ -79,11 +81,13 @@ export async function GET(req: NextRequest) {
           {
             title: {
               contains: searchInput,
+              mode: "insensitive",
             },
           },
           {
             description: {
               contains: searchInput,
+              mode: "insensitive",
             },
           },
         ],
