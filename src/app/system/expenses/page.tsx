@@ -21,7 +21,6 @@ const page = () => {
       </div>
 
       <ShowExpenses />
-
     </div>
   );
 };

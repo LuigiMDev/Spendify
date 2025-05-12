@@ -22,9 +22,9 @@ type contextProp = {
   setTypeChartData: React.Dispatch<
     React.SetStateAction<typeChartData | undefined>
   >;
-  spendEvolutionData: spendEvolution | [];
+  spendEvolutionData: spendEvolution | undefined;
   setSpendEvolutionData: React.Dispatch<
-    React.SetStateAction<spendEvolution | []>
+    React.SetStateAction<spendEvolution | undefined>
   >;
 };
 
@@ -35,7 +35,6 @@ const DashboardProvider = ({ children }: { children: React.ReactNode }) => {
   const [error, setError] = useState(false);
   const [statusData, setStatusData] = useState<statusData>();
   const [spendEvolutionData, setSpendEvolutionData] = useState<spendEvolution>(
-    []
   );
   const [typeChartData, setTypeChartData] = useState<typeChartData>();
   const [searchDueDate, setSearchDueDate] = useState("");

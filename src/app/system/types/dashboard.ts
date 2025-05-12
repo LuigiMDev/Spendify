@@ -3,7 +3,10 @@ type spendEvolutionDate = {
     value: number
 }
 
-export type spendEvolution = spendEvolutionDate[]
+export type spendEvolution = {
+    allDatesGrouped: spendEvolutionDate[],
+    groupByMonth: boolean
+}
 
 export type statusData = {
     total: number,

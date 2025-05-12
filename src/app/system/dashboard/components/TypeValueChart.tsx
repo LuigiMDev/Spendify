@@ -1,24 +1,18 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { TrendingUp } from "lucide-react"
-import { Label, Pie, PieChart } from "recharts"
+import * as React from "react";
+import { Pie, PieChart } from "recharts";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
-import useDashboard from "../../context/dashboard/useDashboard"
+} from "@/components/ui/chart";
+import useDashboard from "../../context/dashboard/useDashboard";
+import LoadingChart from "./LoadingChart";
+import NoDataChart from "./NoDataChart";
 
 const chartConfig = {
   food: {
@@ -53,27 +47,19 @@ const chartConfig = {
     label: "Outros",
     color: "hsl(var(--chart-8))",
   },
-} satisfies ChartConfig
-
-const getFormatedDate = () => {
-    const date = (new Date).toLocaleDateString("pt-BR", {
-        month: "long",
-        year: "numeric"
-    })
-    return date.charAt(0).toUpperCase() + date.slice(1)
-}
+} satisfies ChartConfig;
 
 export function TypeValueChart() {
-  const {typeChartData} = useDashboard()
-  let chartData: object[] = []
-  if(typeChartData) {
-    chartData = Object.entries(typeChartData).filter(([key]) => key !== "totalValue").map(([key, value]) => (
-      {
+  const { typeChartData, isLoading } = useDashboard();
+  let chartData: object[] = [];
+  if (typeChartData) {
+    chartData = Object.entries(typeChartData)
+      .filter(([key]) => key !== "totalValue")
+      .map(([key, value]) => ({
         type: key,
         value,
-        fill: `var(--color-${key})`
-      }
-    ))
+        fill: `var(--color-${key})`,
+      }));
   }
 
   return (
@@ -82,21 +68,27 @@ export function TypeValueChart() {
         <CardTitle>Gastos pagos por tipo</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
-        <ChartContainer
-          config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
-        >
-          <PieChart>
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-            <Pie data={chartData} dataKey="value" nameKey="type" />
-          </PieChart>
-        </ChartContainer>
+        {isLoading ? (
+          <LoadingChart />
+        ) : Object.values(typeChartData || {}).some((value) => value > 0) ? (
+          <ChartContainer
+            config={chartConfig}
+            className="mx-auto aspect-square max-h-[250px]"
+          >
+            <PieChart>
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent hideLabel />}
+              />
+              <Pie data={chartData} dataKey="value" nameKey="type" />
+            </PieChart>
+          </ChartContainer>
+        ) : (
+          <NoDataChart />
+        )}
       </CardContent>
     </Card>
-  )
+  );
 }
 
-export default TypeValueChart
+export default TypeValueChart;

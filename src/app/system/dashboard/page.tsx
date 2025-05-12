@@ -1,8 +1,6 @@
 "use client";
+import DashboardContent from "./components/DashboardContent";
 import DashboardFilters from "./components/DashboardFilters";
-import SpendEvolution from "./components/SpendEvolution";
-import StatusData from "./components/StatusData";
-import TypeValueChart from "./components/TypeValueChart";
 
 const page = () => {
   return (
@@ -17,11 +15,7 @@ const page = () => {
 
       <DashboardFilters />
 
-      <StatusData />
-      <div className="grid grid-cols-auto-fit-320 gap-5">
-        <SpendEvolution />
-        <TypeValueChart />
-      </div>
+      <DashboardContent />
     </div>
   );
 };
