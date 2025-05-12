@@ -30,8 +30,11 @@ export async function PUT(req: NextRequest) {
       valueExpense,
     } = parsed.data;
 
-    if(statusExpense === "paid" && !paymentDateExpense) {
-      return NextResponse.json({message: "Data de pagamento inválida"}, {status: 400})
+    if (statusExpense === "paid" && !paymentDateExpense) {
+      return NextResponse.json(
+        { message: "Data de pagamento inválida" },
+        { status: 400 }
+      );
     }
 
     const { id } = (await getUserAuthentication()) as { id: string };
@@ -44,9 +47,10 @@ export async function PUT(req: NextRequest) {
         type: typeExpense,
         status: statusExpense,
         dueDate: new Date(dueDateExpense),
-        paymentDate: paymentDateExpense
-          ? new Date(paymentDateExpense)
-          : undefined,
+        paymentDate:
+          statusExpense === "paid" && paymentDateExpense
+            ? new Date(paymentDateExpense)
+            : null,
         value: valueExpense,
         userId: id,
       },
