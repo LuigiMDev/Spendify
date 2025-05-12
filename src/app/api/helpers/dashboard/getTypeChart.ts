@@ -1,7 +1,7 @@
 import { Expense, ExpenseType } from "@/generated/prisma";
 
 export const getTypeChart = (data: Expense[]) => {
-  const typeChartWithoutTotal = data.reduce((acc, expense) => {
+  const typeChart = data.reduce((acc, expense) => {
     const type = expense.type;
     if(expense.status === "paid") {
       acc[type] = (acc[type] | 0) + expense.value;
@@ -9,10 +9,6 @@ export const getTypeChart = (data: Expense[]) => {
     return acc;
   }, {} as Record<ExpenseType, number>);
 
-  const totalValue = Object.values(typeChartWithoutTotal).reduce(
-    (acc, value) => acc + value,
-    0
-  );
 
-  return { ...typeChartWithoutTotal, totalValue };
+  return typeChart;
 };

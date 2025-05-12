@@ -6,6 +6,7 @@ type spendEvolutionDate = {
 export type spendEvolution = spendEvolutionDate[]
 
 export type statusData = {
+    total: number,
     pending: number,
     paid: number
     cancelled: number

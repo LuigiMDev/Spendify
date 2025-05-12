@@ -64,7 +64,7 @@ export default {
   		},
   		gridTemplateColumns: {
   			'auto-fill-320': 'repeat(auto-fill, minmax(320px, 1fr))',
-  			'auto-fill-300': 'repeat(auto-fill, minmax(300px, 1fr))',
+  			'auto-fill-200': 'repeat(auto-fill, minmax(200px, 1fr))',
   			'auto-fit-320': 'repeat(auto-fit, minmax(320px, 1fr))'
   		},
   		height: {
