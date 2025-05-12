@@ -17,12 +17,15 @@ export async function GET(req: NextRequest) {
 
     const unicFormatedDueDates = [...new Set(formatedDueDates)];
 
-    const formatedPaymentDates = dates.map((obj) => {
-      return obj.paymentDate?.toISOString().slice(0, 7);
-    });
+    const formatedPaymentDates = dates
+      .filter((obj) => obj.paymentDate)
+      .map((obj) => obj.paymentDate!.toISOString().slice(0, 7));
     const unicFormatedPaymentDates = [...new Set(formatedPaymentDates)];
 
-    return NextResponse.json({ unicFormatedDueDates, unicFormatedPaymentDates }, { status: 200 });
+    return NextResponse.json(
+      { unicFormatedDueDates, unicFormatedPaymentDates },
+      { status: 200 }
+    );
   } catch (err) {
     console.log(err);
     return NextResponse.json(
