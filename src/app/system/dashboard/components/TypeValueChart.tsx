@@ -50,7 +50,7 @@ const chartConfig = {
     color: "hsl(var(--chart-7))",
   },
   other: {
-    label: "Other",
+    label: "Outros",
     color: "hsl(var(--chart-8))",
   },
 } satisfies ChartConfig

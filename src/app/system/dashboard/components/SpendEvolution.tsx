@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { TrendingUp } from "lucide-react"
-import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts"
+import { TrendingUp } from "lucide-react";
+import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts";
 import {
   Card,
   CardContent,
@@ -9,38 +9,36 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
-import useDashboard from "../../context/dashboard/useDashboard"
-
+} from "@/components/ui/chart";
+import useDashboard from "../../context/dashboard/useDashboard";
 
 const chartConfig = {
   valor: {
     label: "Valor",
     color: "hsl(var(--chart-1))",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 export default function SpendEvolution() {
- 
-    const {spendEvolutionData} = useDashboard()
+  const { spendEvolutionData } = useDashboard();
 
-    const chartData = spendEvolutionData?.map((spend, index) => ({
-        key: `spend-${index}`,
-        Data: new Date(spend.date).toLocaleDateString("pt-BR", {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-            timeZone: "UTC"
-        }),
-        Valor: spend.value,
-        fill: "hsl(var(--chart-1))"
-    }))
+  const chartData = spendEvolutionData?.map((spend, index) => ({
+    key: `spend-${index}`,
+    Data: new Date(spend.date).toLocaleDateString("pt-BR", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+      timeZone: "UTC",
+    }),
+    Valor: spend.value,
+    fill: "hsl(var(--chart-1))",
+  }));
 
   return (
     <Card>
@@ -83,13 +81,7 @@ export default function SpendEvolution() {
                 r: 6,
               }}
             >
-              <LabelList
-     
-                position="top"
-                offset={12}
-                className="fill-foreground"
-                fontSize={12}
-              />
+              
             </Line>
           </LineChart>
         </ChartContainer>
@@ -103,5 +95,5 @@ export default function SpendEvolution() {
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }
