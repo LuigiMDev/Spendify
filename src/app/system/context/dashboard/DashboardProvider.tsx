@@ -15,6 +15,8 @@ type contextProp = {
   statusData: statusData | undefined;
   searchDueDate: string;
   setSearchDueDate: React.Dispatch<React.SetStateAction<string>>;
+  searchPaymentDate: string;
+  setSearchPaymentDate: React.Dispatch<React.SetStateAction<string>>;
   setStatusData: React.Dispatch<React.SetStateAction<statusData | undefined>>;
   typeChartData: typeChartData | undefined;
   setTypeChartData: React.Dispatch<
@@ -37,12 +39,13 @@ const DashboardProvider = ({ children }: { children: React.ReactNode }) => {
   );
   const [typeChartData, setTypeChartData] = useState<typeChartData>();
   const [searchDueDate, setSearchDueDate] = useState("");
+  const [searchPaymentDate, setSearchPaymentDate] = useState("");
 
   const handleSearchData = async () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `/api/dashboard?searchDueDate=${searchDueDate}`
+        `/api/dashboard?searchDueDate=${searchDueDate}&searchPaymentDate=${searchPaymentDate}`
       );
       if (!response.ok) {
         throw new Error("Ocorreu um erro ao carregar os dados");
@@ -61,7 +64,7 @@ const DashboardProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     handleSearchData();
-  }, [searchDueDate]);
+  }, [searchDueDate, searchPaymentDate]);
 
   return (
     <dashboardContext.Provider
@@ -73,6 +76,8 @@ const DashboardProvider = ({ children }: { children: React.ReactNode }) => {
         statusData,
         searchDueDate,
         setSearchDueDate,
+        searchPaymentDate,
+        setSearchPaymentDate,
         setStatusData,
         spendEvolutionData,
         setSpendEvolutionData,
