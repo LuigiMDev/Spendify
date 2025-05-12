@@ -12,7 +12,7 @@ export default {
   		colors: {
   			primary: {
   				DEFAULT: 'hsl(var(--primary))',
-  				foreground: 'hsl(var(--primary-foreground))'
+  				foreground: '#e0ffed'
   			},
   			primaryHover: '#05C754',
   			secondary: {
