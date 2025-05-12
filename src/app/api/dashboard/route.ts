@@ -5,7 +5,6 @@ import { getTypeChart } from "../helpers/dashboard/getTypeChart";
 import { validateDueDate } from "../helpers/validateDueDate";
 import { getStatusData } from "../helpers/dashboard/getStatusData";
 import { getSpendEvolution } from "../helpers/dashboard/getSpendEvolution";
-import { getTotalValue } from "../helpers/dashboard/getTotalValue";
 
 export async function GET(req: NextRequest) {
   try {

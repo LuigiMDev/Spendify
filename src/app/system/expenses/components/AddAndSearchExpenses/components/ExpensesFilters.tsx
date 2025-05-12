@@ -4,12 +4,6 @@ import useExpenses from "@/app/system/context/expenses/useExpenses";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 type props = {
-  searchStatus: string;
-  setSearchStatus: React.Dispatch<React.SetStateAction<string>>;
-  searchType: string;
-  setSearchType: React.Dispatch<React.SetStateAction<string>>;
-  searchDueDate: string;
-  setSearchDueDate: React.Dispatch<React.SetStateAction<string>>;
   className?: string;
 };
 
@@ -18,16 +12,19 @@ type dateOption = {
   value: string;
 };
 
-const ExpensesFilters = ({
-  searchStatus,
-  setSearchStatus,
-  searchType,
-  setSearchType,
-  searchDueDate,
-  setSearchDueDate,
-  className,
-}: props) => {
-  const { expenses, page, setPage, totalPages } = useExpenses();
+const ExpensesFilters = ({ className }: props) => {
+  const {
+    expenses,
+    page,
+    setPage,
+    totalPages,
+    searchType,
+    setSearchType,
+    searchStatus,
+    setSearchStatus,
+    searchDueDate,
+    setSearchDueDate,
+  } = useExpenses();
   const [dateOption, setDateOption] = useState<dateOption[]>([]);
 
   useEffect(() => {
@@ -79,16 +76,16 @@ const ExpensesFilters = ({
   };
 
   const handlePreviewPage = () => {
-    if(page > 1) {
-      setPage(prev => prev - 1)
+    if (page > 1) {
+      setPage((prev) => prev - 1);
     }
-  }
+  };
 
   const handleNextPage = () => {
-    if(page < totalPages) {
-      setPage(prev => prev + 1)
+    if (page < totalPages) {
+      setPage((prev) => prev + 1);
     }
-  }
+  };
 
   return (
     <div className={`${className}`}>
@@ -165,12 +162,17 @@ const ExpensesFilters = ({
           <ChevronLeft className="" />
         </button>
         {getViewPages().map((numberPage) => (
-          <button key={numberPage}
-          className={`flex items-center w-8 h-8 justify-center p-1 rounded-lg transition-all ${page === numberPage ? "bg-primary hover:bg-primaryHover text-white" : "bg-gray-50 hover:bg-gray-100"}`}
-          onClick={() => setPage(numberPage)}
-        >
-          {numberPage}
-        </button>
+          <button
+            key={numberPage}
+            className={`flex items-center w-8 h-8 justify-center p-1 rounded-lg transition-all ${
+              page === numberPage
+                ? "bg-primary hover:bg-primaryHover text-white"
+                : "bg-gray-50 hover:bg-gray-100"
+            }`}
+            onClick={() => setPage(numberPage)}
+          >
+            {numberPage}
+          </button>
         ))}
         <button
           disabled={page === totalPages}

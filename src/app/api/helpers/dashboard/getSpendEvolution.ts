@@ -1,10 +1,9 @@
 import { Expense } from "@/generated/prisma";
-import { eachDayOfInterval, format} from "date-fns";
 
 export const getSpendEvolution = (data: Expense[]) => {
 
-  const startDate = new Date(data[data.length -1 ].dueDate)
-  const endDate = new Date(data[0].dueDate) 
+  const startDate = new Date(data[data.length -1 ].paymentDate)
+  const endDate = new Date(data[0].paymentDate) 
 
   const allDates = []
 
@@ -12,8 +11,6 @@ export const getSpendEvolution = (data: Expense[]) => {
     allDates.push((new Date (startDate)).toISOString().slice(0, 10))
     startDate.setUTCDate(startDate.getUTCDate() + 1)
   }
-
-  console.log(allDates)
 
   const grouped = data.reduce((acc, expense) => {
     const date = expense.paymentDate;

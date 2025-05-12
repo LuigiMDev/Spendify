@@ -1,10 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import useDashboard from "../../context/dashboard/useDashboard";
-import { BadgeCheck, Ban, Hourglass, Wallet } from "lucide-react";
+import { BadgeCheck, Ban, Hourglass, LoaderCircle, Wallet } from "lucide-react";
 
 const StatusData = () => {
-  const { statusData } = useDashboard();
+  const { statusData, isLoading } = useDashboard();
+
+  const Loading = <LoaderCircle className="text-primary animate-spin" />;
 
   return (
     <div className="grid grid-cols-auto-fill-200 gap-4 mb-5">
@@ -15,11 +17,19 @@ const StatusData = () => {
             <span className="text-gray-700">Total</span>
           </CardTitle>
         </CardHeader>
-        <CardContent className="text-2xl font-semibold">
-          {(statusData?.total || 0).toLocaleString("pt-BR", {
+        <CardContent
+          className="text-2xl font-semibold truncate"
+          title={(statusData?.total || 0).toLocaleString("pt-BR", {
             style: "currency",
             currency: "BRL",
           })}
+        >
+          {isLoading
+            ? Loading
+            : (statusData?.total || 0).toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              })}
         </CardContent>
       </Card>
       <Card>
@@ -29,11 +39,19 @@ const StatusData = () => {
             <span className="text-gray-700">Pago</span>
           </CardTitle>
         </CardHeader>
-        <CardContent className="text-2xl font-semibold">
-          {(statusData?.paid || 0).toLocaleString("pt-BR", {
+        <CardContent
+          className="text-2xl font-semibold truncate"
+          title={(statusData?.paid || 0).toLocaleString("pt-BR", {
             style: "currency",
             currency: "BRL",
           })}
+        >
+          {isLoading
+            ? Loading
+            : (statusData?.paid || 0).toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              })}
         </CardContent>
       </Card>
       <Card>
@@ -43,11 +61,19 @@ const StatusData = () => {
             <span className="text-gray-700">Pendente</span>
           </CardTitle>
         </CardHeader>
-        <CardContent className="text-2xl font-semibold">
-          {(statusData?.pending || 0).toLocaleString("pt-BR", {
+        <CardContent
+          className="text-2xl font-semibold truncate"
+          title={(statusData?.pending || 0).toLocaleString("pt-BR", {
             style: "currency",
             currency: "BRL",
           })}
+        >
+          {isLoading
+            ? Loading
+            : (statusData?.pending || 0).toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              })}
         </CardContent>
       </Card>
       <Card>
@@ -57,11 +83,19 @@ const StatusData = () => {
             <span className="text-gray-700">Cancelado</span>
           </CardTitle>
         </CardHeader>
-        <CardContent className="text-2xl font-semibold">
-          {(statusData?.cancelled || 0).toLocaleString("pt-BR", {
+        <CardContent
+          className="text-2xl font-semibold truncate"
+          title={(statusData?.cancelled || 0).toLocaleString("pt-BR", {
             style: "currency",
             currency: "BRL",
           })}
+        >
+          {isLoading
+            ? Loading
+            : (statusData?.cancelled || 0).toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              })}
         </CardContent>
       </Card>
     </div>
