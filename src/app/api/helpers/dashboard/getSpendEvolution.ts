@@ -1,4 +1,8 @@
 import { Expense } from "@/generated/prisma";
+import {
+  generateDays,
+  generateMonths,
+} from "./helpers/getSpendEvolution.ts/generateMonthsAndDays";
 
 export const getSpendEvolution = (data: Expense[]) => {
   const paidExpenses = data.filter((expense) => expense.paymentDate);
@@ -10,27 +14,17 @@ export const getSpendEvolution = (data: Expense[]) => {
       new Date(a.paymentDate!).getTime() - new Date(b.paymentDate!).getTime()
   );
 
-  const startDate = new Date(sorted[0].paymentDate!);
-  const endDate = new Date(sorted[sorted.length - 1].paymentDate!);
+  const firstDate = new Date(sorted[0].paymentDate!);
+  const lastDate = new Date(sorted[sorted.length - 1].paymentDate!);
+  const totalDays =
+    (lastDate.getTime() - firstDate.getTime()) / (1000 * 60 * 60 * 24);
 
-  let allDates = [];
+  const groupByMonth = totalDays > 30;
+  const sliceEnd = totalDays < 30 ? 10 : 7;
 
-  while (startDate <= endDate) {
-    allDates.push(new Date(startDate).toISOString().slice(0, 10));
-    startDate.setUTCDate(startDate.getUTCDate() + 1);
-  }
-
-  const groupByMonth = allDates.length > 31;
-
-  if (groupByMonth) {
-    const currentYear = new Date().getFullYear();
-    allDates = Array.from({ length: 12 }, (_, i) => {
-      const month = (i + 1).toString().padStart(2, "0");
-      return `${currentYear}-${month}`;
-    });
-  }
-
-  const sliceEnd = allDates.length < 31 ? 10 : 7;
+  const allDates = groupByMonth
+    ? generateMonths()
+    : generateDays(paidExpenses[0].paymentDate!);
 
   const grouped = paidExpenses.reduce((acc, expense) => {
     const date = expense.paymentDate;
