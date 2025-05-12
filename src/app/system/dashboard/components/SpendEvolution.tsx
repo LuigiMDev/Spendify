@@ -1,6 +1,6 @@
 "use client";
 
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ChartConfig,
@@ -22,40 +22,39 @@ const chartConfig = {
 export default function SpendEvolution() {
   const { spendEvolutionData, isLoading } = useDashboard();
 
-  const chartData =
-    spendEvolutionData?.groupByMonth
-      ? spendEvolutionData.allDatesGrouped?.map((spend, index) => ({
-          key: `spend-${index}`,
-          Data: new Date(spend.date).toLocaleDateString("pt-BR", {
-            month: "short",
-            year: "numeric",
-            timeZone: "UTC",
-          }),
-          Valor: spend.value,
-          fill: "hsl(var(--chart-1))",
-        }))
-      : spendEvolutionData?.allDatesGrouped?.map((spend, index) => ({
-          key: `spend-${index}`,
-          Data: new Date(spend.date).toLocaleDateString("pt-BR", {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-            timeZone: "UTC",
-          }),
-          Valor: spend.value,
-          fill: "hsl(var(--chart-1))",
-        }));
+  const chartData = spendEvolutionData?.groupByMonth
+    ? spendEvolutionData.allDatesGrouped?.map((spend, index) => ({
+        key: `spend-${index}`,
+        Data: new Date(spend.date).toLocaleDateString("pt-BR", {
+          month: "short",
+          year: "numeric",
+          timeZone: "UTC",
+        }),
+        Valor: spend.value,
+        fill: "hsl(var(--chart-1))",
+      }))
+    : spendEvolutionData?.allDatesGrouped?.map((spend, index) => ({
+        key: `spend-${index}`,
+        Data: new Date(spend.date).toLocaleDateString("pt-BR", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+          timeZone: "UTC",
+        }),
+        Valor: spend.value,
+        fill: "hsl(var(--chart-1))",
+      }));
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Gastos pagos por dia</CardTitle>
+        <CardTitle>Gastos pagos por {spendEvolutionData?.groupByMonth ? "mês" : "dia"}</CardTitle>
       </CardHeader>
       <CardContent>
         {isLoading ? (
           <LoadingChart />
         ) : (chartData ?? []).length > 0 ? (
-          <ChartContainer config={chartConfig}>
+          <ChartContainer config={chartConfig} >
             <LineChart
               accessibilityLayer
               data={chartData}
@@ -66,6 +65,11 @@ export default function SpendEvolution() {
               }}
             >
               <CartesianGrid vertical={false} />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                domain={[0, 'auto']}
+              />
               <XAxis
                 dataKey="Data"
                 tickLine={false}
@@ -79,7 +83,7 @@ export default function SpendEvolution() {
               />
               <Line
                 dataKey="Valor"
-                type="natural"
+                type="monotone"
                 stroke="var(--color-valor)"
                 strokeWidth={2}
                 dot={{
