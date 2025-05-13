@@ -20,6 +20,7 @@
   - Recharts (para gráficos)
 - **Backend:**
 
+  - Next.js
   - Prisma (ORM)
   - PostgreSQL (NeonDB)
 
