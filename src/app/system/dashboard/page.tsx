@@ -2,7 +2,7 @@
 import DashboardContent from "./components/DashboardContent";
 import DashboardFilters from "./components/DashboardFilters";
 
-const page = () => {
+const Page = () => {
   return (
     <div>
       <div className="mb-5">
@@ -20,4 +20,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

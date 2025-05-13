@@ -1,11 +1,11 @@
 "use client";
 import Image from "next/image";
 import React from "react";
-import SanduichMenu from "@/app/login/components/SanduichMenu";
+import SanduichMenu from "@/app/system/components/AsideAndHeader/SanduichMenu";
 import Link from "next/link";
-import Navbar from "@/app/login/components/Navbar";
+import Navbar from "@/app/system/components/AsideAndHeader/Navbar";
 import { PanelRightClose, PanelRightOpen } from "lucide-react";
-import UserAsideAndHeader from "@/app/login/components/UserAsideAndHeader";
+import UserAsideAndHeader from "@/app/system/components/AsideAndHeader/UserAsideAndHeader";
 import HookContext from "../context/Aside/HookContext";
 
 const AsideAndHeaderLayout = () => {
