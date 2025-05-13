@@ -60,7 +60,7 @@ const ExcludeExpense = ({ id }: props) => {
               animate={{ opacity: 0.3 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed z-30 bg-black h-[100dvh] top-0 w-screen opacity-30 left-0"
+              className="fixed z-30 bg-black h-screen top-0 w-screen opacity-30 left-0"
               onClick={() => setOpenModal(false)}
             ></motion.div>
             <motion.div

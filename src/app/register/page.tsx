@@ -61,7 +61,7 @@ const Page = () => {
 
   return (
     <main
-      className="w-full min-h-screen flex items-center justify-center flex-col"
+      className="w-full min-h-[100dvh] flex items-center justify-center flex-col"
       style={{ backgroundImage: "url(/Login/loginBackground.svg)" }}
     >
       <Image

@@ -86,7 +86,7 @@ const UpdateExpense = ({ expense }: props) => {
               animate={{ opacity: 0.3 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed z-30 bg-black h-[100dvh] top-0 w-screen opacity-30 left-0"
+              className="fixed z-30 bg-black h-screen top-0 w-screen opacity-30 left-0"
               onClick={() => setOpenModal(false)}
             ></motion.div>
             <motion.div
@@ -144,7 +144,7 @@ const UpdateExpense = ({ expense }: props) => {
                   </label>
                   <select
                     id="typeExpense"
-                    className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block"
+                    className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block bg-white"
                     required
                     {...register("typeExpense")}
                     defaultValue=""
@@ -168,7 +168,7 @@ const UpdateExpense = ({ expense }: props) => {
                   </label>
                   <select
                     id="statusExpense"
-                    className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block"
+                    className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block bg-white"
                     required
                     {...register("statusExpense")}
                     defaultValue=""
@@ -193,7 +193,7 @@ const UpdateExpense = ({ expense }: props) => {
                     <input
                       type="date"
                       id="dueDateExpense"
-                      className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block"
+                      className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block bg-white"
                       {...register("dueDateExpense")}
                     />
                   </div>
@@ -216,7 +216,7 @@ const UpdateExpense = ({ expense }: props) => {
                       id="paymentDateExpense"
                       required={paid}
                       {...(paid && register("paymentDateExpense"))}
-                      className={`outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block disabled:group:opacity-40 ${
+                      className={`outline-primary bg-white rounded-lg border-2 border-gray-150 p-2 w-full block disabled:group:opacity-40 ${
                         !paid && "cursor-not-allowed"
                       }`}
                     />

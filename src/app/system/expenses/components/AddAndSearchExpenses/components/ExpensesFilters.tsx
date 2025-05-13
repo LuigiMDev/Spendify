@@ -107,7 +107,7 @@ const ExpensesFilters = () => {
             Tipo
           </label>
           <select
-            className=" focus:border-primary outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block transition-all"
+            className=" focus:border-primary outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block transition-all bg-white"
             onChange={(e) => setSearchType(e.target.value)}
             value={searchType}
             id="typeFilterExpense"
@@ -131,7 +131,7 @@ const ExpensesFilters = () => {
             Status
           </label>
           <select
-            className=" focus:border-primary outline-primary rounded-lg border-2 border-gray-150 p-2 block w-full transition-all"
+            className=" focus:border-primary outline-primary rounded-lg border-2 border-gray-150 p-2 block w-full transition-all bg-white"
             onChange={(e) => setSearchStatus(e.target.value)}
             value={searchStatus}
             id="statusFilterExpense"
@@ -150,7 +150,7 @@ const ExpensesFilters = () => {
             Vencimento
           </label>
           <select
-            className=" focus:border-primary outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block transition-all"
+            className=" focus:border-primary outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block transition-all bg-white"
             onChange={(e) => setSearchDueDate(e.target.value)}
             value={searchDueDate}
             id="dueDateFilterExpense"
@@ -171,7 +171,7 @@ const ExpensesFilters = () => {
             Pagamento
           </label>
           <select
-            className=" focus:border-primary outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block transition-all"
+            className=" focus:border-primary outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block transition-all bg-white"
             onChange={(e) => setSearchPaymentDate(e.target.value)}
             value={searchPaymentDate}
             id="dueDateFilterExpense"

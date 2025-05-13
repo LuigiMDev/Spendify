@@ -64,7 +64,7 @@ const DashboardFilters = () => {
           Vencimento
         </label>
         <select
-          className=" focus:border-primary outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block transition-all"
+          className=" focus:border-primary outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block transition-all bg-white"
           onChange={(e) => setSearchDueDate(e.target.value)}
           value={searchDueDate}
           id="dueDateFilterExpense"
@@ -85,7 +85,7 @@ const DashboardFilters = () => {
             Pagamento
           </label>
           <select
-            className=" focus:border-primary outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block transition-all"
+            className=" focus:border-primary outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block transition-all bg-white"
             onChange={(e) => setSearchPaymentDate(e.target.value)}
             value={searchPaymentDate}
             id="dueDateFilterExpense"
