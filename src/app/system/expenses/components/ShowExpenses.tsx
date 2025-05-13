@@ -79,7 +79,7 @@ const ShowExpenses = () => {
                     </p>
                   )}
                 </div>
-                <div>
+                <div className="space-y-1">
                   <DetailsExpense expense={expense} />
                   <UpdateExpense expense={expense} />
                   <ExcludeExpense id={expense.id} />

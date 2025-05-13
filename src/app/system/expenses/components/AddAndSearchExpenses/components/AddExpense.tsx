@@ -77,7 +77,7 @@ const AddExpense = () => {
               animate={{ opacity: 0.3 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed z-30 bg-black h-[100dvh] top-0 w-screen opacity-30 left-0"
+              className="fixed z-30 bg-black h-screen top-0 w-screen opacity-30 left-0"
               onClick={() => setOpenModal(false)}
             ></motion.div>
             <motion.div
@@ -135,7 +135,7 @@ const AddExpense = () => {
                   </label>
                   <select
                     id="typeExpense"
-                    className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block"
+                    className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block bg-white"
                     required
                     {...register("typeExpense")}
                     defaultValue=""
@@ -159,7 +159,7 @@ const AddExpense = () => {
                   </label>
                   <select
                     id="statusExpense"
-                    className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block"
+                    className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block bg-white"
                     required
                     {...register("statusExpense")}
                     onChange={(e) => handlePaidExpense(e.target.value)}
@@ -184,7 +184,7 @@ const AddExpense = () => {
                     <input
                       type="date"
                       id="dueDateExpense"
-                      className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block"
+                      className="outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block bg-white"
                       {...register("dueDateExpense")}
                     />
                   </div>
@@ -207,7 +207,7 @@ const AddExpense = () => {
                       required={paid}
                       id="paymentDateExpense"
                       {...(paid && register("paymentDateExpense"))}
-                      className={`outline-primary rounded-lg border-2 border-gray-150 p-2 w-full block disabled:group:opacity-40 ${
+                      className={`outline-primary bg-white rounded-lg border-2 border-gray-150 p-2 w-full block disabled:group:opacity-40 ${
                         !paid && "cursor-not-allowed"
                       }`}
                     />

@@ -19,7 +19,7 @@ const AsideAndHeaderLayout = () => {
     <>
       <header className="fixed w-full py-3 px-5 shadow-header lg:hidden bg-white select-none h-[85px] top-0 z-50">
         <div className="w-full flex justify-between items-center ">
-          <Link href="/dashboard">
+          <Link href="/system/dashboard">
             <Image
               className="w-48"
               src="/spendifyLogoHorizontal.svg"
@@ -41,7 +41,7 @@ const AsideAndHeaderLayout = () => {
         <div className="px-5 py-10">
           <div className="flex justify-between items-center">
             <Link
-              href="/dashboard"
+              href="/system/dashboard"
               className={`flex items-center gap-3 w-auto  transition-all overflow-hidden`}
             >
               <Image
