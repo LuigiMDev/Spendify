@@ -65,7 +65,7 @@ const Page = () => {
       }
     } catch (err) {
       console.log(err);
-      if (err === "Já existe um usuário cadastrado com este e-mail!") {
+      if (err instanceof Error && err.message === "Já existe um usuário cadastrado com este e-mail!") {
         toast.error("Já existe um usuário cadastrado com este e-mail!");
       } else {
         toast.error(

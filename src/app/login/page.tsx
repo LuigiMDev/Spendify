@@ -13,6 +13,7 @@ import finance from "@/assets/login/finance.svg";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { string } from "zod";
 
 const Page = () => {
   const [email, setEmail] = useState("");
@@ -55,7 +56,7 @@ const Page = () => {
       toast.success("Usuário logado com sucesso!");
     } catch (err) {
       console.log(err);
-      if (err === "E-mail ou senha inválidos!") {
+      if (err instanceof Error && err.message === "E-mail ou senha inválidos!") {
         toast.error("E-mail ou senha inválidos!");
       } else {
         toast.error(
