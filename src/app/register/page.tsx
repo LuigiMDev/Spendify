@@ -20,9 +20,7 @@ const Page = () => {
   const router = useRouter();
 
   useEffect(() => {
-    confirmPassword === password
-    ? setVerifyPassword(true)
-    : setVerifyPassword(false);
+    setVerifyPassword(password === confirmPassword)
   }, [confirmPassword, password])
 
   const handleSeePassword = () => {
