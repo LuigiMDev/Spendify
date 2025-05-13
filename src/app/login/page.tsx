@@ -3,12 +3,11 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { Eye, EyeClosed, LoaderCircle, LockKeyhole, LogIn, Mail } from "lucide-react";
 import finance from "@/assets/login/finance.svg";
-import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
-const page = () => {
+const Page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [seePassword, setSeePassword] = useState(false);
@@ -147,4 +146,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

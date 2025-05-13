@@ -178,7 +178,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
+    "rootEnvPath": "../../../.env",
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
@@ -188,11 +188,12 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://spendify_owner:npg_Sv9hXwgoJ5bt@ep-ancient-frost-acctxhpx-pooler.sa-east-1.aws.neon.tech/spendify?sslmode=require"
+        "value": null
       }
     }
   },

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prismadb } from "@/app/api/prismaClient";
 import { getUserAuthentication } from "@/app/api/helpers/auth/getUserAuthentication";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const { id } = (await getUserAuthentication()) as { id: string };
 

@@ -4,7 +4,7 @@ import AddExpense from "./components/AddAndSearchExpenses/components/AddExpense"
 import SearchExpenses from "./components/AddAndSearchExpenses/components/SearchExpenses";
 import ShowExpenses from "./components/ShowExpenses";
 
-const page = () => {
+const Page = () => {
   return (
     <div className="">
       <div className="mb-5">
@@ -25,4 +25,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

@@ -1,4 +1,4 @@
-import { CirclePlus, CircleX, LoaderCircle, Pencil } from "lucide-react";
+import { CircleX, LoaderCircle, Pencil } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { NumericFormat } from "react-number-format";
