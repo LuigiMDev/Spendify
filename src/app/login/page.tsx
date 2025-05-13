@@ -13,7 +13,6 @@ import finance from "@/assets/login/finance.svg";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { string } from "zod";
 
 const Page = () => {
   const [email, setEmail] = useState("");
