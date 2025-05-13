@@ -1,7 +1,15 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { Eye, EyeClosed, LoaderCircle, LockKeyhole, LogIn, Mail, User } from "lucide-react";
+import {
+  Eye,
+  EyeClosed,
+  LoaderCircle,
+  LockKeyhole,
+  LogIn,
+  Mail,
+  User,
+} from "lucide-react";
 import finance from "@/assets/login/finance.svg";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -12,16 +20,16 @@ const Page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [verifyPassword, setVerifyPassword] = useState(true)
+  const [verifyPassword, setVerifyPassword] = useState(true);
   const [seePassword, setSeePassword] = useState(false);
   const [seeConfirmPassword, setSeeConfirmPassword] = useState(false);
-  const [isLoading, setIsloading] = useState(false)
+  const [isLoading, setIsloading] = useState(false);
 
   const router = useRouter();
 
   useEffect(() => {
-    setVerifyPassword(password === confirmPassword)
-  }, [confirmPassword, password])
+    setVerifyPassword(password === confirmPassword);
+  }, [confirmPassword, password]);
 
   const handleSeePassword = () => {
     setSeePassword(!seePassword);
@@ -35,7 +43,7 @@ const Page = () => {
 
     try {
       if (verifyPassword) {
-        setIsloading(true)
+        setIsloading(true);
         const newUser = await fetch("/api/auth/register", {
           method: "POST",
           headers: {
@@ -43,19 +51,28 @@ const Page = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ name, email, password, confirmPassword }),
-        })
-        if(newUser.status === 409) {
-          toast.error("Já existe um usuário cadastrado com este e-mail!")
-          setIsloading(false)
-        } else {
-          console.log(await newUser.json());
-          router.push("/system/dashboard");
+        });
+        if (newUser.status === 409) {
+          throw new Error("Já existe um usuário cadastrado com este e-mail!");
         }
+        if (!newUser.ok) {
+          throw new Error(
+            "Ocorreu um erro ao fazer o registro! Tente novamente mais tarde."
+          );
+        }
+        router.push("/system/dashboard");
+        toast.success("Usuário registrado com sucesso!");
       }
     } catch (err) {
       console.log(err);
-      toast.error("Ocorreu um erro ao fazer o registro!")
-      setIsloading(false)
+      if (err === "Já existe um usuário cadastrado com este e-mail!") {
+        toast.error("Já existe um usuário cadastrado com este e-mail!");
+      } else {
+        toast.error(
+          "Ocorreu um erro ao fazer o registro! Tente novamente mais tarde."
+        );
+      }
+      setIsloading(false);
     }
   };
 
@@ -179,7 +196,11 @@ const Page = () => {
                 className="text-white font-semibold px-4 py-2 bg-primary rounded-xl flex gap-1"
               >
                 Cadastrar
-                {isLoading ? <LoaderCircle className="text-white animate-spin"/> : <LogIn />}        
+                {isLoading ? (
+                  <LoaderCircle className="text-white animate-spin" />
+                ) : (
+                  <LogIn />
+                )}
               </button>
             </div>
           </form>

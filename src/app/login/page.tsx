@@ -1,7 +1,14 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import { Eye, EyeClosed, LoaderCircle, LockKeyhole, LogIn, Mail } from "lucide-react";
+import {
+  Eye,
+  EyeClosed,
+  LoaderCircle,
+  LockKeyhole,
+  LogIn,
+  Mail,
+} from "lucide-react";
 import finance from "@/assets/login/finance.svg";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -14,38 +21,48 @@ const Page = () => {
   const [isLoading, setIsloading] = useState(false);
   const router = useRouter();
 
-
   const handleSeePassword = () => {
     setSeePassword(!seePassword);
   };
-
 
   const LoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      setIsloading(true)
+      setIsloading(true);
       const userLoged = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
           Accept: "application/json",
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email, password
-        })
-      })
-      if(userLoged.status == 401) {
-        toast.error("E-mail ou senha inválidos!")
-        setIsloading(false)
-      } else {
-        router.push("/system/dashboard");
-        toast.success("Usuário logado com sucesso!")
+          email,
+          password,
+        }),
+      });
+      if (userLoged.status === 401) {
+        throw new Error("E-mail ou senha inválidos!");
       }
+
+      if (!userLoged.ok) {
+        throw new Error(
+          "Ocorreu um erro ao fazer login! Tente novamente mais tarde."
+        );
+      }
+
+      router.push("/system/dashboard");
+      toast.success("Usuário logado com sucesso!");
     } catch (err) {
-      console.log(err)
-      toast.error("Ocorreu um erro ao fazer o login!")
-      setIsloading(false)
+      console.log(err);
+      if (err === "E-mail ou senha inválidos!") {
+        toast.error("E-mail ou senha inválidos!");
+      } else {
+        toast.error(
+          "Ocorreu um erro ao fazer login! Tente novamente mais tarde."
+        );
+      }
+      setIsloading(false);
     }
   };
 
@@ -120,7 +137,6 @@ const Page = () => {
               )}
             </div>
 
-
             <div className="w-full flex justify-between items-center">
               <Link
                 href="/register"
@@ -134,9 +150,11 @@ const Page = () => {
                 className="text-white font-semibold px-4 py-2 bg-primary rounded-xl flex gap-1"
               >
                 Entrar
-                {isLoading ?
-                <LoaderCircle className="text-white animate-spin" />
-                : <LogIn />}
+                {isLoading ? (
+                  <LoaderCircle className="text-white animate-spin" />
+                ) : (
+                  <LogIn />
+                )}
               </button>
             </div>
           </form>
