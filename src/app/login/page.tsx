@@ -55,7 +55,7 @@ const Page = () => {
       toast.success("Usuário logado com sucesso!");
     } catch (err) {
       console.log(err);
-      if (err === "E-mail ou senha inválidos!") {
+      if (err instanceof Error && err.message === "E-mail ou senha inválidos!") {
         toast.error("E-mail ou senha inválidos!");
       } else {
         toast.error(
