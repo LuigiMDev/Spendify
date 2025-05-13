@@ -15,14 +15,12 @@ const eslintConfig = [
     rules: {
       "@typescript-eslint/no-require-imports": "off",
     },
-    overrides: [
-      {
-        files: ["**/prisma/generated/**", "**/src/generated/prisma/**"], // Inclui a pasta do Prisma
-        rules: {
-          "@typescript-eslint/no-unused-vars": "off", // Ignora as regras de variáveis não usadas
-        },
-      },
-    ],
+  },
+  {
+    files: ["**/prisma/generated/**", "**/src/generated/prisma/**"],
+    rules: {
+      "@typescript-eslint/no-unused-vars": "off", // Ignora variáveis não usadas apenas para o Prisma
+    },
   },
 ];
 

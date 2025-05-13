@@ -52,5 +52,8 @@ export async function POST(req: NextRequest) {
     })
 
     return NextResponse.json({ message: "Login realizado com sucesso!" }, { status: 200 });
-  } catch {}
+  } catch (err) {
+    console.log(err)
+    return NextResponse.json({ message: "Ocorreu um problema ao realizar o login" }, { status: 500 });
+  }
 }
