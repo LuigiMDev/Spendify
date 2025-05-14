@@ -14,13 +14,19 @@ export const getSpendEvolution = (data: Expense[]) => {
       new Date(a.paymentDate!).getTime() - new Date(b.paymentDate!).getTime()
   );
 
-  const firstDate = new Date(sorted[0].paymentDate!);
-  const lastDate = new Date(sorted[sorted.length - 1].paymentDate!);
-  const totalDays =
-    (lastDate.getTime() - firstDate.getTime()) / (1000 * 60 * 60 * 24);
+  const firstDate = new Date(sorted[0].paymentDate!)
+    .toISOString()
+    .slice(0,7)
+    .split("-")[1];
+  const lastDate = new Date(sorted[sorted.length - 1].paymentDate!)
+    .toISOString()
+    .slice(0,7)
+    .split("-")[1];
 
-  const groupByMonth = totalDays > 30;
-  const sliceEnd = totalDays < 30 ? 10 : 7;
+  console.log(firstDate, lastDate)
+
+  const groupByMonth = firstDate !== lastDate;
+  const sliceEnd = groupByMonth ? 7 : 10;
 
   const allDates = groupByMonth
     ? generateMonths()
