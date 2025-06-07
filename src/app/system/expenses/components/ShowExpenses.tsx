@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import UpdateExpense from "./UpdateExpense";
 import ExcludeExpense from "./ExcludeExpense";
 import { TranslateTypeExpense } from "../../helpers/translateExpense";
@@ -7,8 +8,19 @@ import { LoaderCircle } from "lucide-react";
 import DetailsExpense from "./DetailsExpense";
 import useExpenses from "../../context/expenses/useExpenses";
 
-const ShowExpenses = () => {
-  const { expenses, error, isLoadingHook } = useExpenses();
+type ShowinitialExpenses = {
+  initialExpenses: {
+    expenses: Expense[];
+    totalPages: number;
+  };
+};
+
+const ShowExpenses = ({ initialExpenses }: ShowinitialExpenses) => {
+  const { expenses, setExpenses, error, isLoadingHook, setIsLoadingHook } = useExpenses();
+  useEffect(() => {
+    setExpenses(initialExpenses.expenses);
+    setIsLoadingHook(false)
+  }, [initialExpenses.expenses, setExpenses, setIsLoadingHook]);
 
   const getStatusBg = (status: string) => {
     switch (status) {

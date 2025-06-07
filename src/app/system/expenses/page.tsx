@@ -1,10 +1,14 @@
-"use client";
 import React from "react";
 import AddExpense from "./components/AddAndSearchExpenses/components/AddExpense";
 import SearchExpenses from "./components/AddAndSearchExpenses/components/SearchExpenses";
 import ShowExpenses from "./components/ShowExpenses";
+import { expensesSearchParams } from "@/app/types/expensesSearchParams";
+import { getExpenses } from "@/app/helpers/getExpenses";
 
-const Page = () => {
+const Page = async (searchParams : expensesSearchParams) => {
+  const {searchInput = "", page = 1, searchType = "", searchStatus = "", searchDueDate = "", searchPaymentDate = ""} = searchParams
+
+  const initalExpenses = await getExpenses({searchInput, page, searchType, searchStatus, searchDueDate, searchPaymentDate})
   return (
     <div className="">
       <div className="mb-5">
@@ -20,7 +24,7 @@ const Page = () => {
         <SearchExpenses />
       </div>
 
-      <ShowExpenses />
+      <ShowExpenses initialExpenses={initalExpenses}/>
     </div>
   );
 };

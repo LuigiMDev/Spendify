@@ -1,6 +1,6 @@
 "use client";
 import { Expense } from "@/generated/prisma";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 type ContextType = {
@@ -20,7 +20,7 @@ type ContextType = {
   setIsLoadingHook: React.Dispatch<React.SetStateAction<boolean>>;
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
-  totalPages: number,
+  totalPages: number;
   setTotalPages: React.Dispatch<React.SetStateAction<number>>;
   error: boolean;
   setError: React.Dispatch<React.SetStateAction<boolean>>;
@@ -35,44 +35,71 @@ const ExpenseProvider = ({ children }: { children: React.ReactNode }) => {
   const [searchStatus, setSearchStatus] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [searchDueDate, setSearchDueDate] = useState("");
-  const [searchPaymentDate, setSearchPaymentDate] = useState("")
+  const [searchPaymentDate, setSearchPaymentDate] = useState("");
   const [isLoadingHook, setIsLoadingHook] = useState(true);
   const [error, setError] = useState(false);
-  const [page, setPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [initialLoad, setInitialLoad] = useState(true);
 
-  const handleSearchExpenses = async (e?: React.FormEvent<HTMLFormElement>) => {
-    try {
-      e?.preventDefault()
-      setIsLoadingHook(true)
-      const response = await fetch(
-        `/api/expense/searchExpenses?searchInput=${searchInput}&searchStatus=${searchStatus}&searchType=${searchType}&searchDueDate=${searchDueDate}&searchPaymentDate=${searchPaymentDate}&page=${page}`
-      );
+  const handleSearchExpenses = useCallback(
+    async (e?: React.FormEvent<HTMLFormElement>) => {
+      try {
+        e?.preventDefault();
+        setIsLoadingHook(true);
+        const response = await fetch(
+          `/api/expense/searchExpenses?searchInput=${searchInput}&searchStatus=${searchStatus}&searchType=${searchType}&searchDueDate=${searchDueDate}&searchPaymentDate=${searchPaymentDate}&page=${page}`
+        );
 
-      if (response.status !== 200) {
-        throw new Error("Ocorreu um erro ao buscar os dados!");
+        if (response.status !== 200) {
+          throw new Error("Ocorreu um erro ao buscar os dados!");
+        }
+
+        const expenseJson = await response.json();
+
+        setExpenses(expenseJson.expenses);
+        setTotalPages(expenseJson.totalPages || 1);
+      } catch (err) {
+        setError(true);
+        toast.error("Ocorreu um erro ao buscar os dados!");
+        console.log(err);
       }
+      setIsLoadingHook(false);
+    },
+    [
+      searchInput,
+      searchType,
+      searchStatus,
+      searchDueDate,
+      searchPaymentDate,
+      page,
+    ]
+  );
 
-      const expenseJson = await response.json();
-
-      setExpenses(expenseJson.expenses);
-      setTotalPages(expenseJson.totalPages || 1)
-    } catch (err) {
-      setError(true);
-      toast.error("Ocorreu um erro ao buscar os dados!");
-      console.log(err);
+  useEffect(() => {
+    if (!initialLoad) {
+      setPage(1);
+      handleSearchExpenses();
     }
-    setIsLoadingHook(false);
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    searchType,
+    searchStatus,
+    searchDueDate,
+    searchPaymentDate,
+    handleSearchExpenses,
+  ]);
 
   useEffect(() => {
-    setPage(1)
-    handleSearchExpenses();
-  }, [searchType, searchStatus, searchDueDate, searchPaymentDate]);
+    if (!initialLoad) {
+      handleSearchExpenses();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, handleSearchExpenses]);
 
   useEffect(() => {
-    handleSearchExpenses();
-  },[page])
+    setInitialLoad(false)
+  }, [])
 
   return (
     <expenseContext.Provider

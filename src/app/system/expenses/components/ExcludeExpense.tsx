@@ -1,3 +1,4 @@
+'use client'
 import { AnimatePresence, motion } from "framer-motion";
 import { CircleX, LoaderCircle, Trash2 } from "lucide-react";
 import React, { useState } from "react";
