@@ -29,7 +29,7 @@ type DashboardState = {
 };
 
 export const useDashboard = create<DashboardState>((set, get) => ({
-  isLoading: false,
+  isLoading: true,
   setIsLoading: (isLoading) => set({ isLoading }),
 
   error: false,

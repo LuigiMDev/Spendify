@@ -38,16 +38,17 @@ const AsideContextAndData = ({
   const [openAside, setOpenAside] = useState(true);
 
   // Expenses
-  const [setExpenses, setTotalPages] = useExpense(
-    useShallow((state) => [state.setExpenses, state.setTotalPages])
+  const [setExpenses, setTotalPages, setExpenseLoading] = useExpense(
+    useShallow((state) => [state.setExpenses, state.setTotalPages, state.setIsLoadingHook])
   );
 
   // Dashboard
-  const [setStatusData, setSpendEvolutionData, setTypeChartData] = useDashboard(
+  const [setStatusData, setSpendEvolutionData, setTypeChartData, setDashboardLoading] = useDashboard(
     useShallow((state) => [
       state.setStatusData,
       state.setSpendEvolutionData,
       state.setTypeChartData,
+      state.setIsLoading
     ])
   );
 
@@ -57,6 +58,8 @@ const AsideContextAndData = ({
     setStatusData(initialDashboardData.statusData);
     setSpendEvolutionData(initialDashboardData.spendEvolution);
     setTypeChartData(initialDashboardData.typeChart);
+    setDashboardLoading(false)
+    setExpenseLoading(false)
   }, [
     setExpenses,
     initialExpenses.expenses,
@@ -68,6 +71,8 @@ const AsideContextAndData = ({
     initialDashboardData.spendEvolution,
     setTypeChartData,
     initialDashboardData.typeChart,
+    setDashboardLoading,
+    setExpenseLoading
   ]);
 
   return (

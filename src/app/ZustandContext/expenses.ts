@@ -55,7 +55,7 @@ export const useExpense = create<ExpenseState>((set, get) => ({
   searchPaymentDate: "",
   setSearchPaymentDate: (searchPaymentDate) => set({ searchPaymentDate }),
 
-  isLoadingHook: false,
+  isLoadingHook: true,
   setIsLoadingHook: (isLoadingHook) => set({ isLoadingHook }),
 
   page: 1,
