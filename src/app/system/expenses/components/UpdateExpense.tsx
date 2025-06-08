@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { CircleX, LoaderCircle, Pencil } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,14 +8,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ExpenseFormSchema, ExpenseZodType } from "@/zod/Expense/FormExpense";
 import { Expense } from "@/generated/prisma";
 import { toast } from "react-toastify";
-import useExpenses from "../../context/expenses/useExpenses";
+import { useExpense } from "@/app/ZustandContext/expenses";
+import {useShallow} from "zustand/shallow"
 
 type props = {
   expense: Expense;
 };
 
 const UpdateExpense = ({ expense }: props) => {
-  const {setExpenses} = useExpenses()
+  const [expenses, setExpenses] = useExpense(useShallow((state) => [
+    state.expenses,
+    state.setExpenses,
+  ]));
   const [openModal, setOpenModal] = useState(false);
   const [paid, setPaid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -60,7 +64,11 @@ const UpdateExpense = ({ expense }: props) => {
       const updatedExpense = await response.json();
 
       console.log(updatedExpense);
-      setExpenses(prevData => prevData.map((prevExpense) => prevExpense.id === updatedExpense.id ? updatedExpense : prevExpense))
+      setExpenses(
+        expenses.map((prevExpense) =>
+          prevExpense.id === updatedExpense.id ? updatedExpense : prevExpense
+        )
+      );
       setOpenModal(false);
       toast.success("Gasto atualizado com sucesso!");
     } catch (err) {

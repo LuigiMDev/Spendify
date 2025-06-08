@@ -1,26 +1,18 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import UpdateExpense from "./UpdateExpense";
 import ExcludeExpense from "./ExcludeExpense";
 import { TranslateTypeExpense } from "../../helpers/translateExpense";
 import { Expense } from "@/generated/prisma";
 import { LoaderCircle } from "lucide-react";
 import DetailsExpense from "./DetailsExpense";
-import useExpenses from "../../context/expenses/useExpenses";
+import { useExpense } from "@/app/ZustandContext/expenses";
+import { useShallow } from "zustand/shallow";
 
-type ShowinitialExpenses = {
-  initialExpenses: {
-    expenses: Expense[];
-    totalPages: number;
-  };
-};
-
-const ShowExpenses = ({ initialExpenses }: ShowinitialExpenses) => {
-  const { expenses, setExpenses, error, isLoadingHook, setIsLoadingHook } = useExpenses();
-  useEffect(() => {
-    setExpenses(initialExpenses.expenses);
-    setIsLoadingHook(false)
-  }, [initialExpenses.expenses, setExpenses, setIsLoadingHook]);
+const ShowExpenses = () => {
+  const [expenses, error, isLoadingHook] = useExpense(
+    useShallow((state) => [state.expenses, state.error, state.isLoadingHook])
+  );
 
   const getStatusBg = (status: string) => {
     switch (status) {

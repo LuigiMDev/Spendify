@@ -8,9 +8,10 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import useDashboard from "../../context/dashboard/useDashboard";
 import LoadingChart from "./LoadingChart";
 import NoDataChart from "./NoDataChart";
+import { useDashboard } from "@/app/ZustandContext/dashboard";
+import {useShallow} from "zustand/shallow"
 
 const chartConfig = {
   valor: {
@@ -20,7 +21,10 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function SpendEvolution() {
-  const { spendEvolutionData, isLoading } = useDashboard();
+  const [spendEvolutionData, isLoading] = useDashboard(useShallow((state) => [
+    state.spendEvolutionData,
+    state.isLoading,
+  ]));
 
   const chartData = spendEvolutionData?.groupByMonth
     ? spendEvolutionData.allDatesGrouped?.map((spend, index) => ({
@@ -48,13 +52,15 @@ export default function SpendEvolution() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Gastos pagos por {spendEvolutionData?.groupByMonth ? "mês" : "dia"}</CardTitle>
+        <CardTitle>
+          Gastos pagos por {spendEvolutionData?.groupByMonth ? "mês" : "dia"}
+        </CardTitle>
       </CardHeader>
       <CardContent>
         {isLoading ? (
           <LoadingChart />
         ) : (chartData ?? []).length > 0 ? (
-          <ChartContainer config={chartConfig} >
+          <ChartContainer config={chartConfig}>
             <LineChart
               accessibilityLayer
               data={chartData}
@@ -65,11 +71,7 @@ export default function SpendEvolution() {
               }}
             >
               <CartesianGrid vertical={false} />
-              <YAxis
-                tickLine={false}
-                axisLine={false}
-                domain={[0, 'auto']}
-              />
+              <YAxis tickLine={false} axisLine={false} domain={[0, "auto"]} />
               <XAxis
                 dataKey="Data"
                 tickLine={false}

@@ -1,39 +1,16 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import StatusData from "./StatusData";
 import SpendEvolution from "./SpendEvolution";
 import TypeValueChart from "./TypeValueChart";
-import useDashboard from "../../context/dashboard/useDashboard";
-import {
-  spendEvolution,
-  statusData,
-  typeChartData,
-} from "../../types/dashboard";
+import { useDashboard } from "@/app/ZustandContext/dashboard";
+import {useShallow} from "zustand/shallow"
 
-type initialData = {
-  initialData: {
-    statusData: statusData;
-    spendEvolution: spendEvolution;
-    typeChart: typeChartData;
-  };
-};
-
-const DashboardContent = ({ initialData }: initialData) => {
-  const { error, setStatusData, setSpendEvolutionData, setTypeChartData } =
-    useDashboard();
-
-  useEffect(() => {
-    setStatusData(initialData.statusData);
-    setSpendEvolutionData(initialData.spendEvolution);
-    setTypeChartData(initialData.typeChart);
-  }, [
-    initialData.statusData,
-    initialData.spendEvolution,
-    initialData.typeChart,
-    setStatusData,
-    setSpendEvolutionData,
-    setTypeChartData,
-  ]);
+const DashboardContent = () => {
+  const [error] =
+    useDashboard(useShallow((state) => [
+      state.error,
+    ]));
 
   if (error)
     return (

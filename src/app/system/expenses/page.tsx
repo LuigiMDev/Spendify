@@ -2,32 +2,9 @@ import React from "react";
 import AddExpense from "./components/AddAndSearchExpenses/components/AddExpense";
 import SearchExpenses from "./components/AddAndSearchExpenses/components/SearchExpenses";
 import ShowExpenses from "./components/ShowExpenses";
-import { expensesSearchParams } from "@/app/system/types/expensesSearchParams";
-import { getExpenses } from "@/app/helpers/getExpenses";
 import { getDate } from "../dashboard/components/DashboardFilters/helpers/getDate";
 
-type PageProps = {
-  searchParams: Promise<expensesSearchParams>
-}
-
-const Page = async ({searchParams}: PageProps) => {
-  const {
-    searchInput = "",
-    page = 1,
-    searchType = "",
-    searchStatus = "",
-    searchDueDate = "",
-    searchPaymentDate = "",
-  } = await searchParams;
-
-  const initalExpenses = await getExpenses({
-    searchInput,
-    page,
-    searchType,
-    searchStatus,
-    searchDueDate,
-    searchPaymentDate,
-  });
+const Page = async () => {
 
   const dates = await getDate();
   return (
@@ -45,7 +22,7 @@ const Page = async ({searchParams}: PageProps) => {
         <SearchExpenses dates={dates} />
       </div>
 
-      <ShowExpenses initialExpenses={initalExpenses} />
+      <ShowExpenses />
     </div>
   );
 };

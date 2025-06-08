@@ -1,29 +1,59 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import useDashboard from "../../../context/dashboard/useDashboard";
 import { dateOption } from "@/app/system/types/dates";
+import { useDashboard } from "@/app/ZustandContext/dashboard";
+import {useShallow} from "zustand/shallow"
 
 type filters = {
   filters: {
     dueDateOption: dateOption[];
     paymentDateOption: dateOption[];
-  }
-}
+  };
+};
 
-const DashboardFilters = ({filters}: filters) => {
-  const {
+const DashboardFilters = ({ filters }: filters) => {
+  const [
     searchDueDate,
     setSearchDueDate,
     searchPaymentDate,
     setSearchPaymentDate,
-  } = useDashboard();
+    handleSearchData,
+    setIsLoading,
+  ] = useDashboard(useShallow((state) => [
+    state.searchDueDate,
+    state.setSearchDueDate,
+    state.searchPaymentDate,
+    state.setSearchPaymentDate,
+    state.handleSearchData,
+    state.setIsLoading,
+  ]));
   const [dueDateOption, setDueDateOption] = useState<dateOption[]>([]);
   const [paymentDateOption, setPaymentDateOption] = useState<dateOption[]>([]);
 
   useEffect(() => {
-    setDueDateOption(filters.dueDateOption)
-    setPaymentDateOption(filters.paymentDateOption)
-  }, [setDueDateOption, setPaymentDateOption, filters.dueDateOption, filters.paymentDateOption]);
+    setDueDateOption(filters.dueDateOption);
+    setPaymentDateOption(filters.paymentDateOption);
+  }, [
+    setDueDateOption,
+    setPaymentDateOption,
+    filters.dueDateOption,
+    filters.paymentDateOption,
+  ]);
+
+  const [firstLoad, setFirstLoad] = useState(true);
+
+  useEffect(() => {
+    if (!firstLoad) {
+      handleSearchData();
+    }
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchDueDate, searchPaymentDate]);
+
+  useEffect(() => {
+    setFirstLoad(false);
+    setIsLoading(false);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 w-full md:w-fit items-center gap-3 mb-5">

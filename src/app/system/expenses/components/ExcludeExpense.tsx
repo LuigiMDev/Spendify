@@ -1,16 +1,19 @@
-'use client'
+"use client";
+import { useExpense } from "@/app/ZustandContext/expenses";
 import { AnimatePresence, motion } from "framer-motion";
 import { CircleX, LoaderCircle, Trash2 } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import useExpenses from "../../context/expenses/useExpenses";
+import { useShallow } from "zustand/shallow";
 
 type props = {
   id: string;
 };
 
 const ExcludeExpense = ({ id }: props) => {
-  const {setExpenses} = useExpenses()
+  const [expenses, setExpenses] = useExpense(
+    useShallow((state) => [state.expenses, state.setExpenses])
+  );
   const [openModal, setOpenModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,11 +33,7 @@ const ExcludeExpense = ({ id }: props) => {
         throw new Error("Ocorreu um erro ao excluir seu gasto!");
       }
 
-      setExpenses((prev) => {
-        if (!prev) return prev;
-
-        return prev.filter((expense) => expense.id !== id);
-      });
+      setExpenses(expenses.filter((expense) => expense.id !== id));
       toast.success("Gasto excluído com sucesso!");
     } catch (err) {
       console.log(err);
