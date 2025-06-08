@@ -2,13 +2,30 @@ import React from "react";
 import AddExpense from "./components/AddAndSearchExpenses/components/AddExpense";
 import SearchExpenses from "./components/AddAndSearchExpenses/components/SearchExpenses";
 import ShowExpenses from "./components/ShowExpenses";
-import { expensesSearchParams } from "@/app/types/expensesSearchParams";
+import { expensesSearchParams } from "@/app/system/types/expensesSearchParams";
 import { getExpenses } from "@/app/helpers/getExpenses";
+import { getDate } from "../dashboard/components/DashboardFilters/helpers/getDate";
 
-const Page = async (searchParams : expensesSearchParams) => {
-  const {searchInput = "", page = 1, searchType = "", searchStatus = "", searchDueDate = "", searchPaymentDate = ""} = searchParams
+const Page = async (searchParams: expensesSearchParams) => {
+  const {
+    searchInput = "",
+    page = 1,
+    searchType = "",
+    searchStatus = "",
+    searchDueDate = "",
+    searchPaymentDate = "",
+  } = searchParams;
 
-  const initalExpenses = await getExpenses({searchInput, page, searchType, searchStatus, searchDueDate, searchPaymentDate})
+  const initalExpenses = await getExpenses({
+    searchInput,
+    page,
+    searchType,
+    searchStatus,
+    searchDueDate,
+    searchPaymentDate,
+  });
+
+  const dates = await getDate();
   return (
     <div className="">
       <div className="mb-5">
@@ -21,10 +38,10 @@ const Page = async (searchParams : expensesSearchParams) => {
 
       <div className="flex gap-x-5 gap-y-3 flex-wrap mb-5">
         <AddExpense />
-        <SearchExpenses />
+        <SearchExpenses dates={dates} />
       </div>
 
-      <ShowExpenses initialExpenses={initalExpenses}/>
+      <ShowExpenses initialExpenses={initalExpenses} />
     </div>
   );
 };

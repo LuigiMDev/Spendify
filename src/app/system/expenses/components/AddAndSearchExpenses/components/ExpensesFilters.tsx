@@ -1,15 +1,10 @@
-'use client'
+"use client";
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import useExpenses from "@/app/system/context/expenses/useExpenses";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { dateOption, Dates } from "@/app/system/types/dates";
 
-type dateOption = {
-  display: string;
-  value: string;
-};
-
-const ExpensesFilters = () => {
+const ExpensesFilters = ({ dates }: Dates) => {
   const {
     expenses,
     page,
@@ -28,46 +23,15 @@ const ExpensesFilters = () => {
   const [paymentDateOption, setPaymentDateOption] = useState<dateOption[]>([]);
 
   useEffect(() => {
-    const getDate = async () => {
-      try {
-        const response = await fetch("/api/expense/searchExpenses/getDate");
-        if (!response.ok) {
-          throw new Error("Ocorreu um erro ao buscar o filtro de datas!");
-        }
-        const dates = await response.json();
-
-        setDueDateOption(
-          dates.unicFormatedDueDates.map((date: string) => {
-            const [year, month] = date.split("-").map(Number);
-            return {
-              display: new Date(year, month - 1).toLocaleDateString("pt-BR", {
-                month: "short",
-                year: "numeric",
-              }),
-              value: date,
-            };
-          })
-        );
-        setPaymentDateOption(
-          dates.unicFormatedPaymentDates.map((date: string) => {
-            const [year, month] = date.split("-").map(Number);
-            return {
-              display: new Date(year, month - 1).toLocaleDateString("pt-BR", {
-                month: "short",
-                year: "numeric",
-              }),
-              value: date,
-            };
-          })
-        );
-      } catch (err) {
-        console.log(err);
-        toast.error("Ocorreu um erro ao buscar o filtro de datas!");
-      }
-    };
-
-    getDate();
-  }, [expenses]);
+    setDueDateOption(dates.dueDateOption);
+    setPaymentDateOption(dates.paymentDateOption);
+  }, [
+    expenses,
+    setDueDateOption,
+    setPaymentDateOption,
+    dates.dueDateOption,
+    dates.paymentDateOption,
+  ]);
 
   const getViewPages = () => {
     if (totalPages <= 3)

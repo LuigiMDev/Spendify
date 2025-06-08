@@ -3,8 +3,9 @@ import { Search } from "lucide-react";
 import React from "react";
 import ExpensesFilters from "./ExpensesFilters";
 import useExpenses from "@/app/system/context/expenses/useExpenses";
+import { Dates } from "@/app/system/types/dates";
 
-const SearchExpenses = () => {
+const SearchExpenses = ({dates}: Dates) => {
   const { searchInput, setSearchInput, handleSearchExpenses } = useExpenses();
 
   return (
@@ -24,7 +25,7 @@ const SearchExpenses = () => {
           <Search className="absolute right-0 top-1/2 -translate-y-1/2 bg-white pointer-events-none h-10 mr-2 text-gray-700" />
         </div>
       </form>
-      <ExpensesFilters />
+      <ExpensesFilters dates={dates} />
     </>
   );
 };

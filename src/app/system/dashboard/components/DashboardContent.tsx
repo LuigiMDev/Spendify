@@ -1,12 +1,39 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import StatusData from "./StatusData";
 import SpendEvolution from "./SpendEvolution";
 import TypeValueChart from "./TypeValueChart";
 import useDashboard from "../../context/dashboard/useDashboard";
+import {
+  spendEvolution,
+  statusData,
+  typeChartData,
+} from "../../types/dashboard";
 
-const DashboardContent = () => {
-  const { error } = useDashboard();
+type initialData = {
+  initialData: {
+    statusData: statusData;
+    spendEvolution: spendEvolution;
+    typeChart: typeChartData;
+  };
+};
+
+const DashboardContent = ({ initialData }: initialData) => {
+  const { error, setStatusData, setSpendEvolutionData, setTypeChartData } =
+    useDashboard();
+
+  useEffect(() => {
+    setStatusData(initialData.statusData);
+    setSpendEvolutionData(initialData.spendEvolution);
+    setTypeChartData(initialData.typeChart);
+  }, [
+    initialData.statusData,
+    initialData.spendEvolution,
+    initialData.typeChart,
+    setStatusData,
+    setSpendEvolutionData,
+    setTypeChartData,
+  ]);
 
   if (error)
     return (

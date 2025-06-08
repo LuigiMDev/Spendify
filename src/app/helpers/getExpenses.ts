@@ -1,8 +1,8 @@
 import { prismadb } from "../api/prismaClient";
 import { ExpenseStatus, ExpenseType } from "@/generated/prisma";
 import { getUserAuthentication } from "../api/helpers/auth/getUserAuthentication";
-import { validateDate } from "../api/helpers/validateDate";
-import { expensesSearchParams } from "../types/expensesSearchParams";
+import { validateDate } from "./validateDate";
+import { expensesSearchParams } from "../system/types/expensesSearchParams";
 
 export const getExpenses = async ({
   searchInput,

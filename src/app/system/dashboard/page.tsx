@@ -1,8 +1,14 @@
-"use client";
+import { getDashboard } from "@/app/helpers/getDashboard";
 import DashboardContent from "./components/DashboardContent";
-import DashboardFilters from "./components/DashboardFilters";
+import DashboardFilters from "./components/DashboardFilters/DashboardFilters";
+import { dashboardSearchParams } from "@/app/system/types/dashboardSearchParams";
+import { getDate } from "./components/DashboardFilters/helpers/getDate";
 
-const Page = () => {
+const Page = async (searchParams: dashboardSearchParams) => {
+  const { searchDueDate, searchPaymentDate } = searchParams;
+  const initialData = await getDashboard({ searchDueDate, searchPaymentDate });
+  const filters = await getDate();
+
   return (
     <div>
       <div className="mb-5">
@@ -13,9 +19,9 @@ const Page = () => {
         </p>
       </div>
 
-      <DashboardFilters />
+      <DashboardFilters filters={filters} />
 
-      <DashboardContent />
+      <DashboardContent initialData={initialData} />
     </div>
   );
 };
