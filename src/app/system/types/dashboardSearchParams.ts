@@ -1,4 +1,4 @@
 export type dashboardSearchParams = {
-    searchDueDate: string,
-    searchPaymentDate: string
-}
+  searchDueDate: string;
+  searchPaymentDate: string;
+};

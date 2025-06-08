@@ -6,7 +6,11 @@ import { expensesSearchParams } from "@/app/system/types/expensesSearchParams";
 import { getExpenses } from "@/app/helpers/getExpenses";
 import { getDate } from "../dashboard/components/DashboardFilters/helpers/getDate";
 
-const Page = async (searchParams: expensesSearchParams) => {
+type PageProps = {
+  searchParams: Promise<expensesSearchParams>
+}
+
+const Page = async ({searchParams}: PageProps) => {
   const {
     searchInput = "",
     page = 1,
@@ -14,7 +18,7 @@ const Page = async (searchParams: expensesSearchParams) => {
     searchStatus = "",
     searchDueDate = "",
     searchPaymentDate = "",
-  } = searchParams;
+  } = await searchParams;
 
   const initalExpenses = await getExpenses({
     searchInput,

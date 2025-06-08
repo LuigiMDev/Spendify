@@ -4,8 +4,12 @@ import DashboardFilters from "./components/DashboardFilters/DashboardFilters";
 import { dashboardSearchParams } from "@/app/system/types/dashboardSearchParams";
 import { getDate } from "./components/DashboardFilters/helpers/getDate";
 
-const Page = async (searchParams: dashboardSearchParams) => {
-  const { searchDueDate, searchPaymentDate } = searchParams;
+type PageProps = {
+  searchParams: Promise<dashboardSearchParams>
+}
+
+const Page = async ({searchParams}: PageProps) => {
+  const { searchDueDate, searchPaymentDate } = await searchParams;
   const initialData = await getDashboard({ searchDueDate, searchPaymentDate });
   const filters = await getDate();
 
