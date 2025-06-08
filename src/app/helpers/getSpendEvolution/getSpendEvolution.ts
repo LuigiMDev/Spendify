@@ -2,12 +2,15 @@ import { Expense } from "@/generated/prisma";
 import {
   generateDays,
   generateMonths,
-} from "./helpers/getSpendEvolution.ts/generateMonthsAndDays";
+} from "./generateMonthsAndDays";
 
 export const getSpendEvolution = (data: Expense[]) => {
   const paidExpenses = data.filter((expense) => expense.paymentDate);
 
-  if (paidExpenses.length === 0) return [];
+  if (paidExpenses.length === 0) return {
+    allDatesGrouped: [],
+    groupByMonth: false
+  };
 
   const sorted = paidExpenses.sort(
     (a, b) =>

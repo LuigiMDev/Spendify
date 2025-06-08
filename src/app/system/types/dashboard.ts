@@ -16,7 +16,6 @@ export type statusData = {
 }
 
 export type typeChartData = {
-    totalValue: number;
     food: number;
     transport: number;
     entertainment: number;

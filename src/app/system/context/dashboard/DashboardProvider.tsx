@@ -1,5 +1,5 @@
 "use client";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useEffect, useState } from "react";
 import {
   spendEvolution,
   statusData,
@@ -39,8 +39,9 @@ const DashboardProvider = ({ children }: { children: React.ReactNode }) => {
   const [typeChartData, setTypeChartData] = useState<typeChartData>();
   const [searchDueDate, setSearchDueDate] = useState("");
   const [searchPaymentDate, setSearchPaymentDate] = useState("");
+  const [initialLoad, setInitialLoad] = useState(true)
 
-  const handleSearchData = async () => {
+  const handleSearchData = useCallback( async () => {
     setIsLoading(true);
     try {
       const response = await fetch(
@@ -59,11 +60,19 @@ const DashboardProvider = ({ children }: { children: React.ReactNode }) => {
       toast.error("Ocorreu um erro ao carregar os dados!");
     }
     setIsLoading(false);
-  };
+  }, [searchDueDate, searchPaymentDate])
 
   useEffect(() => {
-    handleSearchData();
-  }, [searchDueDate, searchPaymentDate]);
+    if(!initialLoad) {
+      handleSearchData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchDueDate, searchPaymentDate, handleSearchData]);
+
+  useEffect(() => {
+    setInitialLoad(false)
+    setIsLoading(false)
+  }, [])
 
   return (
     <dashboardContext.Provider
