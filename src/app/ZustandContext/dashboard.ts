@@ -52,9 +52,8 @@ export const useDashboard = create<DashboardState>((set, get) => ({
 
 
   handleSearchData: async () => {
-    const { searchDueDate, searchPaymentDate, setIsLoading, setError, setTypeChartData, setStatusData, setSpendEvolutionData } = get();
+    const { searchDueDate, searchPaymentDate, setError, setTypeChartData, setStatusData, setSpendEvolutionData } = get();
 
-    setIsLoading(true);
     try {
       const response = await fetch(`/api/dashboard?searchDueDate=${searchDueDate}&searchPaymentDate=${searchPaymentDate}`);
 
@@ -73,6 +72,5 @@ export const useDashboard = create<DashboardState>((set, get) => ({
       setError(true);
       toast.error("Ocorreu um erro ao carregar os dados!");
     }
-    setIsLoading(false);
   },
 }));

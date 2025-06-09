@@ -1,10 +1,7 @@
 import DashboardContent from "./components/DashboardContent";
-import DashboardFilters from "./components/DashboardFilters/DashboardFilters";
-import { getDate } from "./components/DashboardFilters/helpers/getDate";
+import DashboardFilters from "./components/DashboardFilters";
 
 const Page = async () => {
-  const filters = await getDate();
-
   return (
     <div>
       <div className="mb-5">
@@ -15,7 +12,7 @@ const Page = async () => {
         </p>
       </div>
 
-      <DashboardFilters filters={filters} />
+      <DashboardFilters />
 
       <DashboardContent />
     </div>

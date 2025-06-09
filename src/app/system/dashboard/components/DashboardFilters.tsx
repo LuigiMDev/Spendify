@@ -1,46 +1,32 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { dateOption } from "@/app/system/types/dates";
+import React, { useEffect } from "react";
 import { useDashboard } from "@/app/ZustandContext/dashboard";
-import {useShallow} from "zustand/shallow"
+import { useShallow } from "zustand/shallow";
+import { useDates } from "@/app/ZustandContext/dates";
+import { useFirstLoad } from "@/app/ZustandContext/firstLoad";
 
-type filters = {
-  filters: {
-    dueDateOption: dateOption[];
-    paymentDateOption: dateOption[];
-  };
-};
-
-const DashboardFilters = ({ filters }: filters) => {
+const DashboardFilters = () => {
   const [
     searchDueDate,
     setSearchDueDate,
     searchPaymentDate,
     setSearchPaymentDate,
     handleSearchData,
-    setIsLoading,
-  ] = useDashboard(useShallow((state) => [
-    state.searchDueDate,
-    state.setSearchDueDate,
-    state.searchPaymentDate,
-    state.setSearchPaymentDate,
-    state.handleSearchData,
-    state.setIsLoading,
-  ]));
-  const [dueDateOption, setDueDateOption] = useState<dateOption[]>([]);
-  const [paymentDateOption, setPaymentDateOption] = useState<dateOption[]>([]);
+  ] = useDashboard(
+    useShallow((state) => [
+      state.searchDueDate,
+      state.setSearchDueDate,
+      state.searchPaymentDate,
+      state.setSearchPaymentDate,
+      state.handleSearchData,
+    ])
+  );
 
-  useEffect(() => {
-    setDueDateOption(filters.dueDateOption);
-    setPaymentDateOption(filters.paymentDateOption);
-  }, [
-    setDueDateOption,
-    setPaymentDateOption,
-    filters.dueDateOption,
-    filters.paymentDateOption,
-  ]);
+  const [dueDateOption, paymentDateOption] = useDates(
+    useShallow((state) => [state.dueDateOption, state.paymentDateOption])
+  );
 
-  const [firstLoad, setFirstLoad] = useState(true);
+  const firstLoad = useFirstLoad((state) => state.firstLoad);
 
   useEffect(() => {
     if (!firstLoad) {
@@ -48,12 +34,6 @@ const DashboardFilters = ({ filters }: filters) => {
     }
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDueDate, searchPaymentDate]);
-
-  useEffect(() => {
-    setFirstLoad(false);
-    setIsLoading(false);
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 w-full md:w-fit items-center gap-3 mb-5">

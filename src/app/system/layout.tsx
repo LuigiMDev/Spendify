@@ -1,4 +1,5 @@
 import { getDashboard } from "../helpers/getDashboard";
+import { getDate } from "../helpers/getDate";
 import { getExpenses } from "../helpers/getExpenses";
 import AsideAndHeader from "./components/AsideAndHeaderLayout";
 import MainLayout from "./components/MainLayout";
@@ -19,10 +20,13 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
     searchPaymentDate: "",
   });
 
+  const initialDates = await getDate()
+
   return (
     <AsideContextAndData
       initialExpenses={initalExpenses}
       initialDashboardData={initialDashboardData}
+      initialDates={initialDates}
     >
       <AsideAndHeader />
       <MainLayout>{children}</MainLayout>

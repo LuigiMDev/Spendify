@@ -1,13 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { dateOption, Dates } from "@/app/system/types/dates";
 import { useExpense } from "@/app/ZustandContext/expenses";
 import {useShallow} from "zustand/shallow"
+import { useDates } from "@/app/ZustandContext/dates";
 
-const ExpensesFilters = ({ dates }: Dates) => {
+const ExpensesFilters = () => {
   const [
-    expenses,
     page,
     setPage,
     totalPages,
@@ -20,7 +19,6 @@ const ExpensesFilters = ({ dates }: Dates) => {
     searchPaymentDate,
     setSearchPaymentDate,
   ] = useExpense(useShallow((state) => [
-    state.expenses,
     state.page,
     state.setPage,
     state.totalPages,
@@ -33,19 +31,7 @@ const ExpensesFilters = ({ dates }: Dates) => {
     state.searchPaymentDate,
     state.setSearchPaymentDate,
   ]));
-  const [dueDateOption, setDueDateOption] = useState<dateOption[]>([]);
-  const [paymentDateOption, setPaymentDateOption] = useState<dateOption[]>([]);
-
-  useEffect(() => {
-    setDueDateOption(dates.dueDateOption);
-    setPaymentDateOption(dates.paymentDateOption);
-  }, [
-    expenses,
-    setDueDateOption,
-    setPaymentDateOption,
-    dates.dueDateOption,
-    dates.paymentDateOption,
-  ]);
+  const [dueDateOption, paymentDateOption] = useDates(useShallow((state) => [state.dueDateOption, state.paymentDateOption]))
 
   const getViewPages = () => {
     if (totalPages <= 3)

@@ -2,11 +2,8 @@ import React from "react";
 import AddExpense from "./components/AddAndSearchExpenses/components/AddExpense";
 import SearchExpenses from "./components/AddAndSearchExpenses/components/SearchExpenses";
 import ShowExpenses from "./components/ShowExpenses";
-import { getDate } from "../dashboard/components/DashboardFilters/helpers/getDate";
 
 const Page = async () => {
-
-  const dates = await getDate();
   return (
     <div className="">
       <div className="mb-5">
@@ -19,7 +16,7 @@ const Page = async () => {
 
       <div className="flex gap-x-5 gap-y-3 flex-wrap mb-5">
         <AddExpense />
-        <SearchExpenses dates={dates} />
+        <SearchExpenses />
       </div>
 
       <ShowExpenses />
