@@ -1,4 +1,4 @@
-import { Expense } from "@/generated/prisma";
+import { Expense } from "@prisma/client";
 import {
   generateDays,
   generateMonths,

@@ -1,4 +1,4 @@
-import { Expense, ExpenseStatus } from "@/generated/prisma";
+import { Expense, ExpenseStatus } from "@prisma/client";
 import { getTotalValue } from "./getTotalValue";
 
 export const getStatusData = (data: Expense[]) => {

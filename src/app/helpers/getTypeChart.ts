@@ -1,4 +1,4 @@
-import { Expense, ExpenseType } from "@/generated/prisma";
+import { Expense, ExpenseType } from "@prisma/client";
 
 export const getTypeChart = (data: Expense[]) => {
   const typeChart = data.reduce((acc, expense) => {
