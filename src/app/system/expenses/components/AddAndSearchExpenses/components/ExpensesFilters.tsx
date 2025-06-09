@@ -1,12 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import useExpenses from "@/app/system/context/expenses/useExpenses";
+import React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { dateOption, Dates } from "@/app/system/types/dates";
+import { useExpense } from "@/app/ZustandContext/expenses";
+import {useShallow} from "zustand/shallow"
+import { useDates } from "@/app/ZustandContext/dates";
 
-const ExpensesFilters = ({ dates }: Dates) => {
-  const {
-    expenses,
+const ExpensesFilters = () => {
+  const [
     page,
     setPage,
     totalPages,
@@ -18,20 +18,20 @@ const ExpensesFilters = ({ dates }: Dates) => {
     setSearchDueDate,
     searchPaymentDate,
     setSearchPaymentDate,
-  } = useExpenses();
-  const [dueDateOption, setDueDateOption] = useState<dateOption[]>([]);
-  const [paymentDateOption, setPaymentDateOption] = useState<dateOption[]>([]);
-
-  useEffect(() => {
-    setDueDateOption(dates.dueDateOption);
-    setPaymentDateOption(dates.paymentDateOption);
-  }, [
-    expenses,
-    setDueDateOption,
-    setPaymentDateOption,
-    dates.dueDateOption,
-    dates.paymentDateOption,
-  ]);
+  ] = useExpense(useShallow((state) => [
+    state.page,
+    state.setPage,
+    state.totalPages,
+    state.searchType,
+    state.setSearchType,
+    state.searchStatus,
+    state.setSearchStatus,
+    state.searchDueDate,
+    state.setSearchDueDate,
+    state.searchPaymentDate,
+    state.setSearchPaymentDate,
+  ]));
+  const [dueDateOption, paymentDateOption] = useDates(useShallow((state) => [state.dueDateOption, state.paymentDateOption]))
 
   const getViewPages = () => {
     if (totalPages <= 3)
@@ -51,13 +51,13 @@ const ExpensesFilters = ({ dates }: Dates) => {
 
   const handlePreviewPage = () => {
     if (page > 1) {
-      setPage((prev) => prev - 1);
+      setPage(page - 1);
     }
   };
 
   const handleNextPage = () => {
     if (page < totalPages) {
-      setPage((prev) => prev + 1);
+      setPage(page + 1);
     }
   };
 

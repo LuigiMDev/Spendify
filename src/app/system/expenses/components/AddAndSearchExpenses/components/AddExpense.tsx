@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { CirclePlus, CircleX, LoaderCircle } from "lucide-react";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -7,10 +7,14 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ExpenseFormSchema, ExpenseZodType } from "@/zod/Expense/FormExpense";
 import { toast } from "react-toastify";
-import useExpenses from "@/app/system/context/expenses/useExpenses";
+import { useExpense } from "@/app/ZustandContext/expenses";
+import {useShallow} from "zustand/shallow"
 
 const AddExpense = () => {
-  const {expenses, setExpenses} = useExpenses()
+  const [expenses, setExpenses] = useExpense(useShallow((state) => [
+    state.expenses,
+    state.setExpenses,
+  ]));
   const [openModal, setOpenModal] = useState(false);
   const [paid, setPaid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,11 +47,11 @@ const AddExpense = () => {
         const newExpense = await response.json();
 
         console.log(newExpense);
-        setExpenses([newExpense, ...expenses])
+        setExpenses([newExpense, ...expenses]);
         setOpenModal(false);
         toast.success("Gasto criado com sucesso!");
       } else {
-        throw new Error("Não foi possível acessar os dados!")
+        throw new Error("Não foi possível acessar os dados!");
       }
     } catch (err) {
       console.error(err);

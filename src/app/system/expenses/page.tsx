@@ -2,34 +2,8 @@ import React from "react";
 import AddExpense from "./components/AddAndSearchExpenses/components/AddExpense";
 import SearchExpenses from "./components/AddAndSearchExpenses/components/SearchExpenses";
 import ShowExpenses from "./components/ShowExpenses";
-import { expensesSearchParams } from "@/app/system/types/expensesSearchParams";
-import { getExpenses } from "@/app/helpers/getExpenses";
-import { getDate } from "../dashboard/components/DashboardFilters/helpers/getDate";
 
-type PageProps = {
-  searchParams: Promise<expensesSearchParams>
-}
-
-const Page = async ({searchParams}: PageProps) => {
-  const {
-    searchInput = "",
-    page = 1,
-    searchType = "",
-    searchStatus = "",
-    searchDueDate = "",
-    searchPaymentDate = "",
-  } = await searchParams;
-
-  const initalExpenses = await getExpenses({
-    searchInput,
-    page,
-    searchType,
-    searchStatus,
-    searchDueDate,
-    searchPaymentDate,
-  });
-
-  const dates = await getDate();
+const Page = async () => {
   return (
     <div className="">
       <div className="mb-5">
@@ -42,10 +16,10 @@ const Page = async ({searchParams}: PageProps) => {
 
       <div className="flex gap-x-5 gap-y-3 flex-wrap mb-5">
         <AddExpense />
-        <SearchExpenses dates={dates} />
+        <SearchExpenses />
       </div>
 
-      <ShowExpenses initialExpenses={initalExpenses} />
+      <ShowExpenses />
     </div>
   );
 };

@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { asideContext } from "./AsideContext";
+import { asideAndDataContext } from "./AsideContextAndData";
 
 const HookContext = () => {
-  const useAsideContext = useContext(asideContext);
+  const useAsideContext = useContext(asideAndDataContext);
 
   if (!useAsideContext) {
     throw new Error("Contexto não inserido!");

@@ -1,10 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
-import useDashboard from "../../context/dashboard/useDashboard";
 import { BadgeCheck, Ban, Hourglass, LoaderCircle, Wallet } from "lucide-react";
+import { useDashboard } from "@/app/ZustandContext/dashboard";
+import {useShallow} from "zustand/shallow"
 
 const StatusData = () => {
-  const { statusData, isLoading } = useDashboard();
+  const [statusData, isLoading] = useDashboard(useShallow((state) => [
+    state.statusData,
+    state.isLoading,
+  ]));
 
   const Loading = <LoaderCircle className="text-primary animate-spin" />;
 

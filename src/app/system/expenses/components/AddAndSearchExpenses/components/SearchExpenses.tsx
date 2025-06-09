@@ -1,12 +1,53 @@
-'use client'
+"use client";
 import { Search } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ExpensesFilters from "./ExpensesFilters";
-import useExpenses from "@/app/system/context/expenses/useExpenses";
-import { Dates } from "@/app/system/types/dates";
+import { useExpense } from "@/app/ZustandContext/expenses";
+import { useShallow } from "zustand/shallow";
 
-const SearchExpenses = ({dates}: Dates) => {
-  const { searchInput, setSearchInput, handleSearchExpenses } = useExpenses();
+const SearchExpenses = () => {
+  const [
+    searchInput,
+    setSearchInput,
+    handleSearchExpenses,
+    searchDueDate,
+    searchPaymentDate,
+    searchStatus,
+    searchType,
+    setIsLoadingHook,
+  ] = useExpense(
+    useShallow((state) => [
+      state.searchInput,
+      state.setSearchInput,
+      state.handleSearchExpenses,
+      state.searchDueDate,
+      state.searchPaymentDate,
+      state.searchStatus,
+      state.searchType,
+      state.setIsLoadingHook,
+    ])
+  );
+
+  const [firstLoad, setFirstLoad] = useState(true);
+
+  useEffect(() => {
+    if (!firstLoad) {
+      handleSearchExpenses();
+    }
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    searchDueDate,
+    searchPaymentDate,
+    searchStatus,
+    searchType,
+    handleSearchExpenses,
+  ]);
+
+  useEffect(() => {
+    setFirstLoad(false);
+    setIsLoadingHook(false);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -25,7 +66,7 @@ const SearchExpenses = ({dates}: Dates) => {
           <Search className="absolute right-0 top-1/2 -translate-y-1/2 bg-white pointer-events-none h-10 mr-2 text-gray-700" />
         </div>
       </form>
-      <ExpensesFilters dates={dates} />
+      <ExpensesFilters />
     </>
   );
 };

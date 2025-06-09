@@ -10,9 +10,11 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import useDashboard from "../../context/dashboard/useDashboard";
+
 import LoadingChart from "./LoadingChart";
 import NoDataChart from "./NoDataChart";
+import { useDashboard } from "@/app/ZustandContext/dashboard";
+import {useShallow} from "zustand/shallow"
 
 const chartConfig = {
   food: {
@@ -50,7 +52,10 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function TypeValueChart() {
-  const { typeChartData, isLoading } = useDashboard();
+  const [typeChartData, isLoading] = useDashboard(useShallow((state) => [
+    state.typeChartData,
+    state.isLoading,
+  ]));
   let chartData: object[] = [];
   if (typeChartData) {
     chartData = Object.entries(typeChartData)
