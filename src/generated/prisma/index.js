@@ -175,10 +175,6 @@ const config = {
         "fromEnvVar": null,
         "value": "windows",
         "native": true
-      },
-      {
-        "fromEnvVar": null,
-        "value": "rhel-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -186,7 +182,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
+    "rootEnvPath": "../../../.env",
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
@@ -205,8 +201,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../src/generated/prisma\"\n  binaryTargets = [\"native\", \"rhel-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id        String    @id @default(uuid())\n  name      String\n  FTwoNames String\n  avatar    String\n  email     String    @unique\n  password  String\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n  expenses  Expense[]\n\n  @@map(\"users\")\n}\n\nmodel Expense {\n  id          String        @id @default(uuid())\n  title       String\n  description String?\n  type        ExpenseType\n  dueDate     DateTime\n  status      ExpenseStatus\n  paymentDate DateTime?\n  value       Float\n  createdAt   DateTime      @default(now())\n  updatedAt   DateTime      @updatedAt\n  userId      String\n  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@map(\"expenses\")\n}\n\nenum ExpenseType {\n  food // Alimentação\n  transport // Transporte\n  entertainment // Entretenimento\n  bills // Contas\n  rent // Aluguel\n  health // Saúde\n  shopping // Compras\n  other // Outros\n}\n\nenum ExpenseStatus {\n  pending //Pendente\n  paid //Paga\n  cancelled //Cancelada\n}\n",
-  "inlineSchemaHash": "9f5fc9c1847049d2924bbf16ee5b85fd9c4ac4d61a377b0c7c84783945b098c8",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id        String    @id @default(uuid())\n  name      String\n  FTwoNames String\n  avatar    String\n  email     String    @unique\n  password  String\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n  expenses  Expense[]\n\n  @@map(\"users\")\n}\n\nmodel Expense {\n  id          String        @id @default(uuid())\n  title       String\n  description String?\n  type        ExpenseType\n  dueDate     DateTime\n  status      ExpenseStatus\n  paymentDate DateTime?\n  value       Float\n  createdAt   DateTime      @default(now())\n  updatedAt   DateTime      @updatedAt\n  userId      String\n  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@map(\"expenses\")\n}\n\nenum ExpenseType {\n  food // Alimentação\n  transport // Transporte\n  entertainment // Entretenimento\n  bills // Contas\n  rent // Aluguel\n  health // Saúde\n  shopping // Compras\n  other // Outros\n}\n\nenum ExpenseStatus {\n  pending //Pendente\n  paid //Paga\n  cancelled //Cancelada\n}\n",
+  "inlineSchemaHash": "537cf19aaaa4c55c3b51955f5ea482f534c2dfa8d767f1fc48739597e012e559",
   "copyEngine": true
 }
 
@@ -247,10 +243,6 @@ Object.assign(exports, Prisma)
 // file annotations for bundling tools to include these files
 path.join(__dirname, "query_engine-windows.dll.node");
 path.join(process.cwd(), "src/generated/prisma/query_engine-windows.dll.node")
-
-// file annotations for bundling tools to include these files
-path.join(__dirname, "libquery_engine-rhel-openssl-3.0.x.so.node");
-path.join(process.cwd(), "src/generated/prisma/libquery_engine-rhel-openssl-3.0.x.so.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "src/generated/prisma/schema.prisma")
