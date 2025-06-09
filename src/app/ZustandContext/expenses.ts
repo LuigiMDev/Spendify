@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Expense } from "@/generated/prisma";
+import { Expense } from "@prisma/client";
 import { toast } from "react-toastify";
 
 type ExpenseState = {

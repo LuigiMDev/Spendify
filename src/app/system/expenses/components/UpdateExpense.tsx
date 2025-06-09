@@ -6,7 +6,7 @@ import { NumericFormat } from "react-number-format";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ExpenseFormSchema, ExpenseZodType } from "@/zod/Expense/FormExpense";
-import { Expense } from "@/generated/prisma";
+import { Expense } from "@prisma/client";
 import { toast } from "react-toastify";
 import { useExpense } from "@/app/ZustandContext/expenses";
 import {useShallow} from "zustand/shallow"

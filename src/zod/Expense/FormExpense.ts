@@ -1,4 +1,4 @@
-import { ExpenseStatus, ExpenseType } from "@/generated/prisma";
+import { ExpenseStatus, ExpenseType } from "@prisma/client";
 import { z } from "zod";
 
 export const ExpenseFormSchema = z.object({

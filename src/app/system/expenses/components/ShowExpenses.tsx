@@ -3,7 +3,7 @@ import React from "react";
 import UpdateExpense from "./UpdateExpense";
 import ExcludeExpense from "./ExcludeExpense";
 import { TranslateTypeExpense } from "../../helpers/translateExpense";
-import { Expense } from "@/generated/prisma";
+import { Expense } from "@prisma/client";
 import { LoaderCircle } from "lucide-react";
 import DetailsExpense from "./DetailsExpense";
 import { useExpense } from "@/app/ZustandContext/expenses";

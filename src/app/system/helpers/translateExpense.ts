@@ -1,4 +1,4 @@
-import { ExpenseStatus, ExpenseType } from "@/generated/prisma";
+import { ExpenseStatus, ExpenseType } from "@prisma/client";
 
 export const TranslateTypeExpense: Record<ExpenseType, string> = {
     food: "Alimentação",

@@ -1,5 +1,5 @@
 import { prismadb } from "../api/prismaClient";
-import { ExpenseStatus, ExpenseType } from "@/generated/prisma";
+import { ExpenseStatus, ExpenseType } from "@prisma/client";
 import { getUserAuthentication } from "../api/helpers/auth/getUserAuthentication";
 import { validateDate } from "./validateDate";
 import { expensesSearchParams } from "../system/types/expensesSearchParams";

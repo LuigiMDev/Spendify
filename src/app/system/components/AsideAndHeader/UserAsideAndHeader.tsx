@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoaderCircle, LogOut } from "lucide-react";
 import Image from "next/image";
-import { User } from "@/generated/prisma";
+import { User } from "@prisma/client";
 
 type prop = {
   openAside?: boolean;

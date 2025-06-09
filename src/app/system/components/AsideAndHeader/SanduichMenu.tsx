@@ -8,7 +8,6 @@ const SanduichMenu = () => {
 
   const handleMenu = () => {
     setMenu(!menu);
-    console.log(menu);
   };
 
   return (

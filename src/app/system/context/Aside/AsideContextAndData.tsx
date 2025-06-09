@@ -1,6 +1,6 @@
 "use client";
 import { useExpense } from "@/app/ZustandContext/expenses";
-import { $Enums, Expense } from "@/generated/prisma";
+import { $Enums, Expense } from "@prisma/client";
 import React, { createContext, useEffect, useState } from "react";
 import { spendEvolution, statusData } from "../../types/dashboard";
 import { useDashboard } from "@/app/ZustandContext/dashboard";

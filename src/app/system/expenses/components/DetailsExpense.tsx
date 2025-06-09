@@ -2,7 +2,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { CircleX, Info } from "lucide-react";
 import React, { useState } from "react";
-import { Expense } from "@/generated/prisma";
+import { Expense } from "@prisma/client";
 import {
   TranslateStatusExpense,
   TranslateTypeExpense,
